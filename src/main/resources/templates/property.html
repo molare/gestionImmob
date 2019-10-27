@@ -1,0 +1,1550 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width initial-scale=1.0">
+    <title>APPS_IMMOBILIERE</title>
+    <!-- GLOBAL MAINLY STYLES-->
+    <link href="/immo-apps/ressources/allRessources" rel="import"/>
+
+    <!-- PAGE LEVEL SCRIPTS-->
+    <script type="text/javascript">
+        var table;
+        $(document).ready(function(){
+            $('#loadingId').hide();
+            $('#editLoadingId').hide();
+            table= $('#propertyTable').DataTable({
+                "responsive": true,
+                "autoWidth":false,
+                "sAjaxSource":window.origin+'/immo-apps/listProperty',
+                "sAjaxDataProp":"data",
+                "oLanguage": {
+                    "sLengthMenu": "_MENU_ Enregistrements",
+                    "sSearch":"<span class='add-on'><i class='fa fa-search'></i></span>Recherche",
+                    "sZeroRecords": "Aucun résultat",
+                    "sInfo": "Affichage de _START_ à _END_ sur _TOTAL_",
+                    "sInfoEmpty": "Affichage de 0 à 0 sur 0 Enregistrements",
+                    "oPaginate": {
+                        "sNext": 'Après',
+                        "sPrevious": 'Avant',
+                    },
+                    "select": {
+                        "rows": {
+                            "_": " %d ligne sélectionnée(s)",
+                            "1": "1 ligne sélectionnée"
+                        }
+                    }
+                },
+                "aLengthMenu": [
+                    [10, 25, 100, -1],
+                    [10, 25, 100, " Tous"]
+                ],
+                "aaSorting": [
+                    [0, 'desc'],
+                    [1, 'asc']
+                ], "columns":[
+                    {"data":"checkboxe"},
+                    {"data":"date"},
+                    {"data":"code"},
+                    {"data":"civilityTransient"},
+                    {"data":"firstName"},
+                    {"data":"lastName"},
+                    {"data":"dateTransient"},
+                    {"data":"typeTransient"},
+                    {"data":"phone"},
+                    {"data":"email"},
+                    {"data":"imageTransient"},
+                    {"data":"action"}
+
+                ],
+                'columnDefs': [{
+                    'className': 'select-checkbox',
+                    'targets': 0,
+                    'checkboxes': {
+                        'selectRow': true
+                    }
+                }],
+                'select': {
+                    'style': 'multi'
+                }
+
+            });
+
+            $('#birthDateId').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                format:"dd-mm-yyyy",
+                calendarWeeks: true,
+                autoclose: true
+            });
+
+            $('#editBirthDateId').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                format:"dd-mm-yyyy",
+                calendarWeeks: true,
+                autoclose: true
+            });
+
+            //FIN DATATABLE
+
+            //IF OPEN MODAL
+            $("#btnAddNew").click(function(){
+                //LOAD type
+                typePropertyOption();
+                civilityOption();
+                $(".col-md-4").removeClass('has-error').removeClass('has-success');
+                $(".text-danger").remove();
+
+            });
+
+
+            //FONCTION ADD PROPERTY
+            $("#btnAddPropertyId").on('click', function(){
+               $(".text-danger").remove()
+                $(".col-md-4").removeClass('has-error').removeClass('has-success');
+
+                // validation
+                var firstName = $("#firstNameId").val();
+                var lastName= $("#lastNameId").val();
+                var type =  $("#typePropertyId").val();
+                var code =  $("#codeId").val();
+                var birthDate = $("#birthDateId").val();
+                var lieuNaiss = $("#lieuNaisId").val();
+                var profession = $("#professionId").val();
+                var domicile = $("#domicilId").val();
+                var nberPiece = $("#nberPieceId").val();
+                var naturePiece = $("#naturePieceId").val();
+                var cpteContribu = $("#cpteContribuId").val();
+                var country = $("#countryId").val();
+                var phone = $("#phoneId").val();
+                var civility =$("#civilityId").val();
+
+
+                //control champs
+                if(firstName === "") {
+                    $("#firstNameId").closest('.col-md-4').addClass('has-error');
+                    $("#firstNameId").after('<p class="text-danger">Champs vide</p>');
+                } else {
+                    $("#firstNameId").closest('.col-md-4').removeClass('has-error');
+                    $("#firstNameId").closest('.col-md-4').addClass('has-success');
+                }
+
+                if(lastName === "") {
+                    $("#lastNameId").closest('.col-md-4').addClass('has-error');
+                    $("#lastNameId").after('<p class="text-danger">Champs vide</p>');
+                }else {
+                    $("#lastNameId").closest('.col-md-4').removeClass('has-error');
+                    $("#lastNameId").closest('.col-md-4').addClass('has-success');
+                }
+
+                if(type === "0") {
+                    $("#typePropertyId").closest('.col-md-4').addClass('has-error');
+                    $("#typePropertyId").after('<p class="text-danger">Champs vide</p>');
+                }else {
+                    $("#typePropertyId").closest('.col-md-4').removeClass('has-error');
+                    $("#typePropertyId").closest('.col-md-4').addClass('has-success');
+                }
+
+                if(civility ==="0") {
+                    $("#civilityId").closest('.col-md-4').addClass('has-error');
+                    $("#civilityId").after('<p class="text-danger">Champs vide</p>');
+                }else {
+                    $("#civilityId").closest('.col-md-4').removeClass('has-error');
+                    $("#civilityId").closest('.col-md-4').addClass('has-success');
+                }
+
+                if(code === "") {
+                    $("#codeId").closest('.col-md-4').addClass('has-error');
+                    $("#codeId").after('<p class="text-danger">Champs vide</p>');
+                }else {
+                    $("#codeId").closest('.col-md-4').removeClass('has-error');
+                    $("#codeId").closest('.col-md-4').addClass('has-success');
+                }
+                if(profession === "") {
+                    $("#professionId").closest('.col-md-4').addClass('has-error');
+                    $("#professionId").after('<p class="text-danger">Champs vide</p>');
+                }else {
+                    $("#professionId").closest('.col-md-4').removeClass('has-error');
+                    $("#professionId").closest('.col-md-4').addClass('has-success');
+                }
+                if(domicile === "") {
+                    $("#domicilId").closest('.col-md-4').addClass('has-error');
+                    $("#domicilId").after('<p class="text-danger">Champs vide</p>');
+                }else {
+                    $("#domicilId").closest('.col-md-4').removeClass('has-error');
+                    $("#domicilId").closest('.col-md-4').addClass('has-success');
+                }
+
+                if(naturePiece === "0") {
+                    $("#naturePieceId").closest('.col-md-4').addClass('has-error');
+                    $("#naturePieceId").after('<p class="text-danger">Champs vide</p>');
+                }else {
+                    $("#naturePieceId").closest('.col-md-4').removeClass('has-error');
+                    $("#naturePieceId").closest('.col-md-4').addClass('has-success');
+                }
+
+                if(nberPiece === "") {
+                    $("#nberPieceId").closest('.col-md-4').addClass('has-error');
+                    $("#nberPieceId").after('<p class="text-danger">Champs vide</p>');
+                }else {
+                    $("#nberPieceId").closest('.col-md-4').removeClass('has-error');
+                    $("#nberPieceId").closest('.col-md-4').addClass('has-success');
+                }
+
+                if(cpteContribu === "") {
+                    $("#cpteContribuId").closest('.col-md-4').addClass('has-error');
+                    $("#cpteContribuId").after('<p class="text-danger">Champs vide</p>');
+                }else {
+                    $("#cpteContribuId").closest('.col-md-4').removeClass('has-error');
+                    $("#cpteContribuId").closest('.col-md-4').addClass('has-success');
+                }
+
+                if(country === "0") {
+                    $("#countryId").closest('.col-md-4').addClass('has-error');
+                    $("#countryId").after('<p class="text-danger">Champs vide</p>');
+                }else {
+                    $("#countryId").closest('.col-md-4').removeClass('has-error');
+                    $("#countryId").closest('.col-md-4').addClass('has-success');
+                }
+
+                if(birthDate === "") {
+                    $("#birthDateId").closest('.col-md-4').addClass('has-error');
+                    $("#birthDateId").after('<p class="text-danger">Champs vide</p>');
+                }else {
+                    $("#birthDateId").closest('.col-md-4').removeClass('has-error');
+                    $("#birthDateId").closest('.col-md-4').addClass('has-success');
+                }
+                if(lieuNaiss === "") {
+                    $("#lieuNaisId").closest('.col-md-4').addClass('has-error');
+                    $("#lieuNaisId").after('<p class="text-danger">Champs vide</p>');
+                }else {
+                    $("#lieuNaisId").closest('.col-md-4').removeClass('has-error');
+                    $("#lieuNaisId").closest('.col-md-4').addClass('has-success');
+                }
+
+                if(phone === "") {
+                    $("#phoneId").closest('.col-md-4').addClass('has-error');
+                    $("#phoneId").after('<p class="text-danger">Champs vide</p>');
+                }else {
+                    $("#phoneId").closest('.col-md-4').removeClass('has-error');
+                    $("#phoneId").closest('.col-md-4').addClass('has-success');
+                }
+
+                //form
+                var form_data = new FormData($('#propertyForm')[0]);
+
+                if(code && firstName && lastName && code &&profession && domicile && phone &&
+                    lieuNaiss&&nberPiece && lieuNaiss && cpteContribu!=""
+                        &&country&& type&&civility&&naturePiece !="0") {
+                    $.ajax({
+                        url: window.origin+'/immo-apps/saveProperty',
+                        type: 'POST',
+                        data:form_data,
+                        //enctype:'multiple/form-data',
+                        processData : false,
+                        contentType:false,
+                        dataType: "json",
+                        beforeSend: function() {
+                            $('#loadingId').show();
+                        },
+                        success: function (response) {
+                            $('#loadingId').hide();
+                            console.log(response);
+                            // remove the error
+                            $(".form-group").removeClass('has-error').removeClass('has-success');
+                            if (response.status === true) {
+                                $("#propertyForm")[0].reset();
+                                $("#addPropertyModal").modal("hide");
+                                table.ajax.reload(null, false);
+                            }else{
+                                $(".messages").html('<div class="alert alert-danger alert-dismissable fade show">'+
+                                        '<button class="close" data-dismiss="alert" aria-label="Close">×</button><strong>ERREUR!</strong> '+response.message+
+                                        '</div>');
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+
+                        }
+                    });
+                }
+                return false;
+
+            });
+
+            //FIN ADD PROPERTY
+        });
+
+
+        //FUNCTION UPDATE PROPERTY
+        function editProperty(id){
+            if(id) {
+                // remove the error
+                $(".col-md-4").removeClass('has-error').removeClass('has-success');
+                $(".text-danger").remove();
+                // empty the message div
+                $(".edit-messages").html("");
+                $("#editNaturePieceId").html("");
+                $("#editCountryId").html("");
+                // $("#editPicture").val('');
+                // remove the id
+                $("#property_edit_id").remove();
+                // fetch the member data
+                $.ajax({
+                    url:window.origin+'/immo-apps/property/'+id,
+                    type: 'get',
+                    dataType: 'json',
+                    success:function(response) {
+                        console.log(response);
+
+                        $("#editPictureId").html(response.data.imageTransient);
+                        $("#editCodeId").val(response.data.code);
+                        $("#editFirstNameId").val(response.data.firstName);
+                        $("#editLastNameId").val(response.data.lastName);
+                        $("#editLieuNaisId").val(response.data.lieuNais);
+                        $("#editProfessionId").val(response.data.profession);
+                        $("#editPhoneId").val(response.data.phone);
+                       // $("#editCivilityId").val(response.data.civility.name);
+                        $("#editEmailId").val(response.data.email);
+                        $("#editBirthDateId").val(response.data.dateTransient);
+                        $("#editNberPieceId").val(response.data.nberPiece);
+                        $("#editCpteContribuId").val(response.data.cpteContribu);
+                        $("#editDomicilId").val(response.data.domicil);
+
+                        if(response.data.country =="2"){
+                            $("#editCountryId").append('<option value='+response.data.country+'> France</option>');
+                            $("#editCountryId").append('<option value='+1+'>Cote d\'ivoire</option>');
+                            $("#editCountryId").append('<option value='+3+'>Belgique</option>');
+
+                        }else if(response.data.country =="1"){
+                            $("#editCountryId").append('<option value='+response.data.naturePiece+'> Cote d\'ivoire</option>');
+                            $("#editCountryId").append('<option value='+2+'>France</option>');
+                            $("#editCountryId").append('<option value='+3+'>Belgique</option>');
+                        }else{
+                            $("#editCountryId").append('<option value='+response.data.naturePiece+'> Belgique</option>');
+                            $("#editCountryId").append('<option value='+1+'>Cote d\'ivoire</option>');
+                            $("#editCountryId").append('<option value='+2+'>France</option>');
+                        }
+
+                        if(response.data.naturePiece =="2"){
+                            $("#editNaturePieceId").append('<option value='+response.data.naturePiece+'> Attestation</option>');
+                            $("#editNaturePieceId").append('<option value='+1+'>CNI</option>');
+                            $("#editNaturePieceId").append('<option value='+3+'>Passeport</option>');
+
+                        }else if(response.data.naturePiece =="1"){
+                            $("#editNaturePieceId").append('<option value='+response.data.naturePiece+'> CNI</option>');
+                            $("#editNaturePieceId").append('<option value='+2+'>Attestation</option>');
+                            $("#editNaturePieceId").append('<option value='+3+'>Passeport</option>');
+                        }else{
+                            $("#editNaturePieceId").append('<option value='+response.data.country+'> Passeport</option>');
+                            $("#editNaturePieceId").append('<option value='+1+'>CNI</option>');
+                            $("#editNaturePieceId").append('<option value='+2+'>Attestation</option>');
+                        }
+
+                        editTypePropertyOption(response.data.typeProperty.id,response.data.typeProperty.name);
+                        editCivilityOption(response.data.civility.id,response.data.civility.name);
+
+                        $("#editPropertyForm").append('<input type="hidden" name="id" id="property_edit_id" value="'+response.data.id+'"/>');
+                        // here update the member data
+                        $("#btnUpdatePropertyId").unbind('click').bind('click', function(){
+
+                            // remove error messages
+                            $(".text-danger").remove();
+
+                            // validation
+                            var firstName = $("#editFirstNameId").val();
+                            var lastName= $("#editLastNameId").val();
+                            var type =  $("#editTypePropertyId").val();
+                            var code =  $("#editCodeId").val();
+                            var birthDate = $("#editBirthDateId").val();
+                            var lieuNaiss = $("#editLieuNaisId").val();
+                            var profession = $("#editProfessionId").val();
+                            var domicile = $("#editDomicilId").val();
+                            var nberPiece = $("#editNberPieceId").val();
+                            var naturePiece = $("#editNaturePieceId").val();
+                            var cpteContribu = $("#editCpteContribuId").val();
+                            var country = $("#editCountryId").val();
+                            var phone = $("#editPhoneId").val();
+                            var civility =$("#editCivilityId").val();
+
+                            //control champs
+                            if(firstName === "") {
+                                $("#editFirstNameId").closest('.col-md-4').addClass('has-error');
+                                $("#editFirstNameId").after('<p class="text-danger">Champs vide</p>');
+                            } else {
+                                $("#editFirstNameId").closest('.col-md-4').removeClass('has-error');
+                                $("#editFirstNameId").closest('.col-md-4').addClass('has-success');
+                            }
+
+                            if(lastName === "") {
+                                $("#editLastNameId").closest('.col-md-4').addClass('has-error');
+                                $("#editLastNameId").after('<p class="text-danger">Champs vide</p>');
+                            }else {
+                                $("#editLastNameId").closest('.col-md-4').removeClass('has-error');
+                                $("#editLastNameId").closest('.col-md-4').addClass('has-success');
+                            }
+
+                            if(type === "0") {
+                                $("#editTypePropertyId").closest('.col-md-4').addClass('has-error');
+                                $("#editTypePropertyId").after('<p class="text-danger">Champs vide</p>');
+                            }else {
+                                $("#editTypePropertyId").closest('.col-md-4').removeClass('has-error');
+                                $("#editTypePropertyId").closest('.col-md-4').addClass('has-success');
+                            }
+
+                            if(civility ==="0") {
+                                $("#editCivilityId").closest('.col-md-4').addClass('has-error');
+                                $("#editCivilityId").after('<p class="text-danger">Champs vide</p>');
+                            }else {
+                                $("#editCivilityId").closest('.col-md-4').removeClass('has-error');
+                                $("#editCivilityId").closest('.col-md-4').addClass('has-success');
+                            }
+
+                            if(code === "") {
+                                $("#editCodeId").closest('.col-md-4').addClass('has-error');
+                                $("#editCodeId").after('<p class="text-danger">Champs vide</p>');
+                            }else {
+                                $("#editCodeId").closest('.col-md-4').removeClass('has-error');
+                                $("#editCodeId").closest('.col-md-4').addClass('has-success');
+                            }
+                            if(profession === "") {
+                                $("#editProfessionId").closest('.col-md-4').addClass('has-error');
+                                $("#editProfessionId").after('<p class="text-danger">Champs vide</p>');
+                            }else {
+                                $("#editProfessionId").closest('.col-md-4').removeClass('has-error');
+                                $("#editProfessionId").closest('.col-md-4').addClass('has-success');
+                            }
+                            if(domicile === "") {
+                                $("#editDomicilId").closest('.col-md-4').addClass('has-error');
+                                $("#editDomicilId").after('<p class="text-danger">Champs vide</p>');
+                            }else {
+                                $("#editDomicilId").closest('.col-md-4').removeClass('has-error');
+                                $("#editDomicilId").closest('.col-md-4').addClass('has-success');
+                            }
+
+                            if(naturePiece === "0") {
+                                $("#naturePieceId").closest('.col-md-4').addClass('has-error');
+                                $("#naturePieceId").after('<p class="text-danger">Champs vide</p>');
+                            }else {
+                                $("#naturePieceId").closest('.col-md-4').removeClass('has-error');
+                                $("#naturePieceId").closest('.col-md-4').addClass('has-success');
+                            }
+
+                            if(nberPiece === "") {
+                                $("#editNberPieceId").closest('.col-md-4').addClass('has-error');
+                                $("#editNberPieceId").after('<p class="text-danger">Champs vide</p>');
+                            }else {
+                                $("#editNberPieceId").closest('.col-md-4').removeClass('has-error');
+                                $("#editNberPieceId").closest('.col-md-4').addClass('has-success');
+                            }
+
+                            if(cpteContribu === "") {
+                                $("#editCpteContribuId").closest('.col-md-4').addClass('has-error');
+                                $("#editCpteContribuId").after('<p class="text-danger">Champs vide</p>');
+                            }else {
+                                $("#editCpteContribuId").closest('.col-md-4').removeClass('has-error');
+                                $("#editCpteContribuId").closest('.col-md-4').addClass('has-success');
+                            }
+
+                            if(country === "0") {
+                                $("#editCountryId").closest('.col-md-4').addClass('has-error');
+                                $("#editCountryId").after('<p class="text-danger">Champs vide</p>');
+                            }else {
+                                $("#editCountryId").closest('.col-md-4').removeClass('has-error');
+                                $("#editCountryId").closest('.col-md-4').addClass('has-success');
+                            }
+
+                            if(birthDate === "") {
+                                $("#editBirthDateId").closest('.col-md-4').addClass('has-error');
+                                $("#editBirthDateId").after('<p class="text-danger">Champs vide</p>');
+                            }else {
+                                $("#editBirthDateId").closest('.col-md-4').removeClass('has-error');
+                                $("#editBirthDateId").closest('.col-md-4').addClass('has-success');
+                            }
+                            if(lieuNaiss === "") {
+                                $("#editLieuNaisId").closest('.col-md-4').addClass('has-error');
+                                $("#editLieuNaisId").after('<p class="text-danger">Champs vide</p>');
+                            }else {
+                                $("#editLieuNaisId").closest('.col-md-4').removeClass('has-error');
+                                $("#editLieuNaisId").closest('.col-md-4').addClass('has-success');
+                            }
+
+                            if(phone === "") {
+                                $("#editPhoneId").closest('.col-md-4').addClass('has-error');
+                                $("#editPhoneId").after('<p class="text-danger">Champs vide</p>');
+                            }else {
+                                $("#editPhoneId").closest('.col-md-4').removeClass('has-error');
+                                $("#editPhoneId").closest('.col-md-4').addClass('has-success');
+                            }
+
+                            //form
+                            var editForm_data = new FormData($('#editPropertyForm')[0]);
+
+                            if(code && firstName && lastName && code &&profession &&domicile&&phone&&
+                                    lieuNaiss&&nberPiece && lieuNaiss && cpteContribu!=""
+                                    &&country&& type&&civility&&naturePiece !="0") {
+                                var id =$("#property_edit_id").val();
+                                $.ajax({
+                                    url:window.origin+'/immo-apps/updateProperty/'+id,
+                                    type:'POST',
+                                    data:editForm_data,
+                                    processData : false,
+                                    contentType:false,
+                                    dataType :"json",
+                                    beforeSend: function() {
+                                        $('#editLoadingId').show();
+                                    },
+                                    success:function(response) {
+                                        $('#editLoadingId').hide();
+                                        console.log(response);
+                                        if(response.status === true) {
+                                            //reset form
+                                            $("#editPropertyForm")[0].reset();
+
+                                            $("#editPropertyModal").modal("hide");
+                                            // reload the datatables
+                                            table.ajax.reload(null, false);
+                                            // remove the error
+                                            $(".form-group").removeClass('has-success').removeClass('has-error');
+                                            $(".text-danger").remove();
+                                            // remove the id
+                                            $("#property_edit_id").remove();
+
+                                        } else {
+
+                                            $(".edit-messages").html('<div class="alert alert-danger alert-dismissable fade show">'+
+                                                    '<button class="close" data-dismiss="alert" aria-label="Close">×</button><strong>ERREUR!</strong> '+response.message+
+                                                    '</div>')
+                                        }
+                                    },
+                                    error: function(jqXHR, textStatus, errorThrown){
+                                        /*  if(jqXHR.status ==403){
+                                         window.location = window.origin + "/spring-boot-apps/errorAuthorise";
+                                         }else {
+                                         window.location = window.origin + "/spring-boot-apps/pageError";
+                                         }   */                                 }
+                                }); // /ajax
+                            } // /if
+
+                            return false;
+                        });
+
+                    }
+                }); //fetch selected member info
+
+            } else {
+                alert("Error : Refresh the page again");
+            }
+        }
+
+        //FIN UPDATE PROPERTY
+
+        //FUNCTION DELETE COMUNNE
+
+        function removeProperty(id){
+            if(id) {
+                // click on remove button
+                $("#removeBtn").unbind('click').bind('click', function() {
+                    $.ajax({
+                        url:window.origin+'/immo-apps/deleteProperty/'+id,
+                        type: 'delete',
+                        dataType: 'json',
+                        beforeSend: function() {
+                            $('#removeLoadingId').show();
+                        },
+                        success:function(response) {
+                            $('#removeLoadingId').hide();
+                            if(response.status === true) {
+                                // refresh the table
+                                table.ajax.reload(null, false);
+
+                                // close the modal
+                                $("#removePropertyModal").modal('hide');
+
+                            } else {
+                                $(".removeMessages").html('<div class="alert alert-danger alert-dismissible" role="alert">'+
+                                        '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+
+                                        '<strong> <span class="glyphicon glyphicon-exclamation-sign"></span> </strong>'+response.message+
+                                        '</div>');
+                            }
+                        },
+                        error: function(jqXHR, textStatus, errorThrown){
+                            /*if(jqXHR.status ==403){
+                             window.location = window.origin + "/spring-boot-apps/errorAuthorise";
+                             }else {
+                             window.location = window.origin + "/spring-boot-apps/pageError";
+                             }*/
+                        }
+                    });
+                }); // click remove btn
+            } else {
+                alert('Error: Refresh the page again');
+            }
+        }
+
+        //FIN DELETE PROPERTY
+
+        //LIST typeProperty
+        function typePropertyOption(){
+            $.ajax({
+                url:window.origin+'/immo-apps/listTypeProperty',
+                type:'GET',
+                dataType :"json",
+                success:function(response){
+                    $("#typePropertyId").html('');
+                    $("#typePropertyId").append('<option value='+0+'>'+' '+'</option>');
+                    $.each(response.data, function(key, val){
+                        $("#typePropertyId").append('<option value='+val.id+'>'+ val.name+ '</option>');
+                    });
+                }
+            });
+        }
+    //FIN
+
+        //LIST edit typeProperty
+        function editTypePropertyOption(comId, comVal){
+            $.ajax({
+                url:window.origin+'/immo-apps/listTypeProperty',
+                type:'GET',
+                dataType :"json",
+                success:function(response){
+                    $("#editTypePropertyId").html('');
+                    $("#editTypePropertyId").append('<option value='+comId+'>'+comVal+'</option>');
+                    $.each(response.data, function(key, val){
+                        if(comId!=val.id){
+                            $("#editTypePropertyId").append('<option value='+val.id+'>'+ val.name+ '</option>');
+                        }
+
+                    });
+                }
+            });
+        }
+        //FIN
+
+        //CIVILITY
+        function civilityOption(){
+            $.ajax({
+                url:window.origin+'/immo-apps/listCivility',
+                type:'GET',
+                dataType :"json",
+                success:function(response){
+                    $("#civilityId").html('');
+                    $("#civilityId").append('<option value='+0+'>'+' '+'</option>');
+                    $.each(response.data, function(key, val){
+                        $("#civilityId").append('<option value='+val.id+'>'+ val.name+ '</option>');
+                    });
+                }
+            });
+        }
+        //FIN
+
+        //LIST typeProperty
+        function editCivilityOption(comId, comVal){
+            $.ajax({
+                url:window.origin+'/immo-apps/listCivility',
+                type:'GET',
+                dataType :"json",
+                success:function(response){
+                    $("#editCivilityId").html('');
+                    $("#editCivilityId").append('<option value='+comId+'>'+comVal+'</option>');
+                    $.each(response.data, function(key, val){
+                        if(comId!=val.id){
+                            $("#editCivilityId").append('<option value='+val.id+'>'+ val.name+ '</option>');
+                        }
+
+                    });
+                }
+            });
+        }
+        //FIN
+
+    </script>
+
+</head>
+
+<body class="fixed-navbar">
+<div class="page-wrapper">
+    <!-- START HEADER-->
+    <header class="header">
+        <div class="page-brand">
+            <a class="link" href="#"  th:href="@{home}">
+                    <span class="brand">SG IMMOBILIERE
+                        <span class="brand-tip"></span>
+                    </span>
+                <span class="brand-mini">SGI</span>
+            </a>
+        </div>
+        <div class="flexbox flex-1">
+            <!-- START TOP-LEFT TOOLBAR-->
+            <ul class="nav navbar-toolbar">
+                <li>
+                    <a class="nav-link sidebar-toggler js-sidebar-toggler"><i class="ti-menu"></i></a>
+                </li>
+                <li>
+                    <!-- <form class="navbar-search" action="javascript:;">
+                         <div class="rel">
+                             <span class="search-icon"><i class="ti-search"></i></span>
+                             <input class="form-control" placeholder="Search here...">
+                         </div>
+                     </form>-->
+                </li>
+            </ul>
+            <!-- END TOP-LEFT TOOLBAR-->
+            <!-- START TOP-RIGHT TOOLBAR-->
+            <ul class="nav navbar-toolbar">
+                <li class="dropdown dropdown-inbox">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope-o"></i>
+                        <span class="badge badge-primary envelope-badge">9</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media">
+                        <li class="dropdown-menu-header">
+                            <div>
+                                <span><strong>9 New</strong> Messages</span>
+                                <a class="pull-right" href="mailbox.html">view all</a>
+                            </div>
+                        </li>
+                        <li class="list-group list-group-divider scroller" data-height="240px" data-color="#71808f">
+                            <div>
+                                <a class="list-group-item">
+                                    <div class="media">
+                                        <div class="media-img">
+                                            <img src="/immo-apps/html/dist/assets/img/users/u1.jpg" />
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="font-strong"> </div>Jeanne Gonzalez<small class="text-muted float-right">Just now</small>
+                                            <div class="font-13">Your proposal interested me.</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="list-group-item">
+                                    <div class="media">
+                                        <div class="media-img">
+                                            <img src="/immo-apps/html/dist/assets/img/users/u2.jpg" />
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="font-strong"></div>Becky Brooks<small class="text-muted float-right">18 mins</small>
+                                            <div class="font-13">Lorem Ipsum is simply.</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="list-group-item">
+                                    <div class="media">
+                                        <div class="media-img">
+                                            <img src="/immo-apps/html/dist/assets/img/users/u3.jpg" />
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="font-strong"></div>Frank Cruz<small class="text-muted float-right">18 mins</small>
+                                            <div class="font-13">Lorem Ipsum is simply.</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="list-group-item">
+                                    <div class="media">
+                                        <div class="media-img">
+                                            <img src="/immo-apps/html/dist/assets/img/users/u4.jpg" />
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="font-strong"></div>Rose Pearson<small class="text-muted float-right">3 hrs</small>
+                                            <div class="font-13">Lorem Ipsum is simply.</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown dropdown-notification">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell-o rel"><span class="notify-signal"></span></i></a>
+                    <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media">
+                        <li class="dropdown-menu-header">
+                            <div>
+                                <span><strong>5 New</strong> Notifications</span>
+                                <a class="pull-right" href="javascript:;">view all</a>
+                            </div>
+                        </li>
+                        <li class="list-group list-group-divider scroller" data-height="240px" data-color="#71808f">
+                            <div>
+                                <a class="list-group-item">
+                                    <div class="media">
+                                        <div class="media-img">
+                                            <span class="badge badge-success badge-big"><i class="fa fa-check"></i></span>
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="font-13">4 task compiled</div><small class="text-muted">22 mins</small></div>
+                                    </div>
+                                </a>
+                                <a class="list-group-item">
+                                    <div class="media">
+                                        <div class="media-img">
+                                            <span class="badge badge-default badge-big"><i class="fa fa-shopping-basket"></i></span>
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="font-13">You have 12 new orders</div><small class="text-muted">40 mins</small></div>
+                                    </div>
+                                </a>
+                                <a class="list-group-item">
+                                    <div class="media">
+                                        <div class="media-img">
+                                            <span class="badge badge-danger badge-big"><i class="fa fa-bolt"></i></span>
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="font-13">Server #7 rebooted</div><small class="text-muted">2 hrs</small></div>
+                                    </div>
+                                </a>
+                                <a class="list-group-item">
+                                    <div class="media">
+                                        <div class="media-img">
+                                            <span class="badge badge-success badge-big"><i class="fa fa-user"></i></span>
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="font-13">New user registered</div><small class="text-muted">2 hrs</small></div>
+                                    </div>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown dropdown-user">
+                    <a class="nav-link dropdown-toggle link" data-toggle="dropdown">
+                        <img src="/immo-apps/html/dist/assets/img/admin-avatar.png" />
+                        <span></span>Admin<i class="fa fa-angle-down m-l-5"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="profile.html"><i class="fa fa-user"></i>Profile</a>
+                        <a class="dropdown-item" href="profile.html"><i class="fa fa-cog"></i>Settings</a>
+                        <li class="dropdown-divider"></li>
+                        <a class="dropdown-item" href="#"  th:href="@{login}"><i class="fa fa-power-off"></i>Logout</a>
+                    </ul>
+                </li>
+            </ul>
+            <!-- END TOP-RIGHT TOOLBAR-->
+        </div>
+    </header>
+    <!-- END HEADER-->
+    <!-- START SIDEBAR-->
+    <nav class="page-sidebar" id="sidebar">
+        <div id="sidebar-collapse">
+            <div class="admin-block d-flex">
+                <div>
+                    <img src="/immo-apps/html/dist/assets/img/admin-avatar.png" width="45px" />
+                </div>
+                <div class="admin-info">
+                    <div class="font-strong">Mory</div><small>Admin</small></div>
+            </div>
+            <ul class="side-menu metismenu">
+                <li>
+                    <a href="#" th:href="@{home}"><i class="sidebar-item-icon fa fa-th-large"></i>
+                        <span class="nav-label">Tableau de bord</span>
+                    </a>
+                </li>
+                <li class="heading">MENU PRINCIPAL</li>
+
+                <li>
+                    <a href="javascript:;"><i class="sidebar-item-icon fa fa-edit"></i>
+                        <span class="nav-label">CIVILITE</span><i class="fa fa-angle-left arrow"></i></a>
+                    <ul class="nav-2-level collapse">
+                        <li>
+                            <a href="#" th:href="@{civility}">Civilité</a>
+                        </li>
+
+                    </ul>
+                </li>
+
+                <li  class="active">
+                    <a href="javascript:;"><i class="sidebar-item-icon fa fa-user"></i>
+                        <span class="nav-label">PROPRIETAIRE</span><i class="fa fa-angle-left arrow"></i></a>
+                    <ul class="nav-2-level collapse in">
+                        <li>
+                            <a href="#" th:href="@{typeProperty}">Type propriétaire</a>
+                        </li>
+
+                        <li>
+                            <a  class="active" href="#" th:href="@{property}">Propriétaire</a>
+                        </li>
+
+                    </ul>
+                </li>
+
+
+                <li>
+                    <a href="javascript:;"><i class="sidebar-item-icon fa fa-table"></i>
+                        <span class="nav-label">COMMUNE</span><i class="fa fa-angle-left arrow"></i></a>
+                    <ul class="nav-2-level collapse">
+                        <li>
+                            <a href="#" th:href="@{com}">Commune</a>
+                        </li>
+
+                    </ul>
+                </li>
+
+
+                <li>
+                    <a href="javascript:;"><i class="sidebar-item-icon fa fa-table"></i>
+                        <span class="nav-label">QUARTIER</span><i class="fa fa-angle-left arrow"></i></a>
+                    <ul class="nav-2-level collapse">
+                        <li>
+                            <a href="#" th:href="@{city}">Quartier</a>
+                        </li>
+                    </ul>
+                </li>
+
+
+                <li>
+                    <a href="javascript:;"><i class="sidebar-item-icon fa fa-money"></i>
+                        <span class="nav-label">DEVIS</span><i class="fa fa-angle-left arrow"></i></a>
+                    <ul class="nav-2-level collapse">
+                        <li>
+                            <a href="#" th:href="@{devis}">Devis</a>
+                        </li>
+                    </ul>
+                </li>
+
+
+                <li>
+                    <a href="javascript:;"><i class="sidebar-item-icon fa fa-home"></i>
+                        <span class="nav-label">BIEN</span><i class="fa fa-angle-left arrow"></i></a>
+                    <ul class="nav-2-level collapse">
+                        <li>
+                            <a href="#" th:href="@{typeBien}">Type</a>
+                        </li>
+
+                        <li>
+                            <a href="#" th:href="@{bien}">Bien</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="javascript:;"><i class="sidebar-item-icon fa fa-users"></i>
+                        <span class="nav-label">LOCATAIRE</span><i class="fa fa-angle-left arrow"></i></a>
+                    <ul class="nav-2-level collapse">
+                        <li>
+                            <a href="#" th:href="@{typeLocater}">Type locataire</a>
+                        </li>
+                        <li>
+                            <a href="#" th:href="@{locater}">Locataire</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="javascript:;"><i class="sidebar-item-icon fa fa-envelope"></i>
+                        <span class="nav-label">PAIEMENT</span><i class="fa fa-angle-left arrow"></i></a>
+                    <ul class="nav-2-level collapse">
+                        <li>
+                            <a href="#" th:href="@{typePay}">Type paiement</a>
+                        </li>
+
+                        <li>
+                            <a href="#" th:href="@{moyenPay}">Moyen paiement</a>
+                        </li>
+
+                        <li>
+                            <a href="#" th:href="@{statutPay}">Statut paiement</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:;"><i class="sidebar-item-icon fa fa-home"></i>
+                        <span class="nav-label">LOCATIVE</span><i class="fa fa-angle-left arrow"></i></a>
+                    <ul class="nav-2-level collapse">
+                        <li>
+                            <a href="#" th:href="@{typeLocative}">Type</a>
+                        </li>
+
+                        <li>
+                            <a  href="#" th:href="@{locative}">Locative</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="javascript:;"><i class="sidebar-item-icon fa fa-book"></i>
+                        <span class="nav-label">CONTRAT BAIL</span><i class="fa fa-angle-left arrow"></i></a>
+                    <ul class="nav-2-level collapse">
+                        <li>
+                            <a href="#" th:href="@{contrat}">Contrat</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="javascript:;"><i class="sidebar-item-icon fa fa-money"></i>
+                        <span class="nav-label">QUITTANCE</span><i class="fa fa-angle-left arrow"></i></a>
+                    <ul class="nav-2-level collapse">
+                        <li>
+                            <a href="#" th:href="@{quittance}">Quittance</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="javascript:;"><i class="sidebar-item-icon fa fa-file"></i>
+                        <span class="nav-label">RAPPORT</span><i class="fa fa-angle-left arrow"></i></a>
+                    <ul class="nav-2-level collapse">
+                        <li>
+                            <a href="#" th:href="@{report}">Rapport</a>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+    </nav>
+    <!-- END SIDEBAR-->
+    <div class="content-wrapper">
+        <!-- START PAGE CONTENT-->
+        <div class="page-heading">
+            <h1 class="page-title">Liste propriétaire</h1>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#"  th:href="@{home}"><i class="la la-home font-20"></i></a>
+                </li>
+                <li class="breadcrumb-item"></li>
+            </ol>
+        </div>
+        <div class="page-content fade-in-up">
+            <div class="ibox">
+                <div class="ibox-head">
+                    <div class="ibox-title"><button class="btn btn-success" data-toggle="modal" data-target="#addPropertyModal" id="btnAddNew"><i class="fa fa-plus"></i>Ajouter</button></div>
+                    <div class="ibox-title pull-right"><button class="btn btn-warning"><i class="fa fa-cloud-upload"></i>Export</button></div>
+                </div>
+                <div class="ibox-body">
+                    <table class="table table-responsive table-striped table-bordered table-hover" id="propertyTable" cellspacing="0" width="100%">
+                        <thead class="thead-default">
+                        <tr>
+                            <th><input name="select_all" value="1" type="checkbox"></th>
+                            <th>Date création</th>
+                            <th>Code</th>
+                            <th>Civilité</th>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th>Date naissance</th>
+                            <th>Type propriétaire</th>
+                            <th>Téléphone</th>
+                            <th>Email</th>
+                            <th>Photo</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+
+                        <tfoot>
+                        <tr>
+                            <th></th>
+                            <th>Date création</th>
+                            <th>Code</th>
+                            <th>Civilité</th>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th>Date naissance</th>
+                            <th>Type propriétaire</th>
+                            <th>Téléphone</th>
+                            <th>Email</th>
+                            <th>Photo</th>
+                            <th>Action</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <!-- END PAGE CONTENT-->
+
+        <style>
+            .visitors-table tbody tr td:last-child {
+                display: flex;
+                align-items: center;
+            }
+
+            .visitors-table .progress {
+                flex: 1;
+            }
+
+            .visitors-table .progress-parcent {
+                text-align: right;
+                margin-left: 10px;
+            }
+        </style>
+
+    </div>
+    <!-- END PAGE CONTENT-->
+    <footer class="page-footer">
+        <div class="font-13">2019 © <b>MoryDev</b>_Gestion immobilier.</div>
+        <!--
+                        <a class="px-4" href="http://themeforest.net/item/adminca-responsive-bootstrap-4-3-angular-4-admin-dashboard-template/20912589" target="_blank">BUY PREMIUM</a>
+        -->
+        <div class="to-top"><i class="fa fa-angle-double-up"></i></div>
+    </footer>
+</div>
+</div>
+<!-- BEGIN THEME CONFIG PANEL-->
+<div class="theme-config">
+    <div class="theme-config-toggle"><i class="fa fa-cog theme-config-show"></i><i class="ti-close theme-config-close"></i></div>
+    <div class="theme-config-box">
+        <div class="text-center font-18 m-b-20">SETTINGS</div>
+        <div class="font-strong">LAYOUT OPTIONS</div>
+        <div class="check-list m-b-20 m-t-10">
+            <label class="ui-checkbox ui-checkbox-gray">
+                <input id="_fixedNavbar" type="checkbox" checked>
+                <span class="input-span"></span>Fixed navbar</label>
+            <label class="ui-checkbox ui-checkbox-gray">
+                <input id="_fixedlayout" type="checkbox">
+                <span class="input-span"></span>Fixed layout</label>
+            <label class="ui-checkbox ui-checkbox-gray">
+                <input class="js-sidebar-toggler" type="checkbox">
+                <span class="input-span"></span>Collapse sidebar</label>
+        </div>
+        <div class="font-strong">LAYOUT STYLE</div>
+        <div class="m-t-10">
+            <label class="ui-radio ui-radio-gray m-r-10">
+                <input type="radio" name="layout-style" value="" checked="">
+                <span class="input-span"></span>Fluid</label>
+            <label class="ui-radio ui-radio-gray">
+                <input type="radio" name="layout-style" value="1">
+                <span class="input-span"></span>Boxed</label>
+        </div>
+        <div class="m-t-10 m-b-10 font-strong">THEME COLORS</div>
+        <div class="d-flex m-b-20">
+            <div class="color-skin-box" data-toggle="tooltip" data-original-title="Default">
+                <label>
+                    <input type="radio" name="setting-theme" value="default" checked="">
+                    <span class="color-check-icon"><i class="fa fa-check"></i></span>
+                    <div class="color bg-white"></div>
+                    <div class="color-small bg-ebony"></div>
+                </label>
+            </div>
+            <div class="color-skin-box" data-toggle="tooltip" data-original-title="Blue">
+                <label>
+                    <input type="radio" name="setting-theme" value="blue">
+                    <span class="color-check-icon"><i class="fa fa-check"></i></span>
+                    <div class="color bg-blue"></div>
+                    <div class="color-small bg-ebony"></div>
+                </label>
+            </div>
+            <div class="color-skin-box" data-toggle="tooltip" data-original-title="Green">
+                <label>
+                    <input type="radio" name="setting-theme" value="green">
+                    <span class="color-check-icon"><i class="fa fa-check"></i></span>
+                    <div class="color bg-green"></div>
+                    <div class="color-small bg-ebony"></div>
+                </label>
+            </div>
+            <div class="color-skin-box" data-toggle="tooltip" data-original-title="Purple">
+                <label>
+                    <input type="radio" name="setting-theme" value="purple">
+                    <span class="color-check-icon"><i class="fa fa-check"></i></span>
+                    <div class="color bg-purple"></div>
+                    <div class="color-small bg-ebony"></div>
+                </label>
+            </div>
+            <div class="color-skin-box" data-toggle="tooltip" data-original-title="Orange">
+                <label>
+                    <input type="radio" name="setting-theme" value="orange">
+                    <span class="color-check-icon"><i class="fa fa-check"></i></span>
+                    <div class="color bg-orange"></div>
+                    <div class="color-small bg-ebony"></div>
+                </label>
+            </div>
+            <div class="color-skin-box" data-toggle="tooltip" data-original-title="Pink">
+                <label>
+                    <input type="radio" name="setting-theme" value="pink">
+                    <span class="color-check-icon"><i class="fa fa-check"></i></span>
+                    <div class="color bg-pink"></div>
+                    <div class="color-small bg-ebony"></div>
+                </label>
+            </div>
+        </div>
+        <div class="d-flex">
+            <div class="color-skin-box" data-toggle="tooltip" data-original-title="White">
+                <label>
+                    <input type="radio" name="setting-theme" value="white">
+                    <span class="color-check-icon"><i class="fa fa-check"></i></span>
+                    <div class="color"></div>
+                    <div class="color-small bg-silver-100"></div>
+                </label>
+            </div>
+            <div class="color-skin-box" data-toggle="tooltip" data-original-title="Blue light">
+                <label>
+                    <input type="radio" name="setting-theme" value="blue-light">
+                    <span class="color-check-icon"><i class="fa fa-check"></i></span>
+                    <div class="color bg-blue"></div>
+                    <div class="color-small bg-silver-100"></div>
+                </label>
+            </div>
+            <div class="color-skin-box" data-toggle="tooltip" data-original-title="Green light">
+                <label>
+                    <input type="radio" name="setting-theme" value="green-light">
+                    <span class="color-check-icon"><i class="fa fa-check"></i></span>
+                    <div class="color bg-green"></div>
+                    <div class="color-small bg-silver-100"></div>
+                </label>
+            </div>
+            <div class="color-skin-box" data-toggle="tooltip" data-original-title="Purple light">
+                <label>
+                    <input type="radio" name="setting-theme" value="purple-light">
+                    <span class="color-check-icon"><i class="fa fa-check"></i></span>
+                    <div class="color bg-purple"></div>
+                    <div class="color-small bg-silver-100"></div>
+                </label>
+            </div>
+            <div class="color-skin-box" data-toggle="tooltip" data-original-title="Orange light">
+                <label>
+                    <input type="radio" name="setting-theme" value="orange-light">
+                    <span class="color-check-icon"><i class="fa fa-check"></i></span>
+                    <div class="color bg-orange"></div>
+                    <div class="color-small bg-silver-100"></div>
+                </label>
+            </div>
+            <div class="color-skin-box" data-toggle="tooltip" data-original-title="Pink light">
+                <label>
+                    <input type="radio" name="setting-theme" value="pink-light">
+                    <span class="color-check-icon"><i class="fa fa-check"></i></span>
+                    <div class="color bg-pink"></div>
+                    <div class="color-small bg-silver-100"></div>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END THEME CONFIG PANEL-->
+<!-- BEGIN PAGA BACKDROPS-->
+<div class="sidenav-backdrop backdrop"></div>
+<div class="preloader-backdrop">
+    <div class="page-preloader">Loading</div>
+</div>
+<!-- END PAGA BACKDROPS-->
+
+
+<!-- Add product Modal-->
+<div class="modal fade large" id="addPropertyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ajouter propriétaire</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!--FORMULIARE-->
+                <form id="propertyForm" enctype="multipart/form-data">
+                    <div class="preloader-backdrop" id="loadingId">
+                        <div class="page-preloader">Loading</div>
+                    </div>
+
+                    <div class="messages"></div>
+
+                    <div class="form-group row">
+                        <label class="control-label col-md-2">Type propriétaire</label>
+                        <div class="col-md-4">
+                            <select class="form-control" id="typePropertyId" name="typeProperty">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="control-label col-md-2">Civilité</label>
+                        <div class="col-md-4">
+                            <select class="form-control" id="civilityId" name="civility">
+                            </select>
+                        </div>
+                        <label class="control-label col-md-2">Code</label>
+                        <div class="col-md-4">
+                            <input name="code" id="codeId" class="form-control" type="text">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="control-label col-md-2">Nom</label>
+                        <div class="col-md-4">
+                            <input name="firstName" id="firstNameId" class="form-control" type="text">
+                            <span class="help-block"></span>
+                        </div>
+                        <label class="control-label col-md-2">Prénom</label>
+                        <div class="col-md-4">
+                            <input name="lastName" id="lastNameId" class="form-control" type="text">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row ">
+                        <label class="control-label col-md-2 font-normal">Date Naissance</label>
+                        <div class="col-md-4 input-group date">
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                <input class="form-control" type="text" name="birthDate" id="birthDateId">
+                        </div>
+
+                        <label class="control-label col-md-2">Lieu Naissance</label>
+                        <div class="col-md-4">
+                            <input name="lieuNais" id="lieuNaisId" class="form-control" type="text">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="control-label col-md-2">N° pièce</label>
+                        <div class="col-md-4">
+                            <input name="nberPiece" id="nberPieceId" class="form-control" type="text">
+                            <span class="help-block"></span>
+                        </div>
+                        <label class="control-label col-md-2">Nature pièce</label>
+                        <div class="col-md-4">
+                            <select class="form-control" id="naturePieceId" name="naturePiece">
+                                <option value="0"></option>
+                                <option value="1">CNI</option>
+                                <option value="2">Attestation</option>
+                                <option value="3">Passeport</option>
+                            </select>
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <label class="control-label col-md-2">Profession</label>
+                        <div class="col-md-4">
+                            <input name="profession" id="professionId" class="form-control" type="text">
+                            <span class="help-block"></span>
+                        </div>
+
+                        <label class="control-label col-md-2">Domicile</label>
+                        <div class="col-md-4">
+                            <input name="domicil" id="domicilId" class="form-control" type="text">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="control-label col-md-2">Telephone</label>
+                        <div class="col-md-4">
+                            <input name="phone" id="phoneId" class="form-control" type="text">
+                            <span class="help-block"></span>
+                        </div>
+
+                        <label class="control-label col-md-2">Email</label>
+                        <div class="input-group col-md-4">
+                            <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                            <input class="form-control" id="emailId" name="email" type="text" placeholder="Email">
+
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="control-label col-md-2">N°compte contribuable</label>
+                        <div class="col-md-4">
+                            <input name="cpteContribu" id="cpteContribuId" class="form-control" type="text">
+                            <span class="help-block"></span>
+                        </div>
+                        <label class="control-label col-md-2">Pays</label>
+                        <div class="col-md-4">
+                            <select class="form-control" id="countryId" name="country">
+                                <option value="0"></option>
+                                <option value="1">Cote d'ivoire</option>
+                                <option value="2">France</option>
+                                <option value="3">Belgique</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            <input type="file" name="picture" id="pictureId" class="form-control">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" id="btnAddPropertyId" type="submit"><i class="fa fa-check"></i>Enregistrer</button>
+                <button class="btn btn-danger" type="button" data-dismiss="modal">Annuler</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fin add product -->
+
+<!-- Edit product Modal-->
+<div class="modal fade" id="editPropertyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabels">Modifier propriétaire</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!--FORMULIARE-->
+                <form id="editPropertyForm" enctype="multipart/form-data">
+                    <div class="preloader-backdrop" id="editLoadingId">
+                        <div class="page-preloader">Loading</div>
+                    </div>
+                    <div class="edit-messages"></div>
+
+                    <div class="form-group">
+                        <div class="" id="editPictureId">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            <input type="file" name="editPicture" id="editPicture" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="control-label col-md-2">Type propriétaire</label>
+                        <div class="col-md-4">
+                            <select class="form-control" id="editTypePropertyId" name="typeProperty">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="control-label col-md-2">Civilité</label>
+                        <div class="col-md-4">
+                            <select class="form-control" id="editCivilityId" name="civility">
+                            </select>
+                        </div>
+                        <label class="control-label col-md-2">Code</label>
+                        <div class="col-md-4">
+                            <input name="code" id="editCodeId" class="form-control" type="text">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="control-label col-md-2">Nom</label>
+                        <div class="col-md-4">
+                            <input name="firstName" id="editFirstNameId" class="form-control" type="text">
+                            <span class="help-block"></span>
+                        </div>
+                        <label class="control-label col-md-2">Prénom</label>
+                        <div class="col-md-4">
+                            <input name="lastName" id="editLastNameId" class="form-control" type="text">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row ">
+                        <label class="control-label col-md-2 font-normal">Date Naissance</label>
+                        <div class="col-md-4 input-group date">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            <input class="form-control" type="text" name="birthDate" id="editBirthDateId">
+                        </div>
+
+                        <label class="control-label col-md-2">Lieu Naissance</label>
+                        <div class="col-md-4">
+                            <input name="lieuNais" id="editLieuNaisId" class="form-control" type="text">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="control-label col-md-2">N° pièce</label>
+                        <div class="col-md-4">
+                            <input name="nberPiece" id="editNberPieceId" class="form-control" type="text">
+                            <span class="help-block"></span>
+                        </div>
+                        <label class="control-label col-md-2">Nature pièce</label>
+                        <div class="col-md-4">
+                            <select class="form-control" id="editNaturePieceId" name="naturePiece">
+                                <option value="0"></option>
+                                <option value="1">CNI</option>
+                                <option value="2">Attestation</option>
+                                <option value="3">Passeport</option>
+                            </select>
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <label class="control-label col-md-2">Profession</label>
+                        <div class="col-md-4">
+                            <input name="profession" id="editProfessionId" class="form-control" type="text">
+                            <span class="help-block"></span>
+                        </div>
+
+                        <label class="control-label col-md-2">Domicile</label>
+                        <div class="col-md-4">
+                            <input name="domicil" id="editDomicilId" class="form-control" type="text">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="control-label col-md-2">Telephone</label>
+                        <div class="col-md-4">
+                            <input name="phone" id="editPhoneId" class="form-control" type="text">
+                            <span class="help-block"></span>
+                        </div>
+
+                        <label class="control-label col-md-2">Email</label>
+                        <div class="input-group col-md-4">
+                            <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                            <input class="form-control" id="editEmailId" name="email" type="text" placeholder="Email">
+
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="control-label col-md-2">N°compte contribuable</label>
+                        <div class="col-md-4">
+                            <input name="cpteContribu" id="editCpteContribuId" class="form-control" type="text">
+                            <span class="help-block"></span>
+                        </div>
+                        <label class="control-label col-md-2">Pays</label>
+                        <div class="col-md-4">
+                            <select class="form-control" id="editCountryId" name="country">
+                            </select>
+                        </div>
+                    </div>
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" id="btnUpdatePropertyId" type="submit"><i class="fa fa-check"></i>Enregistrer</button>
+                <button class="btn btn-danger" type="button" data-dismiss="modal">Annuler</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fin update product -->
+
+<!-- delete product modal-->
+<div class="modal fade" id="removePropertyModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title" id="defaultModalLabel">Supprimer propriétaire</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="preloader-backdrop" id="removeloadingId">
+                    <div class="page-preloader">Loading</div>
+                </div>
+
+                <div class="removeMessages"></div>
+                Voulez vous supprimer cette ligne?
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="removeBtn"  class="btn btn-success ">Supprimer</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Annuler</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Fin modal delete-->
+
+</body>
+
+</html>
