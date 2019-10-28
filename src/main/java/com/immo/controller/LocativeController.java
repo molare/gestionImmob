@@ -49,6 +49,9 @@ public class LocativeController {
             c.setSuperficy(co.getSuperficy());
             c.setDate(co.getDate());
             c.setBienTransient(co.getBien().getDesignation());
+            c.setStatutTransient("<td>\n" +
+                    "<span class=\"badge badge-success\">Disponible</span>\n" +
+                    "  </td>");
             String act="<td>\n" +
                     //"<button  class=\"btn btn-success btn-xs m-r-5\"  data-toggle=\"modal\" data-target=\"#editLocativeModal\" onclick=\"editLocative("+c.getId()+") data-original-title=\"Edit\"><i class=\"fa fa-pencil font-14\"></i></button>\n"+
                     "	<a href=\"javascript: void(0);\" data-toggle=\"modal\" data-target=\"#editLocativeModal\" class=\"link-underlined margin-right-50 btn btn-success\" data-original-title=\"Editer\" onclick=\"editLocative("+c.getId()+")\"><i class=\"fa fa-pencil font-14\"><!-- --></i></a>\n" +
@@ -169,7 +172,13 @@ public class LocativeController {
 
     @RequestMapping(value = "/deleteLocative/{typeId}", method = RequestMethod.DELETE)
     public ResponseData deleteLocative(@PathVariable int typeId,HttpServletRequest request){
-        locativeService.delete(typeId);
-        return new ResponseData(true, null);
+        ResponseData json=null;
+        try {
+            locativeService.delete(typeId);
+            json = new ResponseData(true, null);
+        }catch (Exception ex){
+            json = new ResponseData(false,"Impossible de supprimer cette donnée car elle est liée ailleurs",ex.getCause());
+        }
+        return json;
     }
 }

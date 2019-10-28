@@ -77,7 +77,14 @@ public class TypeLocativeController {
 
     @RequestMapping(value = "/deleteTypeLocative/{typeId}", method = RequestMethod.DELETE)
     public ResponseData deleteTypelocative(@PathVariable int typeId,HttpServletRequest request){
-        typeLocativeService.delete(typeId);
-        return new ResponseData(true, null);
+        ResponseData json=null;
+        try {
+            typeLocativeService.delete(typeId);
+            json = new ResponseData(true, null);
+        }catch (Exception ex){
+            json = new ResponseData(false,"Impossible de supprimer cette donnée car elle est liée ailleurs",ex.getCause());
+        }
+        return json;
+
     }
 }

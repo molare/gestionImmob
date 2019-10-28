@@ -73,7 +73,13 @@ public class CommuneController {
 
     @RequestMapping(value = "/deleteCommune/{communeId}", method = RequestMethod.DELETE)
     public ResponseData deleteCommune(@PathVariable int communeId,HttpServletRequest request){
-        communeService.delete(communeId);
-        return new ResponseData(true, null);
+        ResponseData json=null;
+        try {
+            communeService.delete(communeId);
+            json = new ResponseData(true, null);
+        }catch (Exception ex){
+            json = new ResponseData(false,"Impossible de supprimer cette donnée car elle est liée ailleurs",ex.getCause());
+        }
+        return json;
     }
 }

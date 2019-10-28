@@ -72,7 +72,14 @@ public class CivilityController {
 
     @RequestMapping(value = "/deleteCivility/{civilityId}", method = RequestMethod.DELETE)
     public ResponseData deleteCivility(@PathVariable int civilityId,HttpServletRequest request){
-        civilityService.delete(civilityId);
-        return new ResponseData(true, null);
+
+        ResponseData json=null;
+        try {
+            civilityService.delete(civilityId);
+            json = new ResponseData(true, null);
+        }catch (Exception ex){
+            json = new ResponseData(false,"Impossible de supprimer cette donnée car elle est liée ailleurs",ex.getCause());
+        }
+        return json;
     }
 }

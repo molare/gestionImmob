@@ -76,7 +76,14 @@ public class TypePayController {
 
     @RequestMapping(value = "/deleteTypePay/{devisId}", method = RequestMethod.DELETE)
     public ResponseData deleteTypePay(@PathVariable int devisId,HttpServletRequest request){
-        devisService.delete(devisId);
-        return new ResponseData(true, null);
+        ResponseData json=null;
+        try {
+            devisService.delete(devisId);
+            json = new ResponseData(true, null);
+        }catch (Exception ex){
+            json = new ResponseData(false,"Impossible de supprimer cette donnée car elle est liée ailleurs",ex.getCause());
+        }
+        return json;
+
     }
 }

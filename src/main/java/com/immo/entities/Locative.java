@@ -71,6 +71,8 @@ public class Locative {
 
 
     @Transient
+    private String statutTransient;
+    @Transient
     private String action;
 
     @Transient
@@ -241,6 +243,14 @@ public class Locative {
 
     public void setBienTransient(String bienTransient) {
         this.bienTransient = bienTransient;
+    }
+
+    public String getStatutTransient() {
+        return statutTransient;
+    }
+
+    public void setStatutTransient(String statutTransient) {
+        this.statutTransient = statutTransient;
     }
 
     @Override

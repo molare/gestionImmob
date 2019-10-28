@@ -72,7 +72,14 @@ public class TypePropertyController {
 
     @RequestMapping(value = "/deleteTypeProperty/{typePropertyId}", method = RequestMethod.DELETE)
     public ResponseData deleteTypeproperty(@PathVariable int typePropertyId,HttpServletRequest request){
-        typePropertyService.delete(typePropertyId);
-        return new ResponseData(true, null);
+        ResponseData json=null;
+        try {
+            typePropertyService.delete(typePropertyId);
+            json = new ResponseData(true, null);
+        }catch (Exception ex){
+            json = new ResponseData(false,"Impossible de supprimer cette donnée car elle est liée ailleurs",ex.getCause());
+        }
+        return json;
+
     }
 }

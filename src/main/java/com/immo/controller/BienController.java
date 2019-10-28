@@ -171,7 +171,13 @@ public class BienController {
 
     @RequestMapping(value = "/deleteBien/{typeId}", method = RequestMethod.DELETE)
     public ResponseData deleteBien(@PathVariable int typeId,HttpServletRequest request){
+        ResponseData json=null;
+        try {
         bienService.delete(typeId);
-        return new ResponseData(true, null);
+            json = new ResponseData(true, null);
+        }catch (Exception ex){
+            json = new ResponseData(false,"Impossible de supprimer cette donnée car elle est liée ailleurs",ex.getCause());
+        }
+        return json;
     }
 }

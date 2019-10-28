@@ -76,7 +76,13 @@ public class CityController {
 
     @RequestMapping(value = "/deleteCity/{id}", method = RequestMethod.DELETE)
     public ResponseData deleteCity(@PathVariable int id,HttpServletRequest request){
-          cityService.delete(id);
-        return new ResponseData(true,null);
+        ResponseData json=null;
+        try {
+            cityService.delete(id);
+            json = new ResponseData(true, null);
+        }catch (Exception ex){
+            json = new ResponseData(false,"Impossible de supprimer cette donnée car elle est liée ailleurs",ex.getCause());
+        }
+        return json;
     }
 }
