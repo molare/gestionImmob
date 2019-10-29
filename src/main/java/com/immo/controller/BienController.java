@@ -98,7 +98,7 @@ public class BienController {
                 bien.setImage(bytes);
             }
 
-        bien.setDesignation(request.getParameter("designation"));
+        bien.setDesignation(request.getParameter("designation").toUpperCase());
             bien.setNberFoncier(request.getParameter("nberFoncier"));
         bien.setAcquisitionCost(Double.parseDouble(request.getParameter("cost")));
         bien.setCity(cityService.findById(Integer.parseInt(request.getParameter("city"))));
@@ -130,7 +130,7 @@ public class BienController {
                 bien.setImageName(bienService.findById(id).getImageName());
             }
 
-            bien.setDesignation(request.getParameter("designation"));
+            bien.setDesignation(request.getParameter("designation").toUpperCase());
             bien.setNberFoncier(request.getParameter("nberFoncier"));
             bien.setAcquisitionCost(Double.parseDouble(request.getParameter("cost")));
             bien.setCity(cityService.findById(Integer.parseInt(request.getParameter("city"))));

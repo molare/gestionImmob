@@ -114,6 +114,18 @@
                                 $("#devisForm")[0].reset();
                                 $("#addTypePayModal").modal("hide");
                                 table.ajax.reload(null, false);
+                            }else{
+                                if (response.data != null) {
+                                    $(".messages").html('<div class="alert alert-danger alert-dismissable fade show">' +
+                                            '<button class="close" data-dismiss="alert" aria-label="Close">×</button><strong>ERREUR!</strong> ' + response.data.cause.serverErrorMessage.detail +
+                                            '</div>');
+
+                                }else{
+                                    $(".messages").html('<div class="alert alert-danger alert-dismissable fade show">' +
+                                            '<button class="close" data-dismiss="alert" aria-label="Close">×</button><strong>ERREUR!</strong> ' + response.message +
+                                            '</div>');
+
+                                }
                             }
                         },
                         error: function (jqXHR, textStatus, errorThrown) {

@@ -99,7 +99,7 @@ public class LocaterController {
             locater.setFirstName(firstName);
             locater.setLastName(lastName);
             if(email.isEmpty()){
-                locater.setEmail(firstName+"."+lastName+"@gmail.coml");
+                locater.setEmail(firstName+"."+lastName+"@gmail.com");
             }else {
                 locater.setEmail(email);
             }
@@ -144,7 +144,7 @@ public class LocaterController {
             locater.setFirstName(firstName);
             locater.setLastName(lastName);
             if(email.isEmpty()){
-                locater.setEmail(firstName+"."+lastName+"@gmail.coml");
+                locater.setEmail(firstName+"."+lastName+"@gmail.com");
             }else {
                 locater.setEmail(email);
             }
