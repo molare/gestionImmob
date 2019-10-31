@@ -47,17 +47,18 @@
                     [1, 'asc']
                 ], "columns":[
                     {"data":"checkboxe"},
-                    {"data":"date"},
-                    {"data":"code"},
-                    {"data":"propertyTransient"},
-                    {"data":"designation"},
-                    {"data":"typeTransient"},
-                    {"data":"nberIlot"},
-                    {"data":"nberlot"},
-                    {"data":"superficy"},
-                    {"data":"acquisitionCost"},
-                    {"data":"cityTransient"},
-                    {"data":"communeTransient"},
+                    {"data":"dateTransient"},
+                    {"data":"locaterTransient"},
+                    {"data":"locativeTransient"},
+                    {"data":"name"},
+                    {"data":"amount"},
+                    {"data":"advanceMonth"},
+                    {"data":"agenceMonth"},
+                    {"data":"bailDateTransient"},
+                    {"data":"moyenPayTransient"},
+                    {"data":"statutPayTransient"},
+                    {"data":"commentary"},
+                   //{"data":"communeTransient"},
                     {"data":"imageTransient"},
                     {"data":"action"}
 
@@ -107,6 +108,15 @@
                 statutPayOption();
                 moyenPayOption();
 
+                $("#monthNberId").change(function (){
+                    getGaranty($('#locativeId').val(),$('#monthNberId').val());
+                });
+
+
+                $("#advanceId").change(function (){
+                    getGarantyQuittance($('#locativeId').val(),$('#advanceId').val());
+                });
+
             });
 
             //FONCTION ADD Contrat
@@ -115,94 +125,104 @@
                 $(".col-md-4").removeClass('has-error').removeClass('has-success');
 
                 // validation
-                var designation = $("#designationId").val();
-                var property= $("#propertyId").val();
-                var typeContrat= $("#typeContratId").val();
-                var nberFoncier =$("#nberFoncierId").val();
-                var nberIlot =$("#nberIlotId").val();
-                var nberLot =$("#nberLotId").val();
-                var superficy =$("#superficyId").val();
-                var cost =$("#costId").val();
-                var city =$("#cityId").val();
+                var name = $("#nameId").val();
+                var locative= $("#locativeId").val();
+                var locater= $("#locaterId").val();
+                var moyen =$("#moyenId").val();
+                var statut =$("#statutId").val();
+                var bailDate =$("#bailDateId").val();
+                var advance =$("#advanceId").val();
+                var agence=$("#agenceId").val();
+                var firstQuittance =$("#firstQuittanceId").val();
+                var monthNber =$("#monthNberId").val();
 
 
 
-                if(designation === "") {
-                    $("#designationId").closest('.col-md-4').addClass('has-error');
-                    $("#designationId").after('<p class="text-danger">Champs vide</p>');
+                if(name === "") {
+                    $("#nameId").closest('.col-md-4').addClass('has-error');
+                    $("#nameId").after('<p class="text-danger">Champs vide</p>');
                 } else {
-                    $("#designationId").closest('.col-md-4').removeClass('has-error');
-                    $("#designationId").closest('.col-md-4').addClass('has-success');
+                    $("#nameId").closest('.col-md-4').removeClass('has-error');
+                    $("#nameId").closest('.col-md-4').addClass('has-success');
                 }
 
-                if(typeContrat === "0"){
-                    $("#typeContratId").closest('.col-md-4').addClass('has-error');
-                    $("#descriptionId").after('<p class="text-danger">Champs vide</p>');
+                if(locative === "0"){
+                    $("#locativeId").closest('.col-md-4').addClass('has-error');
+                    $("#locativeId").after('<p class="text-danger">Champs vide</p>');
                 }else {
-                    $("#typeContratId").closest('.col-md-4').removeClass('has-error');
-                    $("#typeContratId").closest('.col-md-4').addClass('has-success');
+                    $("#locativeId").closest('.col-md-4').removeClass('has-error');
+                    $("#locativeId").closest('.col-md-4').addClass('has-success');
                 }
 
-                if(property === "0"){
-                    $("#propertyId").closest('.col-md-4').addClass('has-error');
-                    $("#propertyId").after('<p class="text-danger">Champs vide</p>');
+                if(locater === "0"){
+                    $("#locaterId").closest('.col-md-4').addClass('has-error');
+                    $("#locaterId").after('<p class="text-danger">Champs vide</p>');
                 }else {
-                    $("#propertyId").closest('.col-md-4').removeClass('has-error');
-                    $("#propertyId").closest('.col-md-4').addClass('has-success');
+                    $("#locaterId").closest('.col-md-4').removeClass('has-error');
+                    $("#locaterId").closest('.col-md-4').addClass('has-success');
                 }
 
-                if(nberFoncier === "") {
-                    $("#nberFoncierId").closest('.col-md-4').addClass('has-error');
-                    $("#nberFoncierId").after('<p class="text-danger">Champs vide</p>');
+                if(bailDate === "") {
+                    $("#bailDateId").closest('.col-md-4').addClass('has-error');
+                    $("#bailDateId").after('<p class="text-danger">Champs vide</p>');
                 }else {
-                    $("#nberFoncierId").closest('.col-md-4').removeClass('has-error');
-                    $("#nberFoncierId").closest('.col-md-4').addClass('has-success');
+                    $("#bailDateId").closest('.col-md-4').removeClass('has-error');
+                    $("#bailDateId").closest('.col-md-4').addClass('has-success');
                 }
 
-                if(nberIlot === "") {
-                    $("#nberIlotId").closest('.col-md-4').addClass('has-error');
-                    $("#nberIlotId").after('<p class="text-danger">Champs vide</p>');
+                if(advance === "") {
+                    $("#advanceId").closest('.col-md-4').addClass('has-error');
+                    $("#advanceId").after('<p class="text-danger">Champs vide</p>');
                 }else {
-                    $("#nberIlotId").closest('.col-md-4').removeClass('has-error');
-                    $("#nberIlotId").closest('.col-md-4').addClass('has-success');
+                    $("#advanceId").closest('.col-md-4').removeClass('has-error');
+                    $("#advanceId").closest('.col-md-4').addClass('has-success');
                 }
 
-                if(nberLot === "") {
-                    $("#nberLotId").closest('.col-md-4').addClass('has-error');
-                    $("#nberLotId").after('<p class="text-danger">Champs vide</p>');
+                if(agence === "") {
+                    $("#agenceId").closest('.col-md-4').addClass('has-error');
+                    $("#agenceId").after('<p class="text-danger">Champs vide</p>');
                 }else {
-                    $("#nberLotId").closest('.col-md-4').removeClass('has-error');
-                    $("#nberLotId").closest('.col-md-4').addClass('has-success');
+                    $("#agenceId").closest('.col-md-4').removeClass('has-error');
+                    $("#agenceId").closest('.col-md-4').addClass('has-success');
                 }
 
-                if(superficy === "") {
-                    $("#superficyId").closest('.col-md-4').addClass('has-error');
-                    $("#superficyId").after('<p class="text-danger">Champs vide</p>');
+                if(firstQuittance === "") {
+                    $("#firstQuittanceId").closest('.col-md-4').addClass('has-error');
+                    $("#firstQuittanceId").after('<p class="text-danger">Champs vide</p>');
                 }else {
-                    $("#superficyId").closest('.col-md-4').removeClass('has-error');
-                    $("#superficyId").closest('.col-md-4').addClass('has-success');
+                    $("#firstQuittanceId").closest('.col-md-4').removeClass('has-error');
+                    $("#firstQuittanceId").closest('.col-md-4').addClass('has-success');
                 }
 
-
-                if(cost === "") {
-                    $("#costId").closest('.col-md-4').addClass('has-error');
-                    $("#costId").after('<p class="text-danger">Champs vide</p>');
+                if(monthNber === "") {
+                    $("#monthNberId").closest('.col-md-4').addClass('has-error');
+                    $("#monthNberId").after('<p class="text-danger">Champs vide</p>');
                 }else {
-                    $("#costId").closest('.col-md-4').removeClass('has-error');
-                    $("#costId").closest('.col-md-4').addClass('has-success');
+                    $("#monthNberId").closest('.col-md-4').removeClass('has-error');
+                    $("#monthNberId").closest('.col-md-4').addClass('has-success');
                 }
 
-                if(city === "0"){
-                    $("#cityId").closest('.col-md-4').addClass('has-error');
-                    $("#cityId").after('<p class="text-danger">Champs vide</p>');
+
+                if(statut === "0"){
+                    $("#statutId").closest('.col-md-4').addClass('has-error');
+                    $("#statutId").after('<p class="text-danger">Champs vide</p>');
                 }else{
-                    $("#cityId").closest('.col-md-4').removeClass('has-error');
-                    $("#cityId").closest('.col-md-4').addClass('has-success');
+                    $("#statutId").closest('.col-md-4').removeClass('has-error');
+                    $("#statutId").closest('.col-md-4').addClass('has-success');
+                }
+
+                if(moyen === "0"){
+                    $("#moyenId").closest('.col-md-4').addClass('has-error');
+                    $("#moyenId").after('<p class="text-danger">Champs vide</p>');
+                }else{
+                    $("#moyenId").closest('.col-md-4').removeClass('has-error');
+                    $("#moyenId").closest('.col-md-4').addClass('has-success');
                 }
 
                 var form_data = new FormData($("#ContratFormId")[0]);
-                if(designation && cost && superficy &&nberFoncier&&nberIlot
-                        &&nberLot !="" && typeContrat &&city&&property!="0") {
+
+                if(locater && locative &&moyen &&statut !="0" &&name
+                        &&advance&&agence&&monthNber&&firstQuittance&&bailDate!=""){
                     $.ajax({
                         url: window.origin+'/immo-apps/saveContrat',
                         type: 'POST',
@@ -617,6 +637,35 @@
             });
         }
         //FIN
+        function getGaranty(locativeId,month){
+            $.ajax({
+                url:window.origin+'/immo-apps/getGaranty/'+locativeId,
+                type:'POST',
+                dataType :"json",
+                success:function(response){
+                   console.log(response);
+                    $("#amountId").val(month*response.data);
+                },
+                failure: function(error){
+                    console.log(error);
+                }
+            });
+        }
+
+        function getGarantyQuittance(locativeId,month){
+            $.ajax({
+                url:window.origin+'/immo-apps/getGaranty/'+locativeId,
+                type:'POST',
+                dataType :"json",
+                success:function(response){
+                    console.log(response);
+                    $("#firstQuittanceId").val(month*response.data);
+                },
+                failure: function(error){
+                    console.log(error);
+                }
+            });
+        }
 
     </script>
 
@@ -972,16 +1021,16 @@
                         <tr>
                             <th><input name="select_all" value="1" type="checkbox"></th>
                             <th>Date création</th>
-                            <th>Code</th>
-                            <th>Propriétaire</th>
+                            <th>Locataire</th>
+                            <th>Locative</th>
                             <th>Contrat</th>
-                            <th>Type contrat</th>
-                            <th>N°Ilot</th>
-                            <th>N°Lot</th>
-                            <th>Superficie</th>
-                            <th>Cout acquisition</th>
-                            <th>quartier</th>
-                            <th>Commune</th>
+                            <th>Caution loyer</th>
+                            <th>Mois avance loyer</th>
+                            <th>Mois agence loyer</th>
+                            <th>Date debut contrat</th>
+                            <th>Moyen de paiement</th>
+                            <th>Statut de paiement</th>
+                            <th>commentaire</th>
                             <th>Photo</th>
                             <th>Action</th>
                         </tr>
@@ -991,16 +1040,16 @@
                         <tr>
                             <th></th>
                             <th>Date création</th>
-                            <th>Code</th>
-                            <th>Propriétaire</th>
+                            <th>Locataire</th>
+                            <th>Locative</th>
                             <th>Contrat</th>
-                            <th>Type contrat</th>
-                            <th>N°Ilot</th>
-                            <th>N°Lot</th>
-                            <th>Superficie</th>
-                            <th>Cout acquisition</th>
-                            <th>quartier</th>
-                            <th>Commune</th>
+                            <th>Caution loyer</th>
+                            <th>Mois avance loyer</th>
+                            <th>Mois agence loyer</th>
+                            <th>Date debut contrat</th>
+                            <th>Moyen de paiement</th>
+                            <th>Statut de paiement</th>
+                            <th>commentaire</th>
                             <th>Photo</th>
                             <th>Action</th>
                         </tr>

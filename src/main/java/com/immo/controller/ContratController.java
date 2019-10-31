@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,11 +42,24 @@ public class ContratController {
     @RequestMapping(value = "/listContrat", method = RequestMethod.GET)
     public ResponseData getAllContrat(){
         List<Contrat> newComList = new ArrayList<Contrat>();
+        SimpleDateFormat sdf =new SimpleDateFormat("dd-MM-yyyy");
         List<Contrat> listCom = contratService.getAll();
         for(Contrat co : listCom){
             Contrat c = new Contrat();
             c.setId(co.getId());
-
+            c.setName(co.getName());
+            c.setDateTransient(sdf.format(co.getDate()));
+            c.setAmount(co.getAmount());
+            c.setFirstQuittance(co.getFirstQuittance());
+            c.setMonthNber(co.getMonthNber());
+            c.setStatutPayTransient(co.getStatutPay().getName());
+            c.setMoyenPayTransient(co.getMoyenPay().getName());
+            c.setLocaterTransient(co.getLocater().getFirstName()+" "+co.getLocater().getLastName());
+            c.setLocativeTransient(co.getLocative().getDesignation());
+            c.setAgenceMonth(co.getAgenceMonth());
+            c.setAdvanceMonth(co.getAdvanceMonth());
+            c.setCommentary(co.getCommentary());
+            c.setBailDateTransient(sdf.format(co.getBailDate()));
             String act="<td>\n" +
                     //"<button  class=\"btn btn-success btn-xs m-r-5\"  data-toggle=\"modal\" data-target=\"#editContratModal\" onclick=\"editContrat("+c.getId()+") data-original-title=\"Edit\"><i class=\"fa fa-pencil font-14\"></i></button>\n"+
                     "	<a href=\"javascript: void(0);\" data-toggle=\"modal\" data-target=\"#editContratModal\" class=\"link-underlined margin-right-50 btn btn-success\" data-original-title=\"Editer\" onclick=\"editContrat("+c.getId()+")\"><i class=\"fa fa-pencil font-14\"><!-- --></i></a>\n" +
@@ -82,6 +96,7 @@ public class ContratController {
     @RequestMapping(value = "/saveContrat", method = RequestMethod.POST,headers="Accept=*/*")
     public ResponseData addContrat(Locale locale,@ModelAttribute Contrat contrat, BindingResult result,@RequestParam("picture")MultipartFile file,HttpServletRequest request)throws Exception{
         ResponseData json=null;
+        SimpleDateFormat sdf =new SimpleDateFormat("dd-MM-yyyy");
         try {
             if (file.getSize() > 0) {
                 String fileName = file.getOriginalFilename();
@@ -94,8 +109,9 @@ public class ContratController {
         contrat.setAmount(Double.parseDouble(request.getParameter("amount")));
         contrat.setAdvanceMonth(Integer.parseInt(request.getParameter("advance")));
         contrat.setAgenceMonth(Integer.parseInt(request.getParameter("agence")));
+        contrat.setMonthNber(Integer.parseInt(request.getParameter("monthNber")));
         contrat.setFirstQuittance(Double.parseDouble(request.getParameter("firstQuittance")));
-        contrat.setBailDate(new Date());
+        contrat.setBailDate(sdf.parse(request.getParameter("bailDate")));
         contrat.setLocater(locaterService.findById(Integer.parseInt(request.getParameter("locater"))));
         contrat.setLocative(locativeService.findById(Integer.parseInt(request.getParameter("locative"))));
         contrat.setMoyenPay(moyenPayService.findById(Integer.parseInt(request.getParameter("moyen"))));

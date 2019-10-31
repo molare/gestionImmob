@@ -49,9 +49,16 @@ public class LocativeController {
             c.setSuperficy(co.getSuperficy());
             c.setDate(co.getDate());
             c.setBienTransient(co.getBien().getDesignation());
-            c.setStatutTransient("<td>\n" +
-                    "<span class=\"badge badge-success\">Disponible</span>\n" +
-                    "  </td>");
+          Locative locat =  locativeService.findByContrat(co.getId());
+            if(locat != null){
+                c.setStatutTransient("<td>\n" +
+                        "<span class=\"badge badge-danger\"><h7>Occupée</h7></span>\n" +
+                        "  </td>");
+            }else {
+                c.setStatutTransient("<td>\n" +
+                        "<span class=\"badge badge-success\"><h7>Disponible</h7></span>\n" +
+                        "  </td>");
+            }
             String act="<td>\n" +
                     //"<button  class=\"btn btn-success btn-xs m-r-5\"  data-toggle=\"modal\" data-target=\"#editLocativeModal\" onclick=\"editLocative("+c.getId()+") data-original-title=\"Edit\"><i class=\"fa fa-pencil font-14\"></i></button>\n"+
                     "	<a href=\"javascript: void(0);\" data-toggle=\"modal\" data-target=\"#editLocativeModal\" class=\"link-underlined margin-right-50 btn btn-success\" data-original-title=\"Editer\" onclick=\"editLocative("+c.getId()+")\"><i class=\"fa fa-pencil font-14\"><!-- --></i></a>\n" +
@@ -181,4 +188,17 @@ public class LocativeController {
         }
         return json;
     }
+
+    @RequestMapping(value = "/getGaranty/{locativeId}", method = RequestMethod.POST)
+    public ResponseData getGaranty(@PathVariable int locativeId,HttpServletRequest request){
+        ResponseData json=null;
+        try {
+            double garantie=  locativeService.garanty(locativeId);
+            json = new ResponseData(true, garantie);
+        }catch (Exception ex){
+            json = new ResponseData(false,"erreur",ex.getCause());
+        }
+        return json;
+    }
+
 }

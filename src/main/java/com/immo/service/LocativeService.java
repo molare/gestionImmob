@@ -17,4 +17,6 @@ public interface LocativeService {
     public void delete(int id);
     public List<Locative> findByProperty(Property property);
     public List<Locative> findByCity(City city);
+    public double garanty(int id);
+    public Locative findByContrat(int id);
 }
