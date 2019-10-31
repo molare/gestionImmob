@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width initial-scale=1.0">
     <title>APPS_IMMOBILIERE</title>
-    <link href="/immo-apps/ressources/allRessources" rel="import"/>
+    <link href="/ressources/allRessources" rel="import"/>
 
 
     <!-- PAGE LEVEL SCRIPTS-->
@@ -19,7 +19,7 @@
                 /*"responsive": true,
                  "autoWidth":false,*/
 
-                "sAjaxSource":window.origin+'/immo-apps/listContrat',
+                "sAjaxSource":window.origin+'/listContrat',
                 "sAjaxDataProp":"data",
                 "oLanguage": {
                     "sLengthMenu": "_MENU_ Enregistrements",
@@ -224,7 +224,7 @@
                 if(locater && locative &&moyen &&statut !="0" &&name
                         &&advance&&agence&&monthNber&&firstQuittance&&bailDate!=""){
                     $.ajax({
-                        url: window.origin+'/immo-apps/saveContrat',
+                        url: window.origin+'/saveContrat',
                         type: 'POST',
                         data:form_data,
                         //enctype:'multiple/form-data',
@@ -285,7 +285,7 @@
                 $("#Contrat_edit_id").remove();
                 // fetch the member data
                 $.ajax({
-                    url:window.origin+'/immo-apps/findContrat/'+id,
+                    url:window.origin+'/findContrat/'+id,
                     type: 'get',
                     dataType: 'json',
                     success:function(response) {
@@ -403,7 +403,7 @@
                                     &&nberLot !="" && typeContrat &&city&&property!="0"){
                                 var idContrat =$("#Contrat_edit_id").val();
                                 $.ajax({
-                                    url:window.origin+'/immo-apps/updateContrat/'+idContrat,
+                                    url:window.origin+'/updateContrat/'+idContrat,
                                     type:'POST',
                                     data:edit_form_data,
                                     //enctype:'multiple/form-data',
@@ -463,7 +463,7 @@
                 // click on remove button
                 $("#removeBtn").unbind('click').bind('click', function() {
                     $.ajax({
-                        url:window.origin+'/immo-apps/deleteContrat/'+id,
+                        url:window.origin+'/deleteContrat/'+id,
                         type: 'delete',
                         dataType: 'json',
                         success:function(response) {
@@ -499,7 +499,7 @@
         //LIST TYPE LOCATION
         function locativeOption(){
             $.ajax({
-                url:window.origin+'/immo-apps/locativeNotInContrat',
+                url:window.origin+'/locativeNotInContrat',
                 type:'POST',
                 dataType :"json",
                 success:function(response){
@@ -515,7 +515,7 @@
 
         function editLocativeOption(valId, name){
             $.ajax({
-                url:window.origin+'/immo-apps/locativeNotInContrat',
+                url:window.origin+'/locativeNotInContrat',
                 type:'POST',
                 dataType :"json",
                 success:function(response){
@@ -534,7 +534,7 @@
         //LIST PROPERTY
         function LocaterOption(){
             $.ajax({
-                url:window.origin+'/immo-apps/listLocater',
+                url:window.origin+'/listLocater',
                 type:'GET',
                 dataType :"json",
                 success:function(response){
@@ -549,7 +549,7 @@
 
         function editLocaterOption(valId, name){
             $.ajax({
-                url:window.origin+'/immo-apps/listLocater',
+                url:window.origin+'/listLocater',
                 type:'GET',
                 dataType :"json",
                 success:function(response){
@@ -568,7 +568,7 @@
         //LIST STATUT
         function statutPayOption(){
             $.ajax({
-                url:window.origin+'/immo-apps/listStatutPay',
+                url:window.origin+'/listStatutPay',
                 type:'GET',
                 dataType :"json",
                 success:function(response){
@@ -586,7 +586,7 @@
 
         function editStatutPayOption(valId, name){
             $.ajax({
-                url:window.origin+'/immo-apps/listStatutPay',
+                url:window.origin+'/listStatutPay',
                 type:'GET',
                 dataType :"json",
                 success:function(response){
@@ -606,7 +606,7 @@
         //LIST MOYEN PAY
         function moyenPayOption(){
             $.ajax({
-                url:window.origin+'/immo-apps/listMoyenPay',
+                url:window.origin+'/listMoyenPay',
                 type:'GET',
                 dataType :"json",
                 success:function(response){
@@ -624,7 +624,7 @@
 
         function editMoyenPayOption(valId, name){
             $.ajax({
-                url:window.origin+'/immo-apps/listMoyenPay',
+                url:window.origin+'/listMoyenPay',
                 type:'GET',
                 dataType :"json",
                 success:function(response){
@@ -641,7 +641,7 @@
         //FIN
         function getGaranty(locativeId,month){
             $.ajax({
-                url:window.origin+'/immo-apps/getGaranty/'+locativeId,
+                url:window.origin+'/getGaranty/'+locativeId,
                 type:'POST',
                 dataType :"json",
                 success:function(response){
@@ -656,7 +656,7 @@
 
         function getGarantyQuittance(locativeId,month){
             $.ajax({
-                url:window.origin+'/immo-apps/getGaranty/'+locativeId,
+                url:window.origin+'/getGaranty/'+locativeId,
                 type:'POST',
                 dataType :"json",
                 success:function(response){
@@ -719,7 +719,7 @@
                                 <a class="list-group-item">
                                     <div class="media">
                                         <div class="media-img">
-                                            <img src="/immo-apps/html/dist/assets/img/users/u1.jpg" />
+                                            <img src="/html/dist/assets/img/users/u1.jpg" />
                                         </div>
                                         <div class="media-body">
                                             <div class="font-strong"> </div>Jeanne Gonzalez<small class="text-muted float-right">Just now</small>
@@ -730,7 +730,7 @@
                                 <a class="list-group-item">
                                     <div class="media">
                                         <div class="media-img">
-                                            <img src="/immo-apps/html/dist/assets/img/users/u2.jpg" />
+                                            <img src="/html/dist/assets/img/users/u2.jpg" />
                                         </div>
                                         <div class="media-body">
                                             <div class="font-strong"></div>Becky Brooks<small class="text-muted float-right">18 mins</small>
@@ -741,7 +741,7 @@
                                 <a class="list-group-item">
                                     <div class="media">
                                         <div class="media-img">
-                                            <img src="/immo-apps/html/dist/assets/img/users/u3.jpg" />
+                                            <img src="/html/dist/assets/img/users/u3.jpg" />
                                         </div>
                                         <div class="media-body">
                                             <div class="font-strong"></div>Frank Cruz<small class="text-muted float-right">18 mins</small>
@@ -752,7 +752,7 @@
                                 <a class="list-group-item">
                                     <div class="media">
                                         <div class="media-img">
-                                            <img src="/immo-apps/html/dist/assets/img/users/u4.jpg" />
+                                            <img src="/html/dist/assets/img/users/u4.jpg" />
                                         </div>
                                         <div class="media-body">
                                             <div class="font-strong"></div>Rose Pearson<small class="text-muted float-right">3 hrs</small>
@@ -817,7 +817,7 @@
                 </li>
                 <li class="dropdown dropdown-user">
                     <a class="nav-link dropdown-toggle link" data-toggle="dropdown">
-                        <img src="/immo-apps/html/dist/assets/img/admin-avatar.png" />
+                        <img src="/html/dist/assets/img/admin-avatar.png" />
                         <span></span>Admin<i class="fa fa-angle-down m-l-5"></i></a>
                     <ul class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="profile.html"><i class="fa fa-user"></i>Profile</a>
@@ -836,7 +836,7 @@
         <div id="sidebar-collapse">
             <div class="admin-block d-flex">
                 <div>
-                    <img src="/immo-apps/html/dist/assets/img/admin-avatar.png" width="45px" />
+                    <img src="/html/dist/assets/img/admin-avatar.png" width="45px" />
                 </div>
                 <div class="admin-info">
                     <div class="font-strong">Mory</div><small>Admin</small></div>

@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width initial-scale=1.0">
     <title>APPS_IMMOBILIERE</title>
     <!-- GLOBAL MAINLY STYLES-->
-    <link href="/immo-apps/ressources/allRessources" rel="import"/>
+    <link href="/ressources/allRessources" rel="import"/>
 
 
     <!-- PAGE LEVEL SCRIPTS-->
@@ -18,7 +18,7 @@
             table= $('#devisTable').DataTable({
                 "responsive": true,
                 "autoWidth":false,
-                "sAjaxSource":window.origin+'/immo-apps/listStatutPay',
+                "sAjaxSource":window.origin+'/listStatutPay',
                 "sAjaxDataProp":"data",
                 "oLanguage": {
                     "sLengthMenu": "_MENU_ Enregistrements",
@@ -98,7 +98,7 @@
                 }
                 if(name && description !="") {
                     $.ajax({
-                        url: window.origin + '/immo-apps/saveStatutPay',
+                        url: window.origin + '/saveStatutPay',
                         type: 'POST',
                         data: $("#devisForm").serialize(),
                         dataType: "json",
@@ -155,7 +155,7 @@
                 $("#devis_edit_id").remove();
                 // fetch the member data
                 $.ajax({
-                    url:window.origin+'/immo-apps/findStatutPay/'+id,
+                    url:window.origin+'/findStatutPay/'+id,
                     type: 'get',
                     dataType: 'json',
                     success:function(response) {
@@ -197,7 +197,7 @@
                             if(editName && editDescription !=""){
                                 var idStatutPay =$("#devis_edit_id").val();
                                 $.ajax({
-                                    url:window.origin+'/immo-apps/updateStatutPay/'+idStatutPay,
+                                    url:window.origin+'/updateStatutPay/'+idStatutPay,
                                     type:'POST',
                                     data:$("#editStatutPayForm").serialize(),
                                     dataType :"json",
@@ -253,7 +253,7 @@
                 // click on remove button
                 $("#removeBtn").unbind('click').bind('click', function() {
                     $.ajax({
-                        url:window.origin+'/immo-apps/deleteStatutPay/'+id,
+                        url:window.origin+'/deleteStatutPay/'+id,
                         type: 'delete',
                         dataType: 'json',
                         success:function(response) {
@@ -337,7 +337,7 @@
                                     <a class="list-group-item">
                                         <div class="media">
                                             <div class="media-img">
-                                                <img src="/immo-apps/html/dist/assets/img/users/u1.jpg" />
+                                                <img src="/html/dist/assets/img/users/u1.jpg" />
                                             </div>
                                             <div class="media-body">
                                                 <div class="font-strong"> </div>Jeanne Gonzalez<small class="text-muted float-right">Just now</small>
@@ -348,7 +348,7 @@
                                     <a class="list-group-item">
                                         <div class="media">
                                             <div class="media-img">
-                                                <img src="/immo-apps/html/dist/assets/img/users/u2.jpg" />
+                                                <img src="/html/dist/assets/img/users/u2.jpg" />
                                             </div>
                                             <div class="media-body">
                                                 <div class="font-strong"></div>Becky Brooks<small class="text-muted float-right">18 mins</small>
@@ -359,7 +359,7 @@
                                     <a class="list-group-item">
                                         <div class="media">
                                             <div class="media-img">
-                                                <img src="/immo-apps/html/dist/assets/img/users/u3.jpg" />
+                                                <img src="/html/dist/assets/img/users/u3.jpg" />
                                             </div>
                                             <div class="media-body">
                                                 <div class="font-strong"></div>Frank Cruz<small class="text-muted float-right">18 mins</small>
@@ -370,7 +370,7 @@
                                     <a class="list-group-item">
                                         <div class="media">
                                             <div class="media-img">
-                                                <img src="/immo-apps/html/dist/assets/img/users/u4.jpg" />
+                                                <img src="/html/dist/assets/img/users/u4.jpg" />
                                             </div>
                                             <div class="media-body">
                                                 <div class="font-strong"></div>Rose Pearson<small class="text-muted float-right">3 hrs</small>
@@ -435,7 +435,7 @@
                     </li>
                     <li class="dropdown dropdown-user">
                         <a class="nav-link dropdown-toggle link" data-toggle="dropdown">
-                            <img src="/immo-apps/html/dist/assets/img/admin-avatar.png" />
+                            <img src="/html/dist/assets/img/admin-avatar.png" />
                             <span></span>Admin<i class="fa fa-angle-down m-l-5"></i></a>
                         <ul class="dropdown-menu dropdown-menu-right">
                             <a class="dropdown-item" href="profile.html"><i class="fa fa-user"></i>Profile</a>
@@ -454,7 +454,7 @@
             <div id="sidebar-collapse">
                 <div class="admin-block d-flex">
                     <div>
-                        <img src="/immo-apps/html/dist/assets/img/admin-avatar.png" width="45px" />
+                        <img src="/html/dist/assets/img/admin-avatar.png" width="45px" />
                     </div>
                     <div class="admin-info">
                         <div class="font-strong">Mory</div><small>Admin</small></div>
