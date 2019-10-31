@@ -201,4 +201,16 @@ public class LocativeController {
         return json;
     }
 
+    @RequestMapping(value = "/locativeNotInContrat", method = RequestMethod.POST)
+    public ResponseData getLocativeNotInContrat(HttpServletRequest request){
+        ResponseData json=null;
+        try {
+            List<Locative> listLoca =locativeService.getLocativeNotInContrat();
+            json = new ResponseData(true, listLoca);
+        }catch (Exception ex){
+            json = new ResponseData(false,"erreur",ex.getCause());
+        }
+        return json;
+    }
+
 }

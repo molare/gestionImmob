@@ -19,4 +19,5 @@ public interface LocativeService {
     public List<Locative> findByCity(City city);
     public double garanty(int id);
     public Locative findByContrat(int id);
+    public List<Locative> getLocativeNotInContrat();
 }

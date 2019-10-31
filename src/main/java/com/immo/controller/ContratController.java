@@ -52,10 +52,14 @@ public class ContratController {
             c.setAmount(co.getAmount());
             c.setFirstQuittance(co.getFirstQuittance());
             c.setMonthNber(co.getMonthNber());
-            c.setStatutPayTransient(co.getStatutPay().getName());
+            c.setStatutPayTransient("<td>\n" +
+                    "<span class=\"badge badge-warning\"><h7>"+co.getStatutPay().getName()+"</h7></span>\n" +
+                    "  </td>");
+
+
             c.setMoyenPayTransient(co.getMoyenPay().getName());
             c.setLocaterTransient(co.getLocater().getFirstName()+" "+co.getLocater().getLastName());
-            c.setLocativeTransient(co.getLocative().getDesignation());
+            c.setLocativeTransient(co.getLocative().getDesignation()+" ("+co.getLocative().getTypeLocative().getName()+")");
             c.setAgenceMonth(co.getAgenceMonth());
             c.setAdvanceMonth(co.getAdvanceMonth());
             c.setCommentary(co.getCommentary());

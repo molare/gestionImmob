@@ -291,17 +291,18 @@
                     success:function(response) {
                         console.log(response);
                         $("#editPictureId").html(response.data.imageTransient);
-                        $("#editCodeId").val(response.data.code);
-                        $("#editDesignationId").val(response.data.designation);
-                        $("#editNberFoncierId").val(response.data.nberFoncier);
-                        $("#editNberIlotId").val(response.data.nberIlot);
-                        $("#editNberLotId").val(response.data.nberlot);
-                        $("#editSuperficyId").val(response.data.superficy);
-                        $("#editCostId").val(response.data.acquisitionCost);
+                        $("#editNameId").val(response.data.name);
+                        $("#editMonthNberId").val(response.data.monthNber);
+                        $("#editAmountId").val(response.data.amount);
+                        $("#editAdvanceId").val(response.data.advanceMonth);
+                        $("#editAgenceId").val(response.data.agenceMonth);
+                        $("#editFirstQuittanceId").val(response.data.firstQuittance);
+                        //$("#editCostId").val(response.data.acquisitionCost);
                         $("#editCommentaryId").val(response.data.commentary);
-                        editTypeLocationOption(response.data.typeContrat.id,response.data.typeContrat.name);
-                        editPropertyOption(response.data.property.id,response.data.property.firstName+' '+response.data.property.lastName);
-                        editCityOption(response.data.city.id,response.data.city.name);
+                        editLocativeOption(response.data.locative.id, response.data.locative.designation);
+                        editLocaterOption(response.data.locater.id,response.data.locater.firstName+' '+response.data.locater.lastName);
+                        editMoyenPayOption(response.data.moyenPay.id,response.data.moyenPay.name);
+                        editStatutPayOption(response.data.statutPay.id,response.data.statutPay.name);
 
                         $("#editContratForm").append('<input type="hidden" name="id" id="Contrat_edit_id" value="'+response.data.id+'"/>');
                         // here update the member data
@@ -498,10 +499,11 @@
         //LIST TYPE LOCATION
         function locativeOption(){
             $.ajax({
-                url:window.origin+'/immo-apps/listLocative',
-                type:'GET',
+                url:window.origin+'/immo-apps/locativeNotInContrat',
+                type:'POST',
                 dataType :"json",
                 success:function(response){
+                    console.log(response)
                     $("#locativeId").html('');
                     $("#locativeId").append('<option value='+0+'>'+' '+'</option>');
                     $.each(response.data, function(key, val){
@@ -513,15 +515,15 @@
 
         function editLocativeOption(valId, name){
             $.ajax({
-                url:window.origin+'/immo-apps/listLocative',
-                type:'GET',
+                url:window.origin+'/immo-apps/locativeNotInContrat',
+                type:'POST',
                 dataType :"json",
                 success:function(response){
-                    $("#editlocativeId").html('');
-                    $("#editlocativeId").append('<option value='+valId+'>'+name+'</option>');
+                    $("#editLocativeId").html('');
+                    $("#editLocativeId").append('<option value='+valId+'>'+name+'</option>');
                     $.each(response.data, function(key, val){
                         if(valId!=val.id){
-                            $("#editlocativeId").append('<option value='+val.id+'>'+val.designation+'</option>');
+                            $("#editLocativeId").append('<option value='+val.id+'>'+val.designation+'</option>');
                         }
                     });
                 }
@@ -551,11 +553,11 @@
                 type:'GET',
                 dataType :"json",
                 success:function(response){
-                    $("#editlocaterId").html('');
-                    $("#editlocaterId").append('<option value='+valId+'>'+name+'</option>');
+                    $("#editLocaterId").html('');
+                    $("#editLocaterId").append('<option value='+valId+'>'+name+'</option>');
                     $.each(response.data, function(key, val){
                         if(valId != val.id){
-                            $("#editlocaterId").append('<option value='+val.id+'>'+val.firstName+' '+val.lastName+'</option>');
+                            $("#editLocaterId").append('<option value='+val.id+'>'+val.firstName+' '+val.lastName+'</option>');
                         }
                     });
                 }
@@ -1024,12 +1026,12 @@
                             <th>Locataire</th>
                             <th>Locative</th>
                             <th>Contrat</th>
-                            <th>Caution loyer</th>
+                            <th data-priority="1">Caution loyer</th>
                             <th>Mois avance loyer</th>
                             <th>Mois agence loyer</th>
                             <th>Date debut contrat</th>
-                            <th>Moyen de paiement</th>
-                            <th>Statut de paiement</th>
+                            <th data-priority="2">Moyen de paiement</th>
+                            <th data-priority="3">Statut de paiement</th>
                             <th>commentaire</th>
                             <th>Photo</th>
                             <th>Action</th>
@@ -1043,12 +1045,12 @@
                             <th>Locataire</th>
                             <th>Locative</th>
                             <th>Contrat</th>
-                            <th>Caution loyer</th>
+                            <th data-priority="1">Caution loyer</th>
                             <th>Mois avance loyer</th>
                             <th>Mois agence loyer</th>
                             <th>Date debut contrat</th>
-                            <th>Moyen de paiement</th>
-                            <th>Statut de paiement</th>
+                            <th data-priority="2">Moyen de paiement</th>
+                            <th data-priority="3">Statut de paiement</th>
                             <th>commentaire</th>
                             <th>Photo</th>
                             <th>Action</th>
@@ -1290,11 +1292,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <div class="col-md-4">
-                            <input type="file" name="picture" id="pictureId" class="form-control">
-                        </div>
-                    </div>
+
 
                     <div class="col-md-12">
                         <div class="ibox ibox-warning collapsed-mode">
@@ -1382,6 +1380,12 @@
                         </div>
                     </div>
 
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            <input type="file" name="picture" id="pictureId" class="form-control">
+                        </div>
+                    </div>
+
                 </form>
             </div>
             <div class="modal-footer">
@@ -1416,91 +1420,136 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label class="control-label col-md-2">Code</label>
-                        <div class="col-md-4">
-                            <input name="code" id="editCodeId" class="form-control" type="text">
-                            <span class="help-block"></span>
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">Nom de contrat</label>
+                            <div class="col-md-4">
+                                <input name="name" id="editNameId" class="form-control" type="text">
+                                <span class="help-block"></span>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group row">
-                        <label class="control-label col-md-2">Nom de contrat</label>
-                        <div class="col-md-4">
-                            <input name="designation" id="editDesignationId" class="form-control" type="text">
-                            <span class="help-block"></span>
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">Locative</label>
+                            <div class="col-md-4">
+                                <select class="form-control" id="editLocativeId" name="locative">
+                                </select>
+                                <span class="help-block"></span>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group row">
-                        <label class="control-label col-md-2">Type de contrat</label>
-                        <div class="col-md-4">
-                            <select class="form-control" id="editTypeContratId" name="typeContrat">
-                            </select>
-                            <span class="help-block"></span>
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">Locataire</label>
+                            <div class="col-md-4">
+                                <select class="form-control" id="editLocaterId" name="locater">
+                                </select>
+                                <span class="help-block"></span>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group row">
-                        <label class="control-label col-md-2">Propriétaire</label>
-                        <div class="col-md-4">
-                            <select class="form-control" id="editPropertyId" name="property">
-                            </select>
-                            <span class="help-block"></span>
+                        <div class="form-group row ">
+                            <label class="control-label col-md-2 font-normal">Début du bail</label>
+                            <div class="col-md-4 input-group date">
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                <input class="form-control" type="text" name="bailDate" id="editBailDateId">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group row">
-                        <label class="control-label col-md-2">N°foncier</label>
-                        <div class="col-md-4">
-                            <input name="nberFoncier" id="editNberFoncierId" class="form-control" type="text">
-                            <span class="help-block"></span>
-                        </div>
-                    </div>
 
-                    <div class="form-group row">
-                        <label class="control-label col-md-2">N°Ilot</label>
-                        <div class="col-md-4">
-                            <input name="nberIlot" id="editNberIlotId" class="form-control" type="text">
-                            <span class="help-block"></span>
-                        </div>
-                        <label class="control-label col-md-2">N°lot</label>
-                        <div class="col-md-4">
-                            <input name="nberLot" id="editNberLotId" class="form-control" type="text">
-                            <span class="help-block"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="control-label col-md-2">Superficie (m²)</label>
-                        <div class="col-md-4">
-                            <input name="superficy" id="editSuperficyId" class="form-control" type="text">
-                            <span class="help-block"></span>
-                        </div>
-                        <label class="control-label col-md-2">Cout d'acquisition</label>
-                        <div class="col-md-4">
-                            <input name="cost" id="editCostId" class="form-control" type="text">
-                            <span class="help-block"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="control-label col-md-2">Quartier</label>
-                        <div class="col-md-4">
-                            <select class="form-control" id="editCityId" name="city">
-                            </select>
-                            <span class="help-block"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="control-label col-md-2">Commentaire</label>
-                        <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">Commentaire</label>
+                            <div class="col-md-6">
                             <textarea class="form-control" id="editCommentaryId" name="commentary">
                             </textarea>
-                            <span class="help-block"></span>
+                                <span class="help-block"></span>
+                            </div>
                         </div>
-                    </div>
+
+
+                        <div class="col-md-12">
+                            <div class="ibox ibox-warning">
+                                <div class="ibox-head">
+                                    <div class="ibox-title">DEPOT DE GARANTIE (Appuyez sur le bouton plus(+) )</div>
+                                    <div class="ibox-tools">
+                                        <a class="ibox-collapse"><i class="fa fa-minus"></i></a>
+                                        <!--<a class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></a>-->
+                                    </div>
+                                </div>
+                                <div class="ibox-body">
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-2">Nombre mois caution</label>
+                                        <div class="col-md-4">
+                                            <input class="form-control" id="editMonthNberId" name="monthNber"/>
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-2">Montant</label>
+                                        <div class="col-md-4">
+                                            <input class="form-control" id="editAmountId" name="amount" readonly="true"/>
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-2">Moyen paiement</label>
+                                        <div class="col-md-4">
+                                            <select class="form-control" id="editMoyenId" name="moyen">
+                                            </select>
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-2">Statut paiement</label>
+                                        <div class="col-md-4">
+                                            <select class="form-control" id="editStatutId" name="statut">
+                                            </select>
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="ibox ibox-warning">
+                                <div class="ibox-head">
+                                    <div class="ibox-title">PREMIER QUITANCE DE LOYER (Appuyez sur le bouton plus(+))</div>
+                                    <div class="ibox-tools">
+                                        <a class="ibox-collapse"><i class="fa fa-minus"></i></a>
+                                        <!--<a class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></a>-->
+                                    </div>
+                                </div>
+                                <div class="ibox-body">
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-2">Nombre mois d'avance</label>
+                                        <div class="col-md-4">
+                                            <input class="form-control" id="editAdvanceId" name="advance"/>
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-2">Nombre mois d'agence</label>
+                                        <div class="col-md-4">
+                                            <input class="form-control" id="editAgenceId" name="agence"/>
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-2">Total montant</label>
+                                        <div class="col-md-4">
+                                            <input class="form-control" id="editFirstQuittanceId" name="firstQuittance" readonly="true"/>
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
 
                     <div class="form-group row">
                         <div class="col-md-4">

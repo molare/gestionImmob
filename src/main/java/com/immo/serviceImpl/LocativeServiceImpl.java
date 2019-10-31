@@ -14,6 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -88,5 +89,24 @@ public class LocativeServiceImpl implements LocativeService {
             return null;
         }
         return lo;
+    }
+
+    @Override
+    public List<Locative> getLocativeNotInContrat() {
+        String sql = "SELECT lo.id,lo.designation\n" +
+                "FROM locative lo\n" +
+                "WHERE lo.id NOT IN (SELECT lot.id\n" +
+                "FROM locative lot, contrat cont\n" +
+                "WHERE cont.locative_id = lot.id) ORDER BY lo.designation ASC \n";
+        Query query = em.createNativeQuery(sql);
+        List<Object[]> listLo = query.getResultList();
+        List<Locative> locativeList = new ArrayList<Locative>();
+        for(Object[] rs :listLo){
+            Locative lo = new Locative();
+            lo.setId(Integer.parseInt(rs[0]+""));
+            lo.setDesignation(rs[1]+"");
+            locativeList.add(lo);
+        }
+        return locativeList;
     }
 }
