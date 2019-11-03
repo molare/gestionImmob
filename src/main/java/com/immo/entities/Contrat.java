@@ -1,6 +1,7 @@
 package com.immo.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -9,7 +10,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "contrat")
-public class Contrat {
+public class Contrat implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -36,7 +37,7 @@ public class Contrat {
     @Temporal(value = TemporalType.DATE)
     private Date date = new Date();
 
-    @Column(name="bail_date", nullable = false)
+    @Column(name="bail_date")
     @Temporal(value = TemporalType.DATE)
     private Date bailDate;
 
@@ -162,11 +163,11 @@ public class Contrat {
         this.date = date;
     }
 
-    public Date getBailDate() {
+    public Date getBailDate(){
         return bailDate;
     }
 
-    public void setBailDate(Date bailDate) {
+    public void setBailDate(Date bailDate){
         this.bailDate = bailDate;
     }
 
@@ -305,6 +306,8 @@ public class Contrat {
     public void setCommuneTransient(String communeTransient) {
         this.communeTransient = communeTransient;
     }
+
+
 
     @Override
     public String toString() {

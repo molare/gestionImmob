@@ -2,6 +2,7 @@ package com.immo.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -10,7 +11,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "bien")
-public class Bien {
+public class Bien implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

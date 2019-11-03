@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -42,7 +41,7 @@ public class ContratController {
     @RequestMapping(value = "/listContrat", method = RequestMethod.GET)
     public ResponseData getAllContrat(){
         List<Contrat> newComList = new ArrayList<Contrat>();
-        SimpleDateFormat sdf =new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
         List<Contrat> listCom = contratService.getAll();
         for(Contrat co : listCom){
             Contrat c = new Contrat();
@@ -130,42 +129,53 @@ public class ContratController {
         return json;
     }
 
-    @RequestMapping(value = "/updateContrat/{id}", method = RequestMethod.POST,headers="Accept=*/*")
-    public ResponseData updateContrat(Locale locale,@ModelAttribute Contrat contrat,@PathVariable int id, BindingResult result,@RequestParam("editPicture")MultipartFile file,HttpServletRequest request){
-        ResponseData json=null;
-        try {
-            if(file.getSize()>0 && !file.isEmpty()){
-                String fileName = file.getOriginalFilename();
-                byte[] bytes = file.getBytes();
-                contrat.setImageName(fileName);
-                contrat.setImage(bytes);
-            }else{
-                contrat.setImage(contratService.findById(id).getImage());
-                contrat.setImageName(contratService.findById(id).getImageName());
-            }
-            contrat.setName(request.getParameter("name").toUpperCase());
-            contrat.setAmount(Double.parseDouble(request.getParameter("amount")));
-            contrat.setAdvanceMonth(Integer.parseInt(request.getParameter("advance")));
-            contrat.setAgenceMonth(Integer.parseInt(request.getParameter("agence")));
-            contrat.setFirstQuittance(Double.parseDouble(request.getParameter("firstQuittance")));
-            contrat.setBailDate(new Date());
-            contrat.setLocater(locaterService.findById(Integer.parseInt(request.getParameter("locater"))));
-            contrat.setLocative(locativeService.findById(Integer.parseInt(request.getParameter("locative"))));
-            contrat.setMoyenPay(moyenPayService.findById(Integer.parseInt(request.getParameter("moyen"))));
-            contrat.setStatutPay(statutPayService.findById(Integer.parseInt(request.getParameter("statut"))));
-            contrat.setCommentary(request.getParameter("commentary"));
+    @RequestMapping(value = "/updateContrat/{idContrat}", method = RequestMethod.POST,headers="Accept=*/*")
+    public ResponseData updateContrats(Locale locale, @ModelAttribute Contrat cont,BindingResult result, @PathVariable int idContrat,@RequestParam("editPicture")MultipartFile file,HttpServletRequest request)throws Exception{
 
-            Contrat c =  contratService.update(contrat);
-            json = new ResponseData(true, c);
+        ResponseData json=null;
+        SimpleDateFormat sdf =new SimpleDateFormat("dd-MM-yyyy");
+     try{
+         System.out.println("ffff "+idContrat);
+        Contrat contrat = contratService.findById(idContrat);
+         if(file.getSize()>0 && !file.isEmpty()){
+             String fileName = file.getOriginalFilename();
+             byte[] bytes = file.getBytes();
+             contrat.setImageName(fileName);
+             contrat.setImage(bytes);
+         }else{
+             contrat.setImage(contratService.findById(idContrat).getImage());
+             contrat.setImageName(contratService.findById(idContrat).getImageName());
+         }
+         contrat.setName(request.getParameter("name").toUpperCase());
+         contrat.setAmount(Double.parseDouble(request.getParameter("amount")));
+         contrat.setAdvanceMonth(Integer.parseInt(request.getParameter("advance")));
+         contrat.setAgenceMonth(Integer.parseInt(request.getParameter("agence")));
+         contrat.setMonthNber(Integer.parseInt(request.getParameter("monthNber")));
+         contrat.setFirstQuittance(Double.parseDouble(request.getParameter("firstQuittance")));
+         contrat.setBailDate(contrat.getBailDate()/*sdf.parse(request.getParameter("bailDate"))*/);
+         contrat.setLocater(locaterService.findById(Integer.parseInt(request.getParameter("locater"))));
+         contrat.setLocative(locativeService.findById(Integer.parseInt(request.getParameter("locative"))));
+         contrat.setMoyenPay(moyenPayService.findById(Integer.parseInt(request.getParameter("moyen"))));
+         contrat.setStatutPay(statutPayService.findById(Integer.parseInt(request.getParameter("statut"))));
+         contrat.setCommentary(request.getParameter("commentary"));
+         System.out.println("dddddddddddd ");
+
+         Contrat p = contratService.update(contrat);
+         json = new ResponseData(true, p);
+
         }catch (Exception ex){
-            json = new ResponseData(false,"une valeur a été dupliquée ou erroné",ex.getCause());
+         System.out.println("ttttttttttt "+ex.getMessage());
+            json = new ResponseData(false,ex.getLocalizedMessage());
         }
         return json;
     }
 
     @RequestMapping(value = "/findContrat/{id}", method = RequestMethod.GET)
     public ResponseData findContrat(Locale locale,@ModelAttribute Contrat contrat,@PathVariable int id, BindingResult result,HttpServletRequest request){
+        SimpleDateFormat sdf =new SimpleDateFormat("dd-MM-yyyy");
+
         Contrat ci = contratService.findById(id);
+        ci.setBailDateTransient(sdf.format(ci.getBailDate()));
         if(ci.getImage() != null){
             byte[] encodeBase64 = Base64.encodeBase64(ci.getImage());
             String base64Encoded = null;

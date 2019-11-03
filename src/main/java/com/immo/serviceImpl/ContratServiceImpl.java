@@ -8,6 +8,7 @@ import com.immo.repositories.ContratRepository;
 import com.immo.service.ContratService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
  * Created by olivier on 02/10/2019.
  */
 @Service("contratService")
+@Transactional
 public class ContratServiceImpl implements ContratService {
     @Autowired
     private ContratRepository contratRepository;
