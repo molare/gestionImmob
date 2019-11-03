@@ -48,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //super.configure(http);
         http.csrf().disable()
                 .authorizeRequests()//.anyRequest().hasAnyRole("ADMIN", "USER")
-                .antMatchers("/resources/**","/html/**","/dist/**","/assets/**","/angular/**","/src/**","/tools.gulp/**", "/documentaion/**", "/css/**", "/js/**", "/font-awesome-master/**", "/plugins/**","/images/**","/scss/**","/static/**").permitAll()
+                .antMatchers("/resources/**","/html/**","/dist/**","/assets/**","/angular/**","/src/**","/tools.gulp/**","allRessources/**", "/documentaion/**", "/css/**", "/js/**","/jsp/**", "/font-awesome-master/**", "/plugins/**","/images/**","/scss/**","/static/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and().
@@ -61,6 +61,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         //super.configure(web);"
-        web.ignoring().antMatchers("/resources/**","/html/**","/dist/**","/assets/**","/angular/**","/src/**","/tools.gulp/**","/documentaion/**","/css/**","/js/**","/font-awesome-master/**","/plugins/**","/images/**","/scss/**","/static/**");
+        web.ignoring().antMatchers("/resources/**","/html/**","/dist/**","/assets/**","/angular/**","/src/**","/tools.gulp/**","/documentaion/**","allRessources/**","/css/**","/js/**","jsp/**","/font-awesome-master/**","/plugins/**","/images/**","/scss/**","/static/**");
     }
 }
