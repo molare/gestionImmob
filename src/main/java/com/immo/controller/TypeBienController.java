@@ -8,6 +8,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -23,6 +25,7 @@ public class TypeBienController {
     
     @RequestMapping(value = "/listTypeBien", method = RequestMethod.GET)
     public ResponseData getAllTypebien(){
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         List<TypeBien> newComList = new ArrayList<TypeBien>();
         List<TypeBien> listCom = typeBienService.getAll();
         for(TypeBien co : listCom){
@@ -31,6 +34,7 @@ public class TypeBienController {
             c.setName(co.getName());
             c.setDescription(co.getDescription());
             c.setCreatedDate(co.getCreatedDate());
+            c.setDateTransient(df.format(co.getCreatedDate()));
             String act="<td>\n" +
                     //"<button  class=\"btn btn-success btn-xs m-r-5\"  data-toggle=\"modal\" data-target=\"#editTypebienModal\" onclick=\"editTypebien("+c.getId()+") data-original-title=\"Edit\"><i class=\"fa fa-pencil font-14\"></i></button>\n"+
                     "	<a href=\"javascript: void(0);\" data-toggle=\"modal\" data-target=\"#editTypebienModal\" class=\"link-underlined margin-right-50 btn btn-success\" data-original-title=\"Editer\" onclick=\"editTypebien("+c.getId()+")\"><i class=\"fa fa-pencil font-14\"><!-- --></i></a>\n" +

@@ -7,6 +7,10 @@ import com.immo.service.PropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 
 /**
@@ -17,6 +21,8 @@ public class LocaterServiceImpl implements LocaterService {
 
     @Autowired
     private LocaterRepository locaterRepository;
+    @PersistenceContext
+    private EntityManager em;
 
     @Override
     public List<Locater> getAll() {
@@ -44,5 +50,16 @@ public class LocaterServiceImpl implements LocaterService {
     @Override
     public void delete(int id) {
         locaterRepository.deleteById(id);
+    }
+
+    @Override
+    public int countLocater() {
+        String sql="SELECT COUNT(DISTINCT l.id) AS nb FROM locater l";
+        Query query = em.createNativeQuery(sql);
+        try{
+            return Integer.parseInt(query.getSingleResult()+"");
+        }catch (NoResultException ex){
+            return 0;
+        }
     }
 }

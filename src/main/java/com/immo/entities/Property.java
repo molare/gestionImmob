@@ -52,7 +52,7 @@ public class Property implements Serializable {
     private String cpteContribu;
 
     @Column(name="created_date", updatable = false)
-    @Temporal(value = TemporalType.DATE)
+    @Temporal(value = TemporalType.TIMESTAMP)
     private Date date = new Date();;
 
     @Column(name="birth_date")
@@ -79,6 +79,9 @@ public class Property implements Serializable {
     @Transient
     private String dateTransient;
 
+
+    @Transient
+    private String birthDateTransient;
     @Transient
     private String typeTransient;
 
@@ -95,6 +98,14 @@ public class Property implements Serializable {
     private String action;
     @Transient
     private String checkboxe;
+
+    public String getBirthDateTransient() {
+        return birthDateTransient;
+    }
+
+    public void setBirthDateTransient(String birthDateTransient) {
+        this.birthDateTransient = birthDateTransient;
+    }
 
     public int getId() {
         return id;

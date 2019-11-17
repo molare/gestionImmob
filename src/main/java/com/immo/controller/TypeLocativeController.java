@@ -8,6 +8,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -23,6 +25,7 @@ public class TypeLocativeController {
     
     @RequestMapping(value = "/listTypeLocative", method = RequestMethod.GET)
     public ResponseData getAllTypelocative(){
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         List<TypeLocative> newComList = new ArrayList<TypeLocative>();
         List<TypeLocative> listCom = typeLocativeService.getAll();
         for(TypeLocative co : listCom){
@@ -31,6 +34,8 @@ public class TypeLocativeController {
             c.setName(co.getName());
             c.setDescription(co.getDescription());
             c.setCreatedDate(co.getCreatedDate());
+            c.setDateTransient(df.format(co.getCreatedDate()));
+
             String act="<td>\n" +
                     //"<button  class=\"btn btn-success btn-xs m-r-5\"  data-toggle=\"modal\" data-target=\"#editTypelocativeModal\" onclick=\"editTypelocative("+c.getId()+") data-original-title=\"Edit\"><i class=\"fa fa-pencil font-14\"></i></button>\n"+
                     "	<a href=\"javascript: void(0);\" data-toggle=\"modal\" data-target=\"#editTypelocativeModal\" class=\"link-underlined margin-right-50 btn btn-success\" data-original-title=\"Editer\" onclick=\"editTypelocative("+c.getId()+")\"><i class=\"fa fa-pencil font-14\"><!-- --></i></a>\n" +

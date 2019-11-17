@@ -3,6 +3,7 @@ package com.immo.controller;
 import com.immo.dataTableResponse.ResponseData;
 import com.immo.entities.Locative;
 import com.immo.service.BienService;
+import com.immo.service.DevisService;
 import com.immo.service.LocativeService;
 import com.immo.service.TypeLocativeService;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -32,9 +35,13 @@ public class LocativeController {
     @Autowired
     private BienService bienService;
 
+    @Autowired
+    private DevisService devisService;
 
-    @RequestMapping(value = "/listLocative", method = RequestMethod.GET)
+
+    @RequestMapping(value = "/listLocative", method = RequestMethod.GET,produces="application/json;charset=UTF-8")
     public ResponseData getAllLocative(){
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         List<Locative> newComList = new ArrayList<Locative>();
         List<Locative> listCom = locativeService.getAll();
         for(Locative co : listCom){
@@ -44,15 +51,17 @@ public class LocativeController {
             c.setAmount(co.getAmount());
             c.setTypeTransient(co.getTypeLocative().getName());
             c.setNberRoom(co.getNberRoom());
-            c.setMeubleLocative(co.getMeubleLocative());
+            c.setUsageLocative(co.getUsageLocative());
             c.setCharge(co.getCharge());
             c.setSuperficy(co.getSuperficy());
             c.setDate(co.getDate());
+            c.setDateTransient(df.format(co.getDate()));
+            c.setDevisTransient(co.getDevis().getName());
             c.setBienTransient(co.getBien().getDesignation());
           Locative locat =  locativeService.findByContrat(co.getId());
             if(locat != null){
                 c.setStatutTransient("<td>\n" +
-                        "<span class=\"badge badge-danger\"><h7>Occupée</h7></span>\n" +
+                        "<span class=\"badge badge-danger\"><h7>Occup&eacute;e</h7></span>\n" +
                         "  </td>");
             }else {
                 c.setStatutTransient("<td>\n" +
@@ -105,7 +114,7 @@ public class LocativeController {
             }
             //locative.setCode(request.getParameter("code"));
             locative.setDesignation(request.getParameter("designation"));
-            locative.setMeubleLocative(request.getParameter("meubleLocative"));
+            locative.setUsageLocative(request.getParameter("usageLocative"));
             locative.setCharge(Double.parseDouble(request.getParameter("charge")));
             locative.setAmount(Double.parseDouble(request.getParameter("amount")));
             locative.setNberRoom(Integer.parseInt(request.getParameter("nberRoom")));
@@ -113,6 +122,7 @@ public class LocativeController {
             locative.setBien(bienService.findById(Integer.parseInt(request.getParameter("bien"))));
             locative.setSuperficy(Double.parseDouble(request.getParameter("superficy")));
             locative.setCommentary(request.getParameter("commentary"));
+            locative.setDevis(devisService.findById(Integer.parseInt(request.getParameter("devis"))));
             Locative c =  locativeService.add(locative);
             json = new ResponseData(true, c);
 
@@ -139,7 +149,7 @@ public class LocativeController {
             }
 
             locative.setDesignation(request.getParameter("designation"));
-            locative.setMeubleLocative(request.getParameter("meubleLocative"));
+            locative.setUsageLocative(request.getParameter("usageLocative"));
             locative.setCharge(Double.parseDouble(request.getParameter("charge")));
             locative.setAmount(Double.parseDouble(request.getParameter("amount")));
             locative.setNberRoom(Integer.parseInt(request.getParameter("nberRoom")));
@@ -147,6 +157,8 @@ public class LocativeController {
             locative.setBien(bienService.findById(Integer.parseInt(request.getParameter("bien"))));
             locative.setSuperficy(Double.parseDouble(request.getParameter("superficy")));
             locative.setCommentary(request.getParameter("commentary"));
+            locative.setDevis(devisService.findById(Integer.parseInt(request.getParameter("devis"))));
+
             Locative c =  locativeService.update(locative);
             json = new ResponseData(true, c);
         }catch (Exception ex){
@@ -209,6 +221,18 @@ public class LocativeController {
             json = new ResponseData(true, listLoca);
         }catch (Exception ex){
             json = new ResponseData(false,"erreur",ex.getCause());
+        }
+        return json;
+    }
+
+    @RequestMapping(value = "/countLocative", method = RequestMethod.POST)
+    public ResponseData countBien(HttpServletRequest request){
+        ResponseData json=null;
+        try {
+            int count = locativeService.countLocative();
+            json = new ResponseData(true, count);
+        }catch (Exception ex){
+            json = new ResponseData(false,"erreur serveur",ex.getCause());
         }
         return json;
     }

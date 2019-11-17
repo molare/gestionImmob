@@ -1,7 +1,7 @@
 $(function() {
     // Line Chart example
 
-    var lineData = {
+    /*var lineData = {
         labels: ["January", "February", "March", "April", "May", "June", "July"],
         datasets: [
             {
@@ -24,7 +24,7 @@ $(function() {
         maintainAspectRatio: false
     };
     var ctx = document.getElementById("line_chart").getContext("2d");
-    new Chart(ctx, {type: 'line', data: lineData, options:lineOptions});
+    new Chart(ctx, {type: 'line', data: lineData, options:lineOptions});*/
 
     // Bar Chart example
 
@@ -49,7 +49,7 @@ $(function() {
         maintainAspectRatio: false
     };
 
-    var ctx = document.getElementById("bar_chart").getContext("2d");
+    var ctx = document.getElementById("bar_charts").getContext("2d");
     new Chart(ctx, {type: 'bar', data: barData, options:barOptions}); 
 
     // doughnut chart example
@@ -73,7 +73,7 @@ $(function() {
 
     // Radar chart example
 
-    var radarData = {
+    /*var radarData = {
         labels: ["Eating", "Drinking", "Sleeping", "Designing", "Coding", "Cycling", "Running"],
         datasets: [{
             label: "My First Dataset",
@@ -103,6 +103,6 @@ $(function() {
     };
 
     var ctx5 = document.getElementById("radar_chart").getContext("2d");
-    new Chart(ctx5, {type: 'radar', data: radarData, options:radarOptions});
+    new Chart(ctx5, {type: 'radar', data: radarData, options:radarOptions});*/
 
 });

@@ -2,19 +2,33 @@ package com.immo.controller;
 
 import com.immo.dataTableResponse.ResponseData;
 import com.immo.entities.Contrat;
+import com.immo.entities.PayRoll;
+import com.immo.reporting.ContratReporting;
+import com.immo.reporting.ExportFileName;
 import com.immo.service.*;
+import net.sf.dynamicreports.report.exception.DRException;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 /**
  * Created by olivier on 02/10/2019.
@@ -37,11 +51,15 @@ public class ContratController {
     @Autowired
     private StatutPayService statutPayService;
 
+    @Autowired
+    private PayRollService payRollService;
+
 
     @RequestMapping(value = "/listContrat", method = RequestMethod.GET)
     public ResponseData getAllContrat(){
         List<Contrat> newComList = new ArrayList<Contrat>();
         SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
+        DecimalFormat df = new DecimalFormat("#");
         List<Contrat> listCom = contratService.getAll();
         for(Contrat co : listCom){
             Contrat c = new Contrat();
@@ -54,15 +72,26 @@ public class ContratController {
             c.setStatutPayTransient("<td>\n" +
                     "<span class=\"badge badge-warning\"><h7>"+co.getStatutPay().getName()+"</h7></span>\n" +
                     "  </td>");
-
-
+            if(co.getStatusContrat().equals("1")) {
+                c.setStatusContrat("<td>\n" +
+                        "<span class=\"badge badge-success\"><h7>En cours</h7></span>\n" +
+                        "  </td>");
+            }else{
+                c.setStatusContrat("<td>\n" +
+                        "<span class=\"badge badge-danger\"><h7>Annuler</h7></span>\n" +
+                        "  </td>");
+            }
             c.setMoyenPayTransient(co.getMoyenPay().getName());
             c.setLocaterTransient(co.getLocater().getFirstName()+" "+co.getLocater().getLastName());
             c.setLocativeTransient(co.getLocative().getDesignation()+" ("+co.getLocative().getTypeLocative().getName()+")");
             c.setAgenceMonth(co.getAgenceMonth());
             c.setAdvanceMonth(co.getAdvanceMonth());
             c.setCommentary(co.getCommentary());
-            c.setBailDateTransient(sdf.format(co.getBailDate()));
+            c.setStartBailDateTransient(sdf.format(co.getStartBailDate()));
+           // c.setEndBailDateTransient(sdf.format(co.getEndBailDate()));
+            c.setBienTransient(co.getLocative().getBien().getDesignation());
+            double rest = (co.getRestCaution()/(co.getLocative().getAmount()+co.getLocative().getCharge()));
+            c.setRestCautionTransient(df.format(rest)+" mois soit "+df.format(co.getRestCaution())+" "+co.getLocative().getDevis().getName());
             String act="<td>\n" +
                     //"<button  class=\"btn btn-success btn-xs m-r-5\"  data-toggle=\"modal\" data-target=\"#editContratModal\" onclick=\"editContrat("+c.getId()+") data-original-title=\"Edit\"><i class=\"fa fa-pencil font-14\"></i></button>\n"+
                     "	<a href=\"javascript: void(0);\" data-toggle=\"modal\" data-target=\"#editContratModal\" class=\"link-underlined margin-right-50 btn btn-success\" data-original-title=\"Editer\" onclick=\"editContrat("+c.getId()+")\"><i class=\"fa fa-pencil font-14\"><!-- --></i></a>\n" +
@@ -99,30 +128,9 @@ public class ContratController {
     @RequestMapping(value = "/saveContrat", method = RequestMethod.POST,headers="Accept=*/*")
     public ResponseData addContrat(Locale locale,@ModelAttribute Contrat contrat, BindingResult result,@RequestParam("picture")MultipartFile file,HttpServletRequest request)throws Exception{
         ResponseData json=null;
-        SimpleDateFormat sdf =new SimpleDateFormat("dd-MM-yyyy");
         try {
-            if (file.getSize() > 0) {
-                String fileName = file.getOriginalFilename();
-                byte[] bytes = file.getBytes();
-                contrat.setImageName(fileName);
-                contrat.setImage(bytes);
-            }
+            json = contratService.addContrat(contrat,result,file,request);
 
-        contrat.setName(request.getParameter("name").toUpperCase());
-        contrat.setAmount(Double.parseDouble(request.getParameter("amount")));
-        contrat.setAdvanceMonth(Integer.parseInt(request.getParameter("advance")));
-        contrat.setAgenceMonth(Integer.parseInt(request.getParameter("agence")));
-        contrat.setMonthNber(Integer.parseInt(request.getParameter("monthNber")));
-        contrat.setFirstQuittance(Double.parseDouble(request.getParameter("firstQuittance")));
-        contrat.setBailDate(sdf.parse(request.getParameter("bailDate")));
-        contrat.setLocater(locaterService.findById(Integer.parseInt(request.getParameter("locater"))));
-        contrat.setLocative(locativeService.findById(Integer.parseInt(request.getParameter("locative"))));
-        contrat.setMoyenPay(moyenPayService.findById(Integer.parseInt(request.getParameter("moyen"))));
-        contrat.setStatutPay(statutPayService.findById(Integer.parseInt(request.getParameter("statut"))));
-        contrat.setCommentary(request.getParameter("commentary"));
-
-         Contrat c =  contratService.add(contrat);
-            json = new ResponseData(true, c);
         }catch (Exception ex){
             json = new ResponseData(false,"une valeur a été dupliquée ou erroné",ex.getCause());
         }
@@ -134,38 +142,45 @@ public class ContratController {
 
         ResponseData json=null;
         SimpleDateFormat sdf =new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat sf =new SimpleDateFormat("dd-mm-yyyy");
      try{
-         System.out.println("ffff "+idContrat);
-        Contrat contrat = contratService.findById(idContrat);
-         if(file.getSize()>0 && !file.isEmpty()){
-             String fileName = file.getOriginalFilename();
-             byte[] bytes = file.getBytes();
-             contrat.setImageName(fileName);
-             contrat.setImage(bytes);
-         }else{
-             contrat.setImage(contratService.findById(idContrat).getImage());
-             contrat.setImageName(contratService.findById(idContrat).getImageName());
-         }
-         contrat.setName(request.getParameter("name").toUpperCase());
-         contrat.setAmount(Double.parseDouble(request.getParameter("amount")));
-         contrat.setAdvanceMonth(Integer.parseInt(request.getParameter("advance")));
-         contrat.setAgenceMonth(Integer.parseInt(request.getParameter("agence")));
-         contrat.setMonthNber(Integer.parseInt(request.getParameter("monthNber")));
-         contrat.setFirstQuittance(Double.parseDouble(request.getParameter("firstQuittance")));
-         contrat.setBailDate(contrat.getBailDate()/*sdf.parse(request.getParameter("bailDate"))*/);
-         contrat.setLocater(locaterService.findById(Integer.parseInt(request.getParameter("locater"))));
-         contrat.setLocative(locativeService.findById(Integer.parseInt(request.getParameter("locative"))));
-         contrat.setMoyenPay(moyenPayService.findById(Integer.parseInt(request.getParameter("moyen"))));
-         contrat.setStatutPay(statutPayService.findById(Integer.parseInt(request.getParameter("statut"))));
-         contrat.setCommentary(request.getParameter("commentary"));
-         System.out.println("dddddddddddd ");
+         if(sdf.parse(request.getParameter("editStartBailDate")).before(sdf.parse(request.getParameter("editEndBailDate")))) {
 
-         Contrat p = contratService.update(contrat);
-         json = new ResponseData(true, p);
+
+             Contrat contrat = contratService.findById(idContrat);
+             if (file.getSize() > 0 && !file.isEmpty()) {
+                 String fileName = file.getOriginalFilename();
+                 byte[] bytes = file.getBytes();
+                 contrat.setImageName(fileName);
+                 contrat.setImage(bytes);
+             } else {
+                 contrat.setImage(contratService.findById(idContrat).getImage());
+                 contrat.setImageName(contratService.findById(idContrat).getImageName());
+             }
+             contrat.setName(request.getParameter("name").toUpperCase());
+             contrat.setAmount(Double.parseDouble(request.getParameter("amount")));
+             contrat.setAdvanceMonth(Integer.parseInt(request.getParameter("advance")));
+             contrat.setAgenceMonth(Integer.parseInt(request.getParameter("agence")));
+             contrat.setMonthNber(Integer.parseInt(request.getParameter("monthNber")));
+             contrat.setFirstQuittance(Double.parseDouble(request.getParameter("firstQuittance")));
+             contrat.setStartBailDate(sdf.parse(request.getParameter("editStartBailDate")));
+             contrat.setStatusContrat(request.getParameter("statusContrat"));
+             //contrat.setEndBailDate(sdf.parse(request.getParameter("editEndBailDate")));
+             contrat.setLocater(locaterService.findById(Integer.parseInt(request.getParameter("locater"))));
+             contrat.setLocative(locativeService.findById(Integer.parseInt(request.getParameter("locative"))));
+             contrat.setMoyenPay(moyenPayService.findById(Integer.parseInt(request.getParameter("moyen"))));
+             contrat.setStatutPay(statutPayService.findById(Integer.parseInt(request.getParameter("statut"))));
+             contrat.setCommentary(request.getParameter("commentary"));
+
+             Contrat p = contratService.update(contrat);
+             json = new ResponseData(true, p);
+         }else{
+             json = new ResponseData(false,"La date début bail est superieure à la date fin bail",null);
+         }
 
         }catch (Exception ex){
-         System.out.println("ttttttttttt "+ex.getMessage());
-            json = new ResponseData(false,ex.getLocalizedMessage());
+         System.out.println("erreur "+ex.getMessage());
+         json = new ResponseData(false,"une valeur a été dupliquée ou erronée",ex.getMessage());
         }
         return json;
     }
@@ -175,7 +190,8 @@ public class ContratController {
         SimpleDateFormat sdf =new SimpleDateFormat("dd-MM-yyyy");
 
         Contrat ci = contratService.findById(id);
-        ci.setBailDateTransient(sdf.format(ci.getBailDate()));
+        ci.setStartBailDateTransient(sdf.format(ci.getStartBailDate()));
+        //ci.setEndBailDateTransient(sdf.format(ci.getEndBailDate()));
         if(ci.getImage() != null){
             byte[] encodeBase64 = Base64.encodeBase64(ci.getImage());
             String base64Encoded = null;
@@ -198,11 +214,38 @@ public class ContratController {
     public ResponseData deleteContrat(@PathVariable int typeId,HttpServletRequest request){
         ResponseData json=null;
         try {
+
+            List<PayRoll> listPayRoll = payRollService.findByContrat(contratService.findById(typeId));
+            if(!listPayRoll.isEmpty()){
+               for(PayRoll  pr : listPayRoll){
+                   payRollService.delete(pr.getId());
+               }
+            }
         contratService.delete(typeId);
             json = new ResponseData(true, null);
         }catch (Exception ex){
             json = new ResponseData(false,"Impossible de supprimer cette donnée car elle est liée ailleurs",ex.getCause());
         }
         return json;
+    }
+
+
+    @RequestMapping(value = "/contrat/export", method = RequestMethod.POST)
+    public void exportCustomer(HttpServletRequest request, HttpServletResponse response,HttpSession session){
+        response.setContentType("application/pdf");
+
+        int id =Integer.parseInt(request.getParameter("cpt"));
+       // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        List<Contrat> contrats = contratService.export(id, request);
+        try {
+            OutputStream out = response.getOutputStream();
+            ContratReporting p = new ContratReporting(contrats);
+            response.setHeader("Content-disposition", "attachment; filename="+ ExportFileName.CONTRAT+".pdf");
+            p.build(request).toPdf(out);
+        } catch (IOException ex) {
+            Logger.getLogger(ContratController.class.getName()).log(Level.SEVERE, null, ex);
+        }  catch (DRException ex) {
+            Logger.getLogger(ContratController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

@@ -7,10 +7,41 @@
     <meta name="viewport" content="width=device-width initial-scale=1.0">
     <title>APPS_IMMOBILIERE</title>
     <!-- GLOBAL MAINLY STYLES-->
-    <link href="/ressources/allRessources" rel="import"/>
+    <link href="/res/allRessources" rel="import"/>
 
     <!-- PAGE LEVEL SCRIPTS-->
     <script type="text/javascript">
+        'use strict';
+        $(window).on('load',function(){
+            //Welcome Message (not for login page)
+            function notify(message, type){
+                $.growl({
+                    message: message
+                },{
+                    type: type,
+                    allow_dismiss: false,
+                    label: 'Cancel',
+                    className: 'btn-xs btn-inverse',
+                    placement: {
+                        from: 'bottom',
+                        align: 'right'
+                    },
+                    delay: 2500,
+                    animate: {
+                        enter: 'animated fadeInRight',
+                        exit: 'animated fadeOutRight'
+                    },
+                    offset: {
+                        x: 30,
+                        y: 30
+                    }
+                });
+            };
+
+
+            notify('Bienvenue sur la page des locataires' , 'inverse');
+
+        });
         var table;
         $(document).ready(function(){
             $('#loadingId').hide();
@@ -24,7 +55,7 @@
                     "sLengthMenu": "_MENU_ Enregistrements",
                     "sSearch":"<span class='add-on'><i class='fa fa-search'></i></span>Recherche",
                     "sZeroRecords": "Aucun résultat",
-                    "sInfo": "Affichage de _START_ à _END_ sur _TOTAL_",
+                    "sInfo": "Affichage de _START_ à _END_ sur _TOTAL__",
                     "sInfoEmpty": "Affichage de 0 à 0 sur 0 Enregistrements",
                     "oPaginate": {
                         "sNext": 'Après',
@@ -45,15 +76,17 @@
                     [0, 'desc'],
                     [1, 'asc']
                 ], "columns":[
-                    {"data":"checkboxe"},
-                    {"data":"date"},
-                    {"data":"code"},
+                    {"data":"id"},
+                    {"data":"dateTransient"},
+                    //{"data":"code"},
                     {"data":"civilityTransient"},
                     {"data":"firstName"},
                     {"data":"lastName"},
                     {"data":"phone"},
                     {"data":"email"},
-                    {"data":"imageTransient"},
+                    {"data":"profession"},
+                    //{"data":"imageTransient"},
+                    {"data":"checkboxe"},
                     {"data":"action"}
 
                 ],
@@ -253,6 +286,7 @@
                         $("#editProfessionId").val(response.data.profession);
                         $("#editPhoneId").val(response.data.phone);
                         $("#editEmailId").val(response.data.email);
+                        $("#editNationalityId").val(response.data.nationality);
 
                         editCivilityOption(response.data.civility.id,response.data.civility.name);
 
@@ -271,6 +305,7 @@
                             var phone = $("#editPhoneId").val();
                             var civility =$("#editCivilityId").val();
                             var email =$("#editEmailId").val();
+                            var nationality =$("#editNationalityId").val();
 
                             //control champs
                             if(firstName === "") {
@@ -734,10 +769,10 @@
 
                 <li>
                     <a href="javascript:;"><i class="sidebar-item-icon fa fa-money"></i>
-                        <span class="nav-label">DEVIS</span><i class="fa fa-angle-left arrow"></i></a>
+                        <span class="nav-label">DEVISE</span><i class="fa fa-angle-left arrow"></i></a>
                     <ul class="nav-2-level collapse">
                         <li>
-                            <a href="#" th:href="@{devis}">Devis</a>
+                            <a href="#" th:href="@{devis}">Devise</a>
                         </li>
                     </ul>
                 </li>
@@ -817,7 +852,7 @@
                         <span class="nav-label">QUITTANCE</span><i class="fa fa-angle-left arrow"></i></a>
                     <ul class="nav-2-level collapse">
                         <li>
-                            <a href="#" th:href="@{quittance}">Quittance</a>
+                            <a href="#" th:href="@{payRoll}">Quittance</a>
                         </li>
                     </ul>
                 </li>
@@ -855,17 +890,19 @@
                 </div>
                 <div class="ibox-body">
                     <table class="table table-responsive table-striped table-bordered table-hover display responsive nowrap" id="locaterTable" cellspacing="0" width="100%">
-                        <thead class="thead-default">
+                        <thead style="background-color:#34495f; color:#fff;">
                         <tr>
                             <th><input name="select_all" value="1" type="checkbox"></th>
                             <th>Date création</th>
-                            <th>Code</th>
+                            <!--<th>Code</th>-->
                             <th>Civilité</th>
                             <th>Nom</th>
                             <th>Prénom</th>
                             <th>Téléphone</th>
                             <th>Email</th>
-                            <th>Photo</th>
+                            <th>Profession</th>
+                            <!--<th>Photo</th>-->
+                            <th data-priority="1">Voir Photo</th>
                             <th>Action</th>
                         </tr>
                         </thead>
@@ -874,13 +911,15 @@
                         <tr>
                             <th></th>
                             <th>Date création</th>
-                            <th>Code</th>
+                            <!--<th>Code</th>-->
                             <th>Civilité</th>
                             <th>Nom</th>
                             <th>Prénom</th>
                             <th>Téléphone</th>
                             <th>Email</th>
-                            <th>Photo</th>
+                            <th>Profession</th>
+                           <!-- <th>Photo</th>-->
+                            <th data-priority="1">Voir Photo</th>
                             <th>Action</th>
                         </tr>
                         </tfoot>
@@ -919,7 +958,7 @@
 </div>
 </div>
 <!-- BEGIN THEME CONFIG PANEL-->
-<div class="theme-config">
+<!--<div class="theme-config">
     <div class="theme-config-toggle"><i class="fa fa-cog theme-config-show"></i><i class="ti-close theme-config-close"></i></div>
     <div class="theme-config-box">
         <div class="text-center font-18 m-b-20">SETTINGS</div>
@@ -1046,7 +1085,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
 <!-- END THEME CONFIG PANEL-->
 <!-- BEGIN PAGA BACKDROPS-->
 <div class="sidenav-backdrop backdrop"></div>
@@ -1102,6 +1141,8 @@
                         </div>
                     </div>
 
+
+
                     <div class="form-group row">
                         <label class="control-label col-md-2">Telephone</label>
                         <div class="col-md-4">
@@ -1121,6 +1162,14 @@
                         <label class="control-label col-md-2">Profession</label>
                         <div class="col-md-4">
                             <input name="profession" id="professionId" class="form-control" type="text">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="control-label col-md-2">Nationalité</label>
+                        <div class="col-md-4">
+                            <input name="nationality" id="nationalityId" class="form-control" type="text">
                             <span class="help-block"></span>
                         </div>
                     </div>
@@ -1211,6 +1260,14 @@
                         <label class="control-label col-md-2">Profession</label>
                         <div class="col-md-4">
                             <input name="profession" id="editProfessionId" class="form-control" type="text">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="control-label col-md-2">Nationalité</label>
+                        <div class="col-md-4">
+                            <input name="nationality" id="editNationalityId" class="form-control" type="text">
                             <span class="help-block"></span>
                         </div>
                     </div>

@@ -20,8 +20,8 @@ public class Locative implements Serializable {
     @Column(name = "designation", unique = true)
     private String designation;
 
-    @Column(name = "meuble_locative")
-    private String meubleLocative;
+    @Column(name = "using_locative")
+    private String usageLocative;
 
     @Column(name = "nber_room")
     private int nberRoom;
@@ -36,7 +36,7 @@ public class Locative implements Serializable {
     private double charge;
 
     @Column(name="created_date", updatable = false)
-    @Temporal(value = TemporalType.DATE)
+    @Temporal(value = TemporalType.TIMESTAMP)
     private Date date = new Date();
 
     @ManyToOne
@@ -48,8 +48,13 @@ public class Locative implements Serializable {
     private TypeLocative typeLocative;
 
 
+    @ManyToOne
+    @JoinColumn(name = "devis_id")
+    private Devis devis;
+
+
     @Lob
-    @Column(name="image", unique =true, nullable = true,length = 50000000)
+    @Column(name="image", unique =true, nullable = true,length = 80000000)
     private byte[] image;
 
     @Column(name="image_name", nullable = true)
@@ -68,6 +73,9 @@ public class Locative implements Serializable {
     private String typeTransient;
 
     @Transient
+    private String devisTransient;
+
+    @Transient
     private String bienTransient;
 
 
@@ -81,6 +89,8 @@ public class Locative implements Serializable {
 
     @Transient
     private String communeTransient;
+
+
 
     public int getId() {
         return id;
@@ -198,12 +208,12 @@ public class Locative implements Serializable {
         this.communeTransient = communeTransient;
     }
 
-    public String getMeubleLocative() {
-        return meubleLocative;
+    public String getUsageLocative() {
+        return usageLocative;
     }
 
-    public void setMeubleLocative(String meubleLocative) {
-        this.meubleLocative = meubleLocative;
+    public void setUsageLocative(String usageLocative) {
+        this.usageLocative = usageLocative;
     }
 
     public int getNberRoom() {
@@ -254,24 +264,45 @@ public class Locative implements Serializable {
         this.statutTransient = statutTransient;
     }
 
+    public Devis getDevis() {
+        return devis;
+    }
+
+    public void setDevis(Devis devis) {
+        this.devis = devis;
+    }
+
+    public String getDevisTransient() {
+        return devisTransient;
+    }
+
+    public void setDevisTransient(String devisTransient) {
+        this.devisTransient = devisTransient;
+    }
+
     @Override
     public String toString() {
         return "Locative{" +
                 "id=" + id +
                 ", designation='" + designation + '\'' +
-                ", meubleLocative='" + meubleLocative + '\'' +
+                ", usageLocative='" + usageLocative + '\'' +
                 ", nberRoom=" + nberRoom +
                 ", superficy=" + superficy +
                 ", amount=" + amount +
                 ", charge=" + charge +
                 ", date=" + date +
+                ", bien=" + bien +
                 ", typeLocative=" + typeLocative +
+                ", devis=" + devis +
                 ", image=" + Arrays.toString(image) +
                 ", imageName='" + imageName + '\'' +
                 ", commentary='" + commentary + '\'' +
                 ", imageTransient='" + imageTransient + '\'' +
                 ", dateTransient='" + dateTransient + '\'' +
                 ", typeTransient='" + typeTransient + '\'' +
+                ", devisTransient='" + devisTransient + '\'' +
+                ", bienTransient='" + bienTransient + '\'' +
+                ", statutTransient='" + statutTransient + '\'' +
                 ", action='" + action + '\'' +
                 ", checkboxe='" + checkboxe + '\'' +
                 ", communeTransient='" + communeTransient + '\'' +

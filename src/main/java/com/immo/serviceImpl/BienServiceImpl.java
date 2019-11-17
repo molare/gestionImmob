@@ -9,6 +9,10 @@ import com.immo.service.BienService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 
 /**
@@ -18,6 +22,8 @@ import java.util.List;
 public class BienServiceImpl implements BienService {
     @Autowired
     private BienRepository bienRepository;
+    @PersistenceContext
+    private EntityManager em;
 
     @Override
     public List<Bien> getAll() {
@@ -55,5 +61,17 @@ public class BienServiceImpl implements BienService {
     @Override
     public List<Bien> findByCity(City city) {
         return null;
+    }
+
+    @Override
+    public int countBien() {
+        String sql="SELECT COUNT(DISTINCT b.id) AS nb FROM bien b";
+        Query query = em.createNativeQuery(sql);
+        try{
+            return Integer.parseInt(query.getSingleResult()+"");
+        }catch (NoResultException ex){
+            return 0;
+        }
+
     }
 }

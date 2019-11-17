@@ -13,4 +13,5 @@ public interface LocaterService {
     public Locater update(Locater locater);
     public Locater findById(int id);
     public void delete(int id);
+    public int countLocater();
 }

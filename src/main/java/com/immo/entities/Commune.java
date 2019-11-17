@@ -18,7 +18,7 @@ public class Commune implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_date", updatable = false)
     private Date createdDate = new Date();
     @Transient

@@ -14,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -40,6 +42,7 @@ public class BienController {
     public ResponseData getAllBien(){
         List<Bien> newComList = new ArrayList<Bien>();
         List<Bien> listCom = bienService.getAll();
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         for(Bien co : listCom){
             Bien c = new Bien();
             c.setId(co.getId());
@@ -53,6 +56,7 @@ public class BienController {
             c.setNberlot(co.getNberlot());
             c.setSuperficy(co.getSuperficy());
             c.setDate(co.getDate());
+            c.setDateTransient(df.format(co.getDate()));
             c.setCommuneTransient(co.getCity().getCommune().getName());
             String act="<td>\n" +
                     //"<button  class=\"btn btn-success btn-xs m-r-5\"  data-toggle=\"modal\" data-target=\"#editBienModal\" onclick=\"editBien("+c.getId()+") data-original-title=\"Edit\"><i class=\"fa fa-pencil font-14\"></i></button>\n"+
@@ -60,8 +64,8 @@ public class BienController {
                     "	<a href=\"javascript: void(0);\" data-toggle=\"modal\" data-target=\"#removeBienModal\" class=\"link-underlined btn btn-danger\" data-original-title=\"Supprimer\" onclick=\"removeBien("+c.getId()+")\"><i class=\"fa fa-trash font-14\"><!-- --></i></a>\n" +
                     "</td>";
             c.setAction(act);
-            String checkboxes ="<input name=\"select_id\" id=\"tabId\" value=\""+c.getId()+"\" type=\"checkbox\">";
-            c.setCheckboxe(checkboxes);
+            /*String checkboxes ="<input name=\"select_id\" id=\"tabId\" value=\""+c.getId()+"\" type=\"checkbox\">";
+            c.setCheckboxe(checkboxes);*/
 
             if(co.getImage() != null){
                 byte[] encodeBase64 = Base64.encodeBase64(co.getImage());
@@ -74,9 +78,27 @@ public class BienController {
                 //String img = "<img width=\"64\" height=\"64\" alt=\"img\" src=\"data:image/jpeg;base64,"+base64Encoded+"\"/>";
                 String img = "<img style=\"width:60px\" alt=\"img\" src=\"data:image/jpeg;base64,"+base64Encoded+"\"/>";
                 c.setImageTransient(img);
+
+                String checkboxes="<a href=\"javascript: void(0);\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#ModalBien"+c.getId()+"\"><i class=\"fa fa-eye\"></i></a>\n" +
+                        "<!-- Modal -->\n" +
+                        "  <div class=\"modal fade\" id=\"ModalBien"+c.getId()+"\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"exampleModalLabelts\" aria-hidden=\"true\">\n" +
+                        " <div class=\"modal-dialog\" role=\"document\">\n" +
+                        " <div class=\"modal-content\">\n" +
+                        "  <div class=\"modal-body\">\n" +
+                        "  <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n" +
+                        " <span aria-hidden=\"true\">&times;</span>\n" +
+                        "  </button>\n" +
+                        //" class="img img-fluid" <img src=\"..\\files\\assets\\images\\modal\\overflow.jpg\" alt=\"\" class=\"img img-fluid\">\n" +
+                        "<img style=\"width:900px\" alt=\"img\" class=\"img img-fluid\" src=\"data:image/jpeg;base64,"+base64Encoded+"\"/>\n"+
+                        "  </div>\n" +
+                        "  </div>\n" +
+                        " </div>\n" +
+                        " </div>";
+                c.setCheckboxe(checkboxes);
             }else{
                 // String img = "<img class=\"user_picture_small\" style=\"width:200px\" alt=\"Image\" src=\"../assets/common/img/upload_img.png\">";
                 c.setImageTransient(null);
+                c.setCheckboxe(null);
             }
             newComList.add(c);
         }
@@ -177,6 +199,18 @@ public class BienController {
             json = new ResponseData(true, null);
         }catch (Exception ex){
             json = new ResponseData(false,"Impossible de supprimer cette donnée car elle est liée ailleurs",ex.getCause());
+        }
+        return json;
+    }
+
+    @RequestMapping(value = "/countBien", method = RequestMethod.POST)
+    public ResponseData countBien(HttpServletRequest request){
+        ResponseData json=null;
+        try {
+            int count = bienService.countBien();
+            json = new ResponseData(true, count);
+        }catch (Exception ex){
+            json = new ResponseData(false,"erreur serveur",ex.getCause());
         }
         return json;
     }

@@ -18,7 +18,7 @@ public class MoyenPay implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_date", updatable = false)
     private Date createdDate = new Date();
 
@@ -27,7 +27,16 @@ public class MoyenPay implements Serializable {
     private String action;
     @Transient
     private String checkboxe;
+    @Transient
+    private String dateTransient;
 
+    public String getDateTransient() {
+        return dateTransient;
+    }
+
+    public void setDateTransient(String dateTransient) {
+        this.dateTransient = dateTransient;
+    }
 
     public int getId() {
         return id;

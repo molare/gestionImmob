@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,7 @@ public class LocaterController {
     @RequestMapping(value = "/listLocater", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     public ResponseData getAllProperty(){
         SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         List<Locater> prds = new ArrayList<Locater>();
         List<Locater> listProperty = locaterService.getAll();
         for(Locater p: listProperty){
@@ -45,11 +47,14 @@ public class LocaterController {
             pro.setLastName(p.getLastName());
             pro.setEmail(p.getEmail());
             pro.setPhone(p.getPhone());
+            pro.setProfession(p.getProfession());
             pro.setCivilityTransient(p.getCivility().getName());
+            pro.setDateTransient(df.format(p.getDate()));
             String act="<td>\n" +
                     "	<a href=\"javascript: void(0);\" data-toggle=\"modal\" data-target=\"#editLocaterModal\" class=\"link-underlined margin-right-50 btn btn-success\" onclick=\"editLocater("+pro.getId()+")\"><i class=\"fa fa-edit\"><!-- --></i></a>\n" +
                     "	<a href=\"javascript: void(0);\" data-toggle=\"modal\" data-target=\"#removeLocaterModal\" class=\"link-underlined btn btn-danger\" onclick=\"removeLocater("+pro.getId()+")\"><i class=\"fa fa-trash-o\"><!-- --></i></a>\n" +
                     "</td>";
+
 
             if(p.getImage() != null){
                 byte[] encodeBase64 = Base64.encodeBase64(p.getImage());
@@ -62,6 +67,23 @@ public class LocaterController {
                 //String img = "<img width=\"64\" height=\"64\" alt=\"img\" src=\"data:image/jpeg;base64,"+base64Encoded+"\"/>";
                 String img = "<img style=\"width:60px\" alt=\"img\" src=\"data:image/jpeg;base64,"+base64Encoded+"\"/>";
                 pro.setImageTransient(img);
+
+                String checkboxes="<a href=\"javascript: void(0);\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#Modal-lightbox"+pro.getId()+"\"><i class=\"fa fa-eye\"></i></a>\n" +
+                        "<!-- Modal -->\n" +
+                        "  <div class=\"modal fade\" id=\"Modal-lightbox"+pro.getId()+"\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"exampleModalLabel\" aria-hidden=\"true\">\n" +
+                        " <div class=\"modal-dialog\" role=\"document\">\n" +
+                        " <div class=\"modal-content\">\n" +
+                        "  <div class=\"modal-body\">\n" +
+                        "  <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n" +
+                        " <span aria-hidden=\"true\">&times;</span>\n" +
+                        "  </button>\n" +
+                        //" class="img img-fluid" <img src=\"..\\files\\assets\\images\\modal\\overflow.jpg\" alt=\"\" class=\"img img-fluid\">\n" +
+                        "<img style=\"width:900px\" alt=\"img\" class=\"img img-fluid\" src=\"data:image/jpeg;base64,"+base64Encoded+"\"/>\n"+
+                        "  </div>\n" +
+                        "  </div>\n" +
+                        " </div>\n" +
+                        " </div>";
+                pro.setCheckboxe(checkboxes);
             }else{
                 // String img = "<img class=\"user_picture_small\" style=\"width:200px\" alt=\"Image\" src=\"../assets/common/img/upload_img.png\">";
                 pro.setImageTransient(null);
@@ -69,8 +91,8 @@ public class LocaterController {
 
             pro.setAction(act);
 
-            String checkboxes ="<input name=\"select_id\" id=\"tabId\" value=\""+pro.getId()+"\" type=\"checkbox\">";
-            pro.setCheckboxe(checkboxes);
+           // String checkboxes ="<input name=\"select_id\" id=\"tabId\" value=\""+pro.getId()+"\" type=\"checkbox\">";
+
             prds.add(pro);
         }
         return new ResponseData(true, prds);
@@ -155,7 +177,7 @@ public class LocaterController {
             Locater p = locaterService.update(locater);
             json = new ResponseData(true, p);
         }catch (Exception ex){
-            json = new ResponseData(false,"une valeur a été dupliquée",null);
+            json = new ResponseData(false,"une valeur a été dupliquée ou erronée",ex.getCause());
         }
         return json;
     }
@@ -214,6 +236,18 @@ public class LocaterController {
             json = new ResponseData(true, null);
         }catch (Exception ex){
             json = new ResponseData(false,"Impossible de supprimer car cette donnée est utilisée ailleurs",null);
+        }
+        return json;
+    }
+
+    @RequestMapping(value = "/countLocater", method = RequestMethod.POST)
+    public ResponseData countBien(HttpServletRequest request){
+        ResponseData json=null;
+        try {
+            int count = locaterService.countLocater();
+            json = new ResponseData(true, count);
+        }catch (Exception ex){
+            json = new ResponseData(false,"erreur serveur",ex.getCause());
         }
         return json;
     }

@@ -17,4 +17,5 @@ public interface BienService {
     public void delete(int id);
     public List<Bien> findByProperty(Property property);
     public List<Bien> findByCity(City city);
+    public int countBien();
 }

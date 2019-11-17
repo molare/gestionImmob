@@ -95,4 +95,9 @@ public class MainController {
     public String devis(Model model){
         return "devis";
     }
+
+    @RequestMapping(value = "/payRoll", method = RequestMethod.GET)
+    public String payRoll(Model model){
+        return "payroll";
+    }
 }

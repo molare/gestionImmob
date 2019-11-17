@@ -35,7 +35,7 @@ public class Locater implements Serializable {
 
 
     @Column(name="created_date", updatable = false)
-    @Temporal(value = TemporalType.DATE)
+    @Temporal(value = TemporalType.TIMESTAMP)
     private Date date = new Date();;
 
 
@@ -43,7 +43,7 @@ public class Locater implements Serializable {
     @JoinColumn(name = "civility_id")
     private Civility civility;
     @Lob
-    @Column(name="image", unique =true, nullable = true,length = 50000000)
+    @Column(name="image", unique =true, nullable = true,length = 80000000)
     private byte[] image;
 
     @Column(name="image_name", nullable = true )

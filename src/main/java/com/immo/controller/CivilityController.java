@@ -8,6 +8,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -20,8 +22,9 @@ public class CivilityController {
 
     @Autowired
     private CivilityService civilityService;
-    @RequestMapping(value = "/listCivility", method = RequestMethod.GET)
+    @RequestMapping(value = "/listCivility", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
     public ResponseData getAllCivility(){
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         List<Civility> newComList = new ArrayList<Civility>();
         List<Civility> listCom = civilityService.getAll();
         for(Civility co : listCom){
@@ -30,6 +33,7 @@ public class CivilityController {
             c.setName(co.getName());
             c.setDescription(co.getDescription());
             c.setCreatedDate(co.getCreatedDate());
+            c.setDateTransient(df.format(co.getCreatedDate()));
             String act="<td>\n" +
                     //"<button  class=\"btn btn-success btn-xs m-r-5\"  data-toggle=\"modal\" data-target=\"#editCivilityModal\" onclick=\"editCivility("+c.getId()+") data-original-title=\"Edit\"><i class=\"fa fa-pencil font-14\"></i></button>\n"+
                     "	<a href=\"javascript: void(0);\" data-toggle=\"modal\" data-target=\"#editCivilityModal\" class=\"link-underlined margin-right-50 btn btn-success\" data-original-title=\"Editer\" onclick=\"editCivility("+c.getId()+")\"><i class=\"fa fa-pencil font-14\"><!-- --></i></a>\n" +

@@ -37,8 +37,8 @@ public class Bien implements Serializable{
     private double acquisitionCost;
 
     @Column(name="created_date", updatable = false)
-    @Temporal(value = TemporalType.DATE)
-    private Date date = new Date();;
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date date = new Date();
 
     @ManyToOne
     @JoinColumn(name = "property_id")
@@ -54,7 +54,7 @@ public class Bien implements Serializable{
 
 
     @Lob
-    @Column(name="image", unique =true, nullable = true,length = 50000000)
+    @Column(name="image", unique =true, nullable = true,length = 80000000)
     private byte[] image;
 
     @Column(name="image_name", nullable = true)

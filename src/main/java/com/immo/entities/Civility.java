@@ -18,7 +18,7 @@ public class Civility implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_date", updatable = false)
     private Date createdDate = new Date();
 
@@ -27,6 +27,9 @@ public class Civility implements Serializable {
     private String action;
     @Transient
     private String checkboxe;
+
+    @Transient
+    private String dateTransient;
 
     public int getId() {
         return id;
@@ -74,6 +77,14 @@ public class Civility implements Serializable {
 
     public void setCheckboxe(String checkboxe) {
         this.checkboxe = checkboxe;
+    }
+
+    public String getDateTransient() {
+        return dateTransient;
+    }
+
+    public void setDateTransient(String dateTransient) {
+        this.dateTransient = dateTransient;
     }
 
     @Override

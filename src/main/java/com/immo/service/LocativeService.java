@@ -20,4 +20,5 @@ public interface LocativeService {
     public double garanty(int id);
     public Locative findByContrat(int id);
     public List<Locative> getLocativeNotInContrat();
+    public int countLocative();
 }

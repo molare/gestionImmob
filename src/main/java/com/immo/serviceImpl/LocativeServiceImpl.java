@@ -109,4 +109,15 @@ public class LocativeServiceImpl implements LocativeService {
         }
         return locativeList;
     }
+
+    @Override
+    public int countLocative() {
+        String sql="SELECT COUNT(DISTINCT lo.id) AS nb FROM locative lo";
+        Query query = em.createNativeQuery(sql);
+        try{
+            return Integer.parseInt(query.getSingleResult()+"");
+        }catch (NoResultException ex){
+            return 0;
+        }
+    }
 }

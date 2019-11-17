@@ -34,12 +34,20 @@ public class Contrat implements Serializable{
     private int agenceMonth;
 
     @Column(name="created_date", updatable = false)
-    @Temporal(value = TemporalType.DATE)
+    @Temporal(value = TemporalType.TIMESTAMP)
     private Date date = new Date();
 
-    @Column(name="bail_date")
+    @Column(name="start_bail_date")
     @Temporal(value = TemporalType.DATE)
-    private Date bailDate;
+    private Date startBailDate;
+
+
+    @Column(name = "rest_caution", nullable = false)
+    private double restCaution;
+
+    /*@Column(name="end_bail_date")
+    @Temporal(value = TemporalType.DATE)
+    private Date endBailDate;*/
 
     @ManyToOne
     @JoinColumn(name = "locative_id", nullable = false)
@@ -59,11 +67,14 @@ public class Contrat implements Serializable{
 
 
     @Lob
-    @Column(name="image", unique =true, nullable = true,length = 50000000)
+    @Column(name="image", unique =true, nullable = true,length = 80000000)
     private byte[] image;
 
     @Column(name="image_name", nullable = true)
     private String imageName;
+
+    @Column(name = "status_contrat")
+    private String statusContrat;
 
     @Column(name = "commentary")
     private String commentary;
@@ -75,7 +86,10 @@ public class Contrat implements Serializable{
     private String dateTransient;
 
     @Transient
-    private String bailDateTransient;
+    private String startBailDateTransient;
+
+    @Transient
+    private String endBailDateTransient;
 
     @Transient
     private String statutPayTransient;
@@ -96,7 +110,13 @@ public class Contrat implements Serializable{
     private String checkboxe;
 
     @Transient
+    private String bienTransient;
+
+    @Transient
     private String communeTransient;
+
+    @Transient
+    private String restCautionTransient;
 
     public int getId() {
         return id;
@@ -163,13 +183,21 @@ public class Contrat implements Serializable{
         this.date = date;
     }
 
-    public Date getBailDate(){
-        return bailDate;
+    public Date getStartBailDate() {
+        return startBailDate;
     }
 
-    public void setBailDate(Date bailDate){
-        this.bailDate = bailDate;
+    public void setStartBailDate(Date startBailDate) {
+        this.startBailDate = startBailDate;
     }
+
+  /*  public Date getEndBailDate() {
+        return endBailDate;
+    }
+
+    public void setEndBailDate(Date endBailDate) {
+        this.endBailDate = endBailDate;
+    }*/
 
     public Locative getLocative() {
         return locative;
@@ -243,12 +271,20 @@ public class Contrat implements Serializable{
         this.dateTransient = dateTransient;
     }
 
-    public String getBailDateTransient() {
-        return bailDateTransient;
+    public String getStartBailDateTransient() {
+        return startBailDateTransient;
     }
 
-    public void setBailDateTransient(String bailDateTransient) {
-        this.bailDateTransient = bailDateTransient;
+    public void setStartBailDateTransient(String startBailDateTransient) {
+        this.startBailDateTransient = startBailDateTransient;
+    }
+
+    public String getEndBailDateTransient() {
+        return endBailDateTransient;
+    }
+
+    public void setEndBailDateTransient(String endBailDateTransient) {
+        this.endBailDateTransient = endBailDateTransient;
     }
 
     public String getStatutPayTransient() {
@@ -307,7 +343,37 @@ public class Contrat implements Serializable{
         this.communeTransient = communeTransient;
     }
 
+    public String getBienTransient() {
+        return bienTransient;
+    }
 
+    public void setBienTransient(String bienTransient) {
+        this.bienTransient = bienTransient;
+    }
+
+    public double getRestCaution() {
+        return restCaution;
+    }
+
+    public void setRestCaution(double restCaution) {
+        this.restCaution = restCaution;
+    }
+
+    public String getRestCautionTransient() {
+        return restCautionTransient;
+    }
+
+    public void setRestCautionTransient(String restCautionTransient) {
+        this.restCautionTransient = restCautionTransient;
+    }
+
+    public String getStatusContrat() {
+        return statusContrat;
+    }
+
+    public void setStatusContrat(String statusContrat) {
+        this.statusContrat = statusContrat;
+    }
 
     @Override
     public String toString() {
@@ -320,7 +386,8 @@ public class Contrat implements Serializable{
                 ", advanceMonth=" + advanceMonth +
                 ", agenceMonth=" + agenceMonth +
                 ", date=" + date +
-                ", bailDate=" + bailDate +
+                ", startBailDate=" + startBailDate +
+             //   ", endBailDate=" + endBailDate +
                 ", locative=" + locative +
                 ", locater=" + locater +
                 ", statutPay=" + statutPay +
@@ -330,7 +397,8 @@ public class Contrat implements Serializable{
                 ", commentary='" + commentary + '\'' +
                 ", imageTransient='" + imageTransient + '\'' +
                 ", dateTransient='" + dateTransient + '\'' +
-                ", bailDateTransient='" + bailDateTransient + '\'' +
+                ", startBailDateTransient='" + startBailDateTransient + '\'' +
+                ", endBailDateTransient='" + endBailDateTransient + '\'' +
                 ", statutPayTransient='" + statutPayTransient + '\'' +
                 ", moyenPayTransient='" + moyenPayTransient + '\'' +
                 ", locativeTransient='" + locativeTransient + '\'' +

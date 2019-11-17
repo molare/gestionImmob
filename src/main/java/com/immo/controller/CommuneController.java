@@ -8,6 +8,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -22,6 +24,7 @@ public class CommuneController {
     private CommuneService communeService;
     @RequestMapping(value = "/listCommune", method = RequestMethod.GET)
     public ResponseData getAllCommune(){
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         List<Commune> newComList = new ArrayList<Commune>();
         List<Commune> listCom = communeService.getAll();
         for(Commune co : listCom){
@@ -30,6 +33,7 @@ public class CommuneController {
             c.setName(co.getName());
             c.setDescription(co.getDescription());
             c.setCreatedDate(co.getCreatedDate());
+            c.setDateTransient(df.format(co.getCreatedDate()));
             String act="<td>\n" +
                     //"<button  class=\"btn btn-success btn-xs m-r-5\"  data-toggle=\"modal\" data-target=\"#editCommuneModal\" onclick=\"editCommune("+c.getId()+") data-original-title=\"Edit\"><i class=\"fa fa-pencil font-14\"></i></button>\n"+
                     "	<a href=\"javascript: void(0);\" data-toggle=\"modal\" data-target=\"#editCommuneModal\" class=\"link-underlined margin-right-50 btn btn-success\" data-original-title=\"Editer\" onclick=\"editCommune("+c.getId()+")\"><i class=\"fa fa-pencil font-14\"><!-- --></i></a>\n" +
