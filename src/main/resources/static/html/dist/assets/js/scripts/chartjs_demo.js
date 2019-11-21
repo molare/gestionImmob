@@ -40,6 +40,6 @@ $(function() {
             };
         }
     });
-    var ctx = document.getElementById("bar_charts").getContext("2d");
+    var ctx = document.getElementById("PayMonthBar").getContext("2d");
     new Chart(ctx, {type: 'bar', data: barData, options:barOptions});
 });

@@ -52,7 +52,7 @@ $(function() {
 
 
 
-    var ctx4 = document.getElementById("doughnut_chart").getContext("2d");
+    var ctx4 = document.getElementById("payYear").getContext("2d");
     new Chart(ctx4, {type: 'doughnut', data: doughnutData, options:doughnutOptions});
 
 
@@ -95,7 +95,7 @@ $(function() {
         }
     });
 
-    var ctx = document.getElementById("line_chart").getContext("2d");
+    var ctx = document.getElementById("payMonth").getContext("2d");
     new Chart(ctx, {type: 'line', data: lineData, options:lineOptions});
 
 
