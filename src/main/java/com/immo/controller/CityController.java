@@ -29,7 +29,7 @@ public class CityController {
 
     @RequestMapping(value = "/listCity", method = RequestMethod.GET)
     public ResponseData getAllCity() {
-        DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy : HH:mm");
         List<City> newComList = new ArrayList<City>();
         List<City> listCom = cityService.getAll();
         for (City co : listCom) {
@@ -53,7 +53,7 @@ public class CityController {
         return new ResponseData(true,newComList);
     }
 
-    @RequestMapping(value = "/saveCity", method = RequestMethod.POST)
+    @RequestMapping(value = "/saveCity", method = RequestMethod.POST,produces="application/json;charset=UTF-8")
     public ResponseData addCity(Locale locale,@ModelAttribute City city, BindingResult result,HttpServletRequest request){
         city.setName(request.getParameter("name").toUpperCase());
         city.setDescription(request.getParameter("description"));
@@ -62,7 +62,7 @@ public class CityController {
         return new ResponseData(true,c);
     }
 
-    @RequestMapping(value = "/updateCity/{idCity}", method = RequestMethod.POST)
+    @RequestMapping(value = "/updateCity/{idCity}", method = RequestMethod.POST,produces="application/json;charset=UTF-8")
        public ResponseData updateCity(Locale locale,@ModelAttribute City city,@PathVariable int idCity, BindingResult result,HttpServletRequest request){
         City ci = cityService.findById(idCity);
         ci.setName(request.getParameter("name").toUpperCase());

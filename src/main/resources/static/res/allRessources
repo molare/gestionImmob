@@ -35,9 +35,7 @@
 <script type="text/javascript" src="/html/dist/assets/js/dataTables.select.js"></script>
 <script type="text/javascript" src="/html/dist/assets/js/dataTables.select.min.js"></script>
 <script type="text/javascript" src="/html/dist/assets/js/dataTables.checkboxes.min.js"></script>
-<script src="/html/dist/assets/vendors/chart.js/dist/Chart.min.js" type="text/javascript"></script>
 <script src="/html/dist/assets/js/app.min.js" type="text/javascript"></script>
- <script src="/html/dist/assets/js/scripts/chartjs_demo.js" type="text/javascript"></script>
 
 
 <!-- PAGE LEVEL PLUGINS-->

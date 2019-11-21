@@ -86,6 +86,12 @@ public class Contrat implements Serializable{
     private String dateTransient;
 
     @Transient
+    private String statusContratTransient;
+
+    @Transient
+    private String textStatusContratTransient;
+
+    @Transient
     private String startBailDateTransient;
 
     @Transient
@@ -373,6 +379,22 @@ public class Contrat implements Serializable{
 
     public void setStatusContrat(String statusContrat) {
         this.statusContrat = statusContrat;
+    }
+
+    public String getStatusContratTransient() {
+        return statusContratTransient;
+    }
+
+    public void setStatusContratTransient(String statusContratTransient) {
+        this.statusContratTransient = statusContratTransient;
+    }
+
+    public String getTextStatusContratTransient() {
+        return textStatusContratTransient;
+    }
+
+    public void setTextStatusContratTransient(String textStatusContratTransient) {
+        this.textStatusContratTransient = textStatusContratTransient;
     }
 
     @Override

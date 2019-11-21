@@ -24,7 +24,7 @@ public class StatutPayController {
     private StatutPayService devisService;
     @RequestMapping(value = "/listStatutPay", method = RequestMethod.GET)
     public ResponseData getAllStatutPay(){
-        DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy : HH:mm");
         List<StatutPay> newComList = new ArrayList<StatutPay>();
         List<StatutPay> listCom = devisService.getAll();
         for(StatutPay co : listCom){

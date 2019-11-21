@@ -248,6 +248,7 @@
 
             //IF OPEN MODAL
             $("#btnAddNew").click(function(){
+                $("#ContratFormId")[0].reset();
                 $(".col-md-4").removeClass('has-error').removeClass('has-success');
                 $(".text-danger").remove();
                 $('#loadingId').hide();
@@ -446,6 +447,7 @@
                 $(".text-danger").remove();
                 // empty the message div
                 $(".edit-messages").html("");
+                $("#editStatusContratId").html("");
 
                 // $("#editPicture").val('');
                 $('#editLoadingId').hide();
@@ -482,6 +484,16 @@
                         $("#editAdvanceId").change(function (){
                             editGetGarantyQuittance($('#editLocativeId').val(),$('#editAdvanceId').val());
                         });
+
+                        if(response.data.statusContrat =="1"){
+                         $("#editStatusContratId").append('<option value="1">En cours</option>');
+                            $("#editStatusContratId").append('<option value="2">Annuler</option>');
+                        }else{
+                            $("#editStatusContratId").append('<option value="2">Annuler</option>');
+                            $("#editStatusContratId").append('<option value="1">En cours</option>');
+
+                        }
+
 
                         // here update the member data
                         $("#btnUpdateContratId").unbind('click').bind('click', function(){
@@ -1701,7 +1713,7 @@
                             <label class="control-label col-md-2 font-normal">Début du bail</label>
                             <div class="col-md-4 input-group date">
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                <input class="form-control" type="text" name="editStartBailDate" id="editStartBailDateId">
+                                <input class="form-control" type="text" name="editStartBailDate" id="editStartBailDateId" readonly="true">
                             </div>
                         </div>
 
@@ -1710,8 +1722,6 @@
                         <label class="control-label col-md-2">Statut du contrat</label>
                         <div class="col-md-4">
                             <select class="form-control" id="editStatusContratId" name="statusContrat">
-                                <option value="1">En cours</option>
-                                <option value="2">Annuler</option>
                             </select>
                             <span class="help-block"></span>
                         </div>
@@ -1749,7 +1759,7 @@
                                     <div class="form-group row">
                                         <label class="control-label col-md-2">Nombre mois caution</label>
                                         <div class="col-md-4">
-                                            <input class="form-control" id="editMonthNberId" name="monthNber"/>
+                                            <input class="form-control" id="editMonthNberId" name="monthNber" readonly="true"/>
                                             <span class="help-block"></span>
                                         </div>
                                     </div>
@@ -1765,7 +1775,7 @@
                                     <div class="form-group row">
                                         <label class="control-label col-md-2">Moyen paiement</label>
                                         <div class="col-md-4">
-                                            <select class="form-control" id="editMoyenId" name="moyen">
+                                            <select class="form-control" id="editMoyenId" name="moyen" readonly="true">
                                             </select>
                                             <span class="help-block"></span>
                                         </div>
@@ -1797,7 +1807,7 @@
                                     <div class="form-group row">
                                         <label class="control-label col-md-2">Nombre mois d'avance</label>
                                         <div class="col-md-4">
-                                            <input class="form-control" id="editAdvanceId" name="advance"/>
+                                            <input class="form-control" id="editAdvanceId" name="advance" readonly="true"/>
                                             <span class="help-block"></span>
                                         </div>
                                     </div>
@@ -1805,7 +1815,7 @@
                                     <div class="form-group row">
                                         <label class="control-label col-md-2">Nombre mois d'agence</label>
                                         <div class="col-md-4">
-                                            <input class="form-control" id="editAgenceId" name="agence"/>
+                                            <input class="form-control" id="editAgenceId" name="agence" readonly="true"/>
                                             <span class="help-block"></span>
                                         </div>
                                     </div>

@@ -42,7 +42,7 @@ public class BienController {
     public ResponseData getAllBien(){
         List<Bien> newComList = new ArrayList<Bien>();
         List<Bien> listCom = bienService.getAll();
-        DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy : HH:mm");
         for(Bien co : listCom){
             Bien c = new Bien();
             c.setId(co.getId());
@@ -109,7 +109,7 @@ public class BienController {
     }
 
 
-    @RequestMapping(value = "/saveBien", method = RequestMethod.POST,headers="Accept=*/*")
+    @RequestMapping(value = "/saveBien", method = RequestMethod.POST,headers="Accept=*/*",produces="application/json;charset=UTF-8")
     public ResponseData addBien(Locale locale,@ModelAttribute Bien bien, BindingResult result,@RequestParam("picture")MultipartFile file,HttpServletRequest request)throws Exception{
         ResponseData json=null;
         try {
@@ -133,12 +133,12 @@ public class BienController {
          Bien c =  bienService.add(bien);
             json = new ResponseData(true, c);
         }catch (Exception ex){
-            json = new ResponseData(false,"une valeur a été dupliquée ou erroné",ex.getCause());
+            json = new ResponseData(false,"une valeur a &eacute;t&eacute; dupliqu&eacute;e ou erron&eacute;e",ex.getCause());
         }
         return json;
     }
 
-    @RequestMapping(value = "/updateBien/{id}", method = RequestMethod.POST,headers="Accept=*/*")
+    @RequestMapping(value = "/updateBien/{id}", method = RequestMethod.POST,headers="Accept=*/*",produces="application/json;charset=UTF-8")
     public ResponseData updateBien(Locale locale,@ModelAttribute Bien bien,@PathVariable int id, BindingResult result,@RequestParam("editPicture")MultipartFile file,HttpServletRequest request){
         ResponseData json=null;
         try {
@@ -165,7 +165,7 @@ public class BienController {
             Bien c =  bienService.update(bien);
             json = new ResponseData(true, c);
         }catch (Exception ex){
-            json = new ResponseData(false,"une valeur a été dupliquée ou erroné",ex.getCause());
+            json = new ResponseData(false,"une valeur a &eacute;t&eacute; dupliqu&eacute;e ou erron&eacute;e",ex.getCause());
         }
         return json;
     }

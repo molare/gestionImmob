@@ -24,7 +24,7 @@ public class CivilityController {
     private CivilityService civilityService;
     @RequestMapping(value = "/listCivility", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
     public ResponseData getAllCivility(){
-        DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy : HH:mm");
         List<Civility> newComList = new ArrayList<Civility>();
         List<Civility> listCom = civilityService.getAll();
         for(Civility co : listCom){

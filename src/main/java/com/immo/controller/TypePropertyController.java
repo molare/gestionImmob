@@ -24,7 +24,7 @@ public class TypePropertyController {
     private TypePropertyService typePropertyService;
     @RequestMapping(value = "/listTypeProperty", method = RequestMethod.GET)
     public ResponseData getAllTypeProperty(){
-        DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy : HH:mm");
         List<TypeProperty> newComList = new ArrayList<TypeProperty>();
         List<TypeProperty> listCom = typePropertyService.getAll();
         for(TypeProperty co : listCom){

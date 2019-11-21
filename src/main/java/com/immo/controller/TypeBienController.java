@@ -25,7 +25,7 @@ public class TypeBienController {
     
     @RequestMapping(value = "/listTypeBien", method = RequestMethod.GET)
     public ResponseData getAllTypebien(){
-        DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy : HH:mm");
         List<TypeBien> newComList = new ArrayList<TypeBien>();
         List<TypeBien> listCom = typeBienService.getAll();
         for(TypeBien co : listCom){

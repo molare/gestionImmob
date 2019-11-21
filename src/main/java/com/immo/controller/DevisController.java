@@ -24,7 +24,7 @@ public class DevisController {
     private DevisService devisService;
     @RequestMapping(value = "/listDevis", method = RequestMethod.GET)
     public ResponseData getAllDevis(){
-        DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy : HH:mm");
         List<Devis> newComList = new ArrayList<Devis>();
         List<Devis> listCom = devisService.getAll();
         for(Devis co : listCom){

@@ -10,6 +10,7 @@ public class ResponseData {
     private boolean status;
     private String message;
     private Object data;
+    private Object firstData;
     private Object secondData;
     private Object thirtyData;
 
@@ -26,9 +27,16 @@ public class ResponseData {
 
 
 
-    public ResponseData(boolean status, Object data, Object secondData, Object thirtyData) {
+    /*public ResponseData(boolean status, Object data, Object secondData, Object thirtyData) {
         this.status = status;
         this.data = data;
+        this.secondData = secondData;
+        this.thirtyData = thirtyData;
+    }*/
+
+    public ResponseData(boolean status, Object firstData, Object secondData, Object thirtyData) {
+        this.status = status;
+        this.firstData = firstData;
         this.secondData = secondData;
         this.thirtyData = thirtyData;
     }
@@ -72,6 +80,14 @@ public class ResponseData {
 
     public void setThirtyData(Object thirtyData) {
         this.thirtyData = thirtyData;
+    }
+
+    public Object getFirstData() {
+        return firstData;
+    }
+
+    public void setFirstData(Object firstData) {
+        this.firstData = firstData;
     }
 
     @Override

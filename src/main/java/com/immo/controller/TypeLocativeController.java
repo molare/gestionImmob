@@ -25,7 +25,7 @@ public class TypeLocativeController {
     
     @RequestMapping(value = "/listTypeLocative", method = RequestMethod.GET)
     public ResponseData getAllTypelocative(){
-        DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy : HH:mm");
         List<TypeLocative> newComList = new ArrayList<TypeLocative>();
         List<TypeLocative> listCom = typeLocativeService.getAll();
         for(TypeLocative co : listCom){

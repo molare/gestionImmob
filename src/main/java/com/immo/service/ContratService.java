@@ -24,4 +24,6 @@ public interface ContratService {
     public void delete(int id);
     public ResponseData addContrat(Contrat contrat, BindingResult result,MultipartFile file,HttpServletRequest request);
     public List<Contrat> export(int cpt, HttpServletRequest request);
-}
+    public ResponseData updateContrat(Locale locale, Contrat cont,BindingResult result, int idContrat,MultipartFile file,HttpServletRequest request);
+
+    }

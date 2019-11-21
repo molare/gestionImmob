@@ -12,16 +12,10 @@
     <link href="/html/dist/assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
     <link href="/html/dist/assets/vendors/themify-icons/css/themify-icons.css" rel="stylesheet" />
     <!-- PLUGINS STYLES-->
-    <link href="/html/dist/assets/vendors/jvectormap/jquery-jvectormap-2.0.3.css" rel="stylesheet" />
-
-    <link href="/html/dist/assets/vendors/DataTables/datatables.min.css" rel="stylesheet" />
-    <link href="/datatables-responsive/css/responsive.datatables.css" rel="stylesheet" />
-    <link href="/datatables-responsive/css/dataTable.css" rel="stylesheet" />
+    <!--<link href="/html/dist/assets/vendors/jvectormap/jquery-jvectormap-2.0.3.css" rel="stylesheet" />-->
 
     <!-- THEME STYLES-->
     <link href="/html/dist/assets/css/main.min.css" rel="stylesheet" />
-    <link href="/html/dist/assets/vendors/bootstrap-datepicker/dist/css/bootstrap-datepicker.css" rel="stylesheet" />
-    <link href="/html/dist/assets/vendors/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
     <link href="/html/dist/assets/notification/notification.css" rel="stylesheet" />
     <link href="/html/dist/assets/animate.css/css/animate.css" rel="stylesheet" />
 
@@ -33,20 +27,14 @@
     <!-- CORE PLUGINS-->
     <script src="/html/dist/assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
     <script src="/html/dist/assets/vendors/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
-
-
+    <script src="/html/dist/assets/vendors/chart.js/dist/Chart.min.js" type="text/javascript"></script>
+    <script src="/html/dist/assets/js/scripts/chartjs_demo.js" type="text/javascript"></script>
     <script src="/html/dist/assets/vendors/popper.js/dist/umd/popper.min.js" type="text/javascript"></script>
     <script src="/html/dist/assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="/html/dist/assets/vendors/metisMenu/dist/metisMenu.min.js" type="text/javascript"></script>
     <script src="/html/dist/assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <script src="/html/dist/assets/vendors/DataTables/datatables.min.js" type="text/javascript"></script>
-    <script src="/datatables-responsive/js/responsive.datatables.js" type="text/javascript"></script>
-    <script type="text/javascript" src="/html/dist/assets/js/dataTables.select.js"></script>
-    <script type="text/javascript" src="/html/dist/assets/js/dataTables.select.min.js"></script>
-    <script type="text/javascript" src="/html/dist/assets/js/dataTables.checkboxes.min.js"></script>
-    <script src="/html/dist/assets/vendors/chart.js/dist/Chart.min.js" type="text/javascript"></script>
+
     <script src="/html/dist/assets/js/app.min.js" type="text/javascript"></script>
-    <script src="/html/dist/assets/js/scripts/chartjs_demo.js" type="text/javascript"></script>
 
 
     <!-- PAGE LEVEL PLUGINS-->
@@ -499,15 +487,15 @@
             <div class="page-content fade-in-up">
 
                 <div class="row">
-                    <div class="col-lg-10">
+                    <div class="col-md-6">
                         <div class="ibox">
                             <div class="ibox-body">
-                                <div class="flexbox mb-4">
+                              <div class="flexbox mb-4">
                                     <div>
-                                        <h3 class="m-0">Statistics</h3>
-                                        <div>Your shop sales analytics</div>
+                                        <h3 class="m-0">Statistique</h3>
+                                        <div>des paiements mensuels</div>
                                     </div>
-                                    <div class="d-inline-flex">
+                            <!--        <div class="d-inline-flex">
                                         <div class="px-3" style="border-right: 1px solid rgba(0,0,0,.1);">
                                             <div class="text-muted">WEEKLY INCOME</div>
                                             <div>
@@ -522,10 +510,23 @@
                                                 <span class="text-warning ml-2"><i class="fa fa-level-down"></i> -12%</span>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>-->
                                 </div>
                                 <div>
-                                    <canvas id="bar_chart" style="height:260px;"></canvas>
+                                    <canvas id="line_chart" style="height:260px;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="ibox">
+                            <div class="ibox-head">
+                                <div class="ibox-title">Paiement des loyers annuel</div>
+                            </div>
+                            <div class="ibox-body">
+                                <div>
+                                    <canvas id="doughnut_chart" style="height:200px;"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -535,10 +536,10 @@
 
                 <div class="page-content fade-in-up">
                     <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="ibox">
                         <div class="ibox-head">
-                            <div class="ibox-title">Bar Chart</div>
+                            <div class="ibox-title">Paiement des loyers mensuel</div>
                         </div>
                         <div class="ibox-body">
                             <div>
@@ -548,18 +549,7 @@
                     </div>
                 </div>
 
-                    <div class="col-md-6">
-                        <div class="ibox">
-                            <div class="ibox-head">
-                                <div class="ibox-title">Doughnut Chart</div>
-                            </div>
-                            <div class="ibox-body">
-                                <div>
-                                    <canvas id="doughnut_chart" style="height:200px;"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
             </div>

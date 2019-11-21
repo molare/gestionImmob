@@ -24,7 +24,7 @@ public class TypePayController {
     private TypePayService devisService;
     @RequestMapping(value = "/listTypePay", method = RequestMethod.GET)
     public ResponseData getAllTypePay(){
-        DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy : HH:mm");
         List<TypePay> newComList = new ArrayList<TypePay>();
         List<TypePay> listCom = devisService.getAll();
         for(TypePay co : listCom){

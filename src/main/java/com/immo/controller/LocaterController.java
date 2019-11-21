@@ -35,7 +35,7 @@ public class LocaterController {
     @RequestMapping(value = "/listLocater", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     public ResponseData getAllProperty(){
         SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
-        DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy : HH:mm");
         List<Locater> prds = new ArrayList<Locater>();
         List<Locater> listProperty = locaterService.getAll();
         for(Locater p: listProperty){
@@ -98,7 +98,7 @@ public class LocaterController {
         return new ResponseData(true, prds);
     }
 
-    @RequestMapping(value = "/saveLocater", method = RequestMethod.POST,headers="Accept=*/*")
+    @RequestMapping(value = "/saveLocater", method = RequestMethod.POST,headers="Accept=*/*",produces="application/json;charset=UTF-8")
     public ResponseData addProperty(Locale locale, @ModelAttribute Locater locater,BindingResult result,@RequestParam("picture")MultipartFile file,HttpServletRequest request)throws Exception{
         ResponseData json=null;
         SimpleDateFormat sdf =new SimpleDateFormat("dd-MM-yyyy");
@@ -134,12 +134,12 @@ public class LocaterController {
             json = new ResponseData(true, p);
 
         }catch (Exception ex){
-            json = new ResponseData(false,"une valeur a été dupliquée",ex.getCause());
+            json = new ResponseData(false,"une valeur a &eacute;t&eacute; dupliqu&eacute;e ou erron&eacute;e",ex.getCause());
         }
         return json;
     }
 
-    @RequestMapping(value = "/updateLocater/{idLocater}", method = RequestMethod.POST,headers="Accept=*/*")
+    @RequestMapping(value = "/updateLocater/{idLocater}", method = RequestMethod.POST,headers="Accept=*/*",produces="application/json;charset=UTF-8")
     public ResponseData updateProperty(Locale locale, @ModelAttribute Locater locater,BindingResult result, @PathVariable int idLocater,@RequestParam("editPicture")MultipartFile file,HttpServletRequest request)throws Exception{
         ResponseData json=null;
         SimpleDateFormat sdf =new SimpleDateFormat("dd-MM-yyyy");
@@ -177,7 +177,7 @@ public class LocaterController {
             Locater p = locaterService.update(locater);
             json = new ResponseData(true, p);
         }catch (Exception ex){
-            json = new ResponseData(false,"une valeur a été dupliquée ou erronée",ex.getCause());
+            json = new ResponseData(false,"une valeur a &eacute;t&eacute; dupliqu&eacute;e ou erron&eacute;e",ex.getCause());
         }
         return json;
     }
@@ -228,14 +228,14 @@ public class LocaterController {
         return new ResponseData(true, p);
     }*/
 
-    @RequestMapping(value = "/deleteLocater/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/deleteLocater/{id}", method = RequestMethod.DELETE ,produces="application/json;charset=UTF-8")
     public ResponseData deleteProperty(@PathVariable int id){
         ResponseData json;
         try {
             locaterService.delete(id);
             json = new ResponseData(true, null);
         }catch (Exception ex){
-            json = new ResponseData(false,"Impossible de supprimer car cette donnée est utilisée ailleurs",null);
+            json = new ResponseData(false,"Impossible de supprimer car cette donn&eacute;e est utilis&eacute;e ailleurs",null);
         }
         return json;
     }

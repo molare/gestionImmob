@@ -24,7 +24,7 @@ public class MoyenPayController {
     private MoyenPayService devisService;
     @RequestMapping(value = "/listMoyenPay", method = RequestMethod.GET)
     public ResponseData getAllMoyenPay(){
-        DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy : HH:mm");
         List<MoyenPay> newComList = new ArrayList<MoyenPay>();
         List<MoyenPay> listCom = devisService.getAll();
         for(MoyenPay co : listCom){

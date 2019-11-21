@@ -127,7 +127,7 @@ public class PayRollServiceImpl implements PayRollService {
             c.setCheckboxe(checkboxes);
 
             String report="\n" +
-                    "	<a href=\"javascript: void(0);\" data-toggle=\"modal\" data-target=\"#\" class=\"link-underlined margin-right-50 badge badge-info\" data-original-title=\"Impr\" onclick=\"editPayroll("+c.getId()+")\"><i class=\"fa fa-upload font-14\"><!-- --></i></a>\n" +
+                    "	<a href=\"javascript: void(0);\" data-toggle=\"modal\" data-target=\"#\" class=\"link-underlined margin-right-50 badge badge-info\" data-original-title=\"Impr\" onclick=\"exportPayRoll("+c.getId()+")\"><i class=\"fa fa-upload font-14\"><!-- --></i></a>\n" +
                     "";
             c.setReporting(report);
 
@@ -147,7 +147,7 @@ public class PayRollServiceImpl implements PayRollService {
         ResponseData json=null;
         boolean test=true;
         try {
-            String[] monthAbbrev = {"Janvier","Fevrier","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Decembre"};
+            String[] monthAbbrev = {"Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"};
             Contrat contrat = contratService.findById(Integer.parseInt(request.getParameter("contrat")));
             String[] startDateTab = request.getParameter("startBailDate").split("-");
             List<PayRoll> listPayRoll = findByContratByOrderByIdAsc(Integer.parseInt(request.getParameter("contrat")));
@@ -191,10 +191,15 @@ public class PayRollServiceImpl implements PayRollService {
                 PayRoll pr = add(payRoll);
                 json = new ResponseData(true, pr);
             }else{
-                json = new ResponseData(false,"cette date contient deja une quittance",null);
+               /* &ecirc;
+                &agrave;
+                &ccedil;
+                &eacute;
+                &ecirc;*/
+                json = new ResponseData(false,"cette date contient d&egrave;ja une quittance",null);
             }
         }catch (Exception ex){
-            json = new ResponseData(false,"une valeur a été dupliquée",ex.getCause());
+            json = new ResponseData(false,"une valeur a &eacute;t&eacute; dupliqu&eacute;e ou erron&eacute;e",ex.getCause());
         }
         return json;
     }
@@ -206,7 +211,7 @@ public class PayRollServiceImpl implements PayRollService {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         ResponseData json=null;
         try {
-            String[] monthAbbrev = {"Janvier","Fevrier","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Decembre"};
+            String[] monthAbbrev = {"Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"};
 
             String[] startDateTab = request.getParameter("startBailDate").split("-");
 
@@ -239,7 +244,7 @@ public class PayRollServiceImpl implements PayRollService {
             PayRoll pr = update(payRoll);
             json = new ResponseData(true, pr);
         }catch (Exception ex){
-            json = new ResponseData(false,"une valeur a été dupliquée",ex.getCause());
+            json = new ResponseData(false,"une valeur a &eacute;t&eacute; dupliqu&eacute;e ou erron&eacute;e",ex.getCause());
         }
         return json;
     }
@@ -255,6 +260,157 @@ public class PayRollServiceImpl implements PayRollService {
             return 0;
         }
     }
+
+    @Override
+    public List<PayRoll> export(int cpt, HttpServletRequest request) {
+        List<PayRoll> cusList = new ArrayList<PayRoll>();
+        PayRoll cus = null;
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        //DecimalFormat dft = new DecimalFormat("#.00");
+
+       //for(int i=0; i<cpt; i++){
+
+            cus = payRollRepository.findById(cpt);
+
+            cus.setDateTransient(df.format(cus.getEndDate()));
+
+            cusList.add(cus);
+       // }
+        return cusList;
+    }
+
+    @Override
+    public List<Object> firstYearPayRollChart() {
+        String sql ="(SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 1\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())) UNION ALL\n" +
+                " (SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 2\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())) UNION ALL\n" +
+                " (SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 3\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())) UNION ALL\n" +
+                " (SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 4\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())) UNION ALL\n" +
+                " (SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 5\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())) UNION ALL\n" +
+                " (SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 6\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())) UNION ALL\n" +
+                " (SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 7\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())) UNION ALL\n" +
+                " (SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 8\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())) UNION ALL\n" +
+                " (SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 9\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())) UNION ALL\n" +
+                " (SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 10\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())) UNION ALL\n" +
+                " (SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 11\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())) UNION ALL\n" +
+                " (SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 12\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now()))";
+
+        Query query =em.createNativeQuery(sql);
+        List<Object> results =query.getResultList();
+        return results;
+    }
+
+
+    @Override
+    public List<Object> secondYearPayRollChart() {
+        String sql="(SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 1\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())-1) UNION ALL\n" +
+                " (SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 2\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())-1) UNION ALL\n" +
+                " (SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 3\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())-1) UNION ALL\n" +
+                " (SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 4\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())-1) UNION ALL\n" +
+                " (SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 5\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())-1) UNION ALL\n" +
+                " (SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 6\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())-1) UNION ALL\n" +
+                " (SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 7\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())-1) UNION ALL\n" +
+                " (SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 8\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())-1) UNION ALL\n" +
+                " (SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 9\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())-1) UNION ALL\n" +
+                " (SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 10\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())-1) UNION ALL\n" +
+                " (SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 11\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())-1) UNION ALL\n" +
+                " (SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 12\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())-1)";
+        Query query =em.createNativeQuery(sql);
+        List<Object> results =query.getResultList();
+        return results;
+    }
+
+    @Override
+    public List<Object> threeYearPayRollChart() {
+        String sql ="(SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 1\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())-2) UNION ALL\n" +
+                " (SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 2\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())-2) UNION ALL\n" +
+                " (SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 3\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())-2) UNION ALL\n" +
+                " (SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 4\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())-2) UNION ALL\n" +
+                " (SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 5\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())-2) UNION ALL\n" +
+                " (SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 6\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())-2) UNION ALL\n" +
+                " (SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 7\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())-2) UNION ALL\n" +
+                " (SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 8\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())-2) UNION ALL\n" +
+                " (SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 9\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())-2) UNION ALL\n" +
+                " (SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 10\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())-2) UNION ALL\n" +
+                " (SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 11\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())-2) UNION ALL\n" +
+                " (SELECT COALESCE(SUM(s.amount),0) FROM pay_roll s, contrat c WHERE s.contrat_id = c.id AND c.status_contrat ='1'\n" +
+                "AND EXTRACT(MONTH FROM s.end_date) = 12\n" +
+                "AND EXTRACT(YEAR FROM s.end_date) = EXTRACT(year FROM now())-2)";
+        Query query =em.createNativeQuery(sql);
+        List<Object> results =query.getResultList();
+        return results;
+    }
+
+
 
 
 }

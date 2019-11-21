@@ -100,4 +100,9 @@ public class MainController {
     public String payRoll(Model model){
         return "payroll";
     }
+
+    @RequestMapping(value = "/report", method = RequestMethod.GET)
+    public String report(Model model){
+        return "reporting";
+    }
 }

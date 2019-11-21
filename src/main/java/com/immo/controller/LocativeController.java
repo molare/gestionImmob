@@ -41,7 +41,7 @@ public class LocativeController {
 
     @RequestMapping(value = "/listLocative", method = RequestMethod.GET,produces="application/json;charset=UTF-8")
     public ResponseData getAllLocative(){
-        DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy : HH:mm");
         List<Locative> newComList = new ArrayList<Locative>();
         List<Locative> listCom = locativeService.getAll();
         for(Locative co : listCom){

@@ -23,4 +23,9 @@ public interface PayRollService {
     public ResponseData addPayRoll(Locale locale,PayRoll payRoll, BindingResult result,HttpServletRequest request);
     public ResponseData updatePayRoll(Locale locale, PayRoll payRoll,int id, BindingResult result,HttpServletRequest request);
     public double sumPayRoll();
+    public List<PayRoll> export(int cpt, HttpServletRequest request);
+    List<Object> firstYearPayRollChart();
+    List<Object> secondYearPayRollChart();
+    List<Object> threeYearPayRollChart();
+
 }

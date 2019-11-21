@@ -3,15 +3,24 @@ package com.immo.controller;
 import com.immo.dataTableResponse.ResponseData;
 import com.immo.entities.Contrat;
 import com.immo.entities.PayRoll;
+import com.immo.reporting.ContratReporting;
+import com.immo.reporting.PayRollReporting;
 import com.immo.service.*;
+import net.sf.dynamicreports.report.exception.DRException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by olivier on 02/10/2019.
@@ -52,7 +61,7 @@ public class PayRollController {
         return new ResponseData(true, pList);
     }
 
-    @RequestMapping(value = "/savePayRoll", method = RequestMethod.POST,headers="Accept=*/*")
+    @RequestMapping(value = "/savePayRoll", method = RequestMethod.POST,headers="Accept=*/*",produces="application/json;charset=UTF-8")
     public ResponseData savePayRoll(Locale locale,@ModelAttribute PayRoll payRoll, BindingResult result,HttpServletRequest request){
         ResponseData json=null;
         json = payRollService.addPayRoll(locale,payRoll,result,request);
@@ -60,7 +69,7 @@ public class PayRollController {
     }
 
 
-    @RequestMapping(value = "/updatePayRoll/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/updatePayRoll/{id}", method = RequestMethod.POST,produces="application/json;charset=UTF-8")
     public ResponseData updatePayRoll(Locale locale,@ModelAttribute PayRoll p, @PathVariable int id, BindingResult result,HttpServletRequest request){
         ResponseData json=null;
         json = payRollService.updatePayRoll(locale,p,id,result,request);
@@ -85,6 +94,33 @@ public class PayRollController {
             json = new ResponseData(false,"erreur serveur",ex.getCause());
         }
         return json;
+    }
+
+    @RequestMapping(value = "/payRoll/export", method = RequestMethod.GET,produces="application/json;charset=UTF-8")
+    public void exportCustomer(HttpServletRequest request, HttpServletResponse response,HttpSession session){
+        response.setContentType("application/pdf;charset=UTF-8");
+
+        int id =Integer.parseInt(request.getParameter("cpt"));
+        // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        List<PayRoll> pr = payRollService.export(id, request);
+        try {
+            OutputStream out = response.getOutputStream();
+            PayRollReporting p = new PayRollReporting(pr);
+            // response.setHeader("Content-disposition", "attachment; filename="+ ExportFileName.CONTRAT+".pdf");
+            p.build(request).toPdf(out);
+        } catch (IOException ex) {
+            Logger.getLogger(ContratController.class.getName()).log(Level.SEVERE, null, ex);
+        }  catch (DRException ex) {
+            Logger.getLogger(ContratController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @RequestMapping(value = "/payRoll/charts", method = RequestMethod.POST)
+    public ResponseData saleCharts(){
+        List<Object>  firstPayRollCharts = payRollService.firstYearPayRollChart();
+        List<Object>  secondPayRollCharts = payRollService.secondYearPayRollChart();
+        List<Object>  threePayRollCharts = payRollService.threeYearPayRollChart();
+        return new ResponseData(true,firstPayRollCharts,secondPayRollCharts,threePayRollCharts);
     }
 
 }

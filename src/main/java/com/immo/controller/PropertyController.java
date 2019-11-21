@@ -35,7 +35,7 @@ public class PropertyController {
     @RequestMapping(value = "/listProperty", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     public ResponseData getAllProperty(){
         SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
-        DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy : HH:mm");
         List<Property> prds = new ArrayList<Property>();
         List<Property> listProperty = propertyService.getAll();
         for(Property p: listProperty){

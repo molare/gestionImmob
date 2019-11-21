@@ -24,6 +24,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by olivier on 02/10/2019.
@@ -59,7 +60,7 @@ public class ContratServiceImpl implements ContratService {
     }
 
     @Override
-    public Contrat update(Contrat contrat) {
+    public Contrat update(Contrat contrat){
         if(contrat.getId() ==0){
             return contratRepository.save(contrat);
         }
@@ -115,7 +116,7 @@ public class ContratServiceImpl implements ContratService {
             contrat.setMoyenPay(moyenPayService.findById(Integer.parseInt(request.getParameter("moyen"))));
             contrat.setStatutPay(statutPayService.findById(Integer.parseInt(request.getParameter("statut"))));
             contrat.setCommentary(request.getParameter("commentary"));
-            contrat.setRestCaution(contrat.getAmount()-(contrat.getAdvanceMonth()+contrat.getAgenceMonth())*(contrat.getLocative().getAmount()+contrat.getLocative().getCharge()));
+            contrat.setRestCaution(contrat.getAmount()-(contrat.getAdvanceMonth()+contrat.getAgenceMonth())*(contrat.getLocative().getAmount()/*+contrat.getLocative().getCharge()*/));
 
 
             Contrat c = add(contrat);
@@ -146,7 +147,7 @@ public class ContratServiceImpl implements ContratService {
 
                    String monthId = df.format(calendarEnd.getTime());
                    payRollScaleDetail.setName(monthAbbrev[Integer.parseInt(monthId.split("-")[1])-1]);
-                  //  payRollScaleDetail.setStartDate(calendarStart.getTime());
+                  // payRollScaleDetail.setStartDate(calendarStart.getTime());
                     payRollScaleDetail.setEndDate(calendarEnd.getTime());
                    payRollScaleDetail.setAmount(c.getLocative().getAmount()+c.getLocative().getCharge());
                    payRollScaleDetail.setStatusId(1);
@@ -160,7 +161,7 @@ public class ContratServiceImpl implements ContratService {
 
         }catch (Exception ex){
 
-            json = new ResponseData(false,"une valeur a été dupliquée ou erroné",ex.getCause());
+            json = new ResponseData(false,"une valeur a &eacute;t&eacute; dupliqu&eacute;e ou erron&eacute;e",ex.getCause());
         }
         return json;
     }
@@ -182,6 +183,99 @@ public class ContratServiceImpl implements ContratService {
             cusList.add(cus);
         }
         return cusList;
+    }
+
+
+
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    public ResponseData updateContrat(Locale locale, Contrat cont, BindingResult result, int idContrat, MultipartFile file, HttpServletRequest request) {
+        ResponseData json=null;
+        SimpleDateFormat sdf =new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat sf =new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+
+            Contrat contrat = findById(idContrat);
+            int oldValAdvance =contrat.getAdvanceMonth();
+            List<PayRoll> plist = payRollService.findByContrat(contrat);
+
+
+            if (file.getSize() > 0) {
+                String fileName = file.getOriginalFilename();
+                byte[] bytes = file.getBytes();
+                contrat.setImageName(fileName);
+                contrat.setImage(bytes);
+            }
+
+            contrat.setName(request.getParameter("name").toUpperCase());
+            contrat.setAmount(Double.parseDouble(request.getParameter("amount")));
+            contrat.setAdvanceMonth(Integer.parseInt(request.getParameter("advance")));
+            contrat.setAgenceMonth(Integer.parseInt(request.getParameter("agence")));
+            contrat.setMonthNber(Integer.parseInt(request.getParameter("monthNber")));
+            contrat.setStatusContrat(request.getParameter("statusContrat"));
+            contrat.setFirstQuittance(Double.parseDouble(request.getParameter("firstQuittance")));
+            contrat.setStartBailDate(sdf.parse(request.getParameter("editStartBailDate")));
+            // contrat.setEndBailDate(sdf.parse(request.getParameter("endBailDate")));
+            contrat.setLocater(locaterService.findById(Integer.parseInt(request.getParameter("locater"))));
+            contrat.setLocative(locativeService.findById(Integer.parseInt(request.getParameter("locative"))));
+            contrat.setMoyenPay(moyenPayService.findById(Integer.parseInt(request.getParameter("moyen"))));
+            contrat.setStatutPay(statutPayService.findById(Integer.parseInt(request.getParameter("statut"))));
+            contrat.setCommentary(request.getParameter("commentary"));
+            contrat.setRestCaution(contrat.getAmount()-(contrat.getAdvanceMonth()+contrat.getAgenceMonth())*(contrat.getLocative().getAmount()/*+contrat.getLocative().getCharge()*/));
+
+
+            Contrat c = update(contrat);
+
+
+
+            if(c!=null && Integer.parseInt(request.getParameter("advance")) !=oldValAdvance){
+
+                for(PayRoll pRoll :plist){
+                    payRollService.delete(pRoll.getId());
+                }
+
+                String[] monthAbbrev = {"Janvier","Fevrier","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Decembre"};
+
+                for(int i= 0; i < contrat.getAdvanceMonth(); i++){
+                    PayRoll payRollScaleDetail = new PayRoll();
+
+                    payRollScaleDetail.setContrat(c);
+                    String[] startDateTab = request.getParameter("editStartBailDate").split("-");
+
+                    //DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                    Calendar calendarStart=Calendar.getInstance();
+                    calendarStart.set(Calendar.YEAR,Integer.parseInt(startDateTab[2]));
+                    calendarStart.set(Calendar.MONTH,Integer.parseInt(startDateTab[1])-1);
+                    calendarStart.set(Calendar.DAY_OF_MONTH,Integer.parseInt(startDateTab[0]));
+
+                    Calendar calendarEnd=Calendar.getInstance();
+                    calendarEnd.setTime(calendarStart.getTime());
+                    calendarStart.set(Calendar.YEAR,Integer.parseInt(startDateTab[2]));
+                    calendarEnd.set(Calendar.MONTH,Integer.parseInt(startDateTab[1])+i-1);;
+                    calendarEnd.set(Calendar.DAY_OF_MONTH,Integer.parseInt(startDateTab[0]));
+
+                    String monthId = df.format(calendarEnd.getTime());
+                    payRollScaleDetail.setName(monthAbbrev[Integer.parseInt(monthId.split("-")[1])-1]);
+                    //  payRollScaleDetail.setStartDate(calendarStart.getTime());
+                    payRollScaleDetail.setEndDate(calendarEnd.getTime());
+                    payRollScaleDetail.setAmount(c.getLocative().getAmount()+c.getLocative().getCharge());
+                    payRollScaleDetail.setStatusId(1);
+                    //payRollScaleDetail.setCaution(c.getAmount()-(contrat.getAdvanceMonth()+contrat.getAgenceMonth())*(c.getLocative().getAmount()+c.getLocative().getCharge()));
+                    payRollScaleDetail.setCautionStatut(1);
+                    PayRoll p = payRollService.add(payRollScaleDetail);
+                }
+
+                json = new ResponseData(true, c);
+            }else{
+                json = new ResponseData(true, c);
+            }
+
+        }catch (Exception ex){
+
+            json = new ResponseData(false,"une valeur a &eacute;t&eacute; dupliqu&eacute;e ou erron&eacute;e",ex.getCause());
+        }
+        return json;
     }
 
 }

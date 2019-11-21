@@ -70,7 +70,7 @@ public class LocativeServiceImpl implements LocativeService {
 
     @Override
     public double garanty(int id) {
-        String sql="SELECT (lo.amount+lo.charge) AS garanty FROM locative lo\n" +
+        String sql="SELECT (lo.amount) AS garanty FROM locative lo\n" +
                 "WHERE lo.id ="+id;
         Query query = em.createNativeQuery(sql);
         return Double.parseDouble(query.getSingleResult()+"");
@@ -97,7 +97,7 @@ public class LocativeServiceImpl implements LocativeService {
                 "FROM locative lo\n" +
                 "WHERE lo.id NOT IN (SELECT lot.id\n" +
                 "FROM locative lot, contrat cont\n" +
-                "WHERE cont.locative_id = lot.id) ORDER BY lo.designation ASC \n";
+                "WHERE cont.locative_id = lot.id AND cont.status_contrat='1') ORDER BY lo.designation ASC \n";
         Query query = em.createNativeQuery(sql);
         List<Object[]> listLo = query.getResultList();
         List<Locative> locativeList = new ArrayList<Locative>();

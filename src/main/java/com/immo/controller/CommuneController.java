@@ -24,7 +24,7 @@ public class CommuneController {
     private CommuneService communeService;
     @RequestMapping(value = "/listCommune", method = RequestMethod.GET)
     public ResponseData getAllCommune(){
-        DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy : HH:mm");
         List<Commune> newComList = new ArrayList<Commune>();
         List<Commune> listCom = communeService.getAll();
         for(Commune co : listCom){
