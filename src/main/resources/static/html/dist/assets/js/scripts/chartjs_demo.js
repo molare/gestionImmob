@@ -4,6 +4,7 @@ $(function() {
     var barOptions;
     var d = new Date();
     var dateYear = d.getFullYear();
+
     $.ajax({
         url: window.origin + '/payRoll/charts',
         dataType: "json",
@@ -40,6 +41,6 @@ $(function() {
             };
         }
     });
-    var ctx = document.getElementById("PayMonthBar").getContext("2d");
+    var ctx = document.getElementById("payMonthBar").getContext("2d");
     new Chart(ctx, {type: 'bar', data: barData, options:barOptions});
 });
