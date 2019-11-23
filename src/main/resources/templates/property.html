@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width initial-scale=1.0">
     <title>APPS_IMMOBILIERE</title>
     <!-- GLOBAL MAINLY STYLES-->
-    <!--<link href="/res/allRessources" rel="import"/>-->
-    <!-- GLOBAL MAINLY STYLES-->
     <link href="/html/dist/assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="/html/dist/assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
     <link href="/html/dist/assets/vendors/themify-icons/css/themify-icons.css" rel="stylesheet" />
@@ -40,12 +37,17 @@
     <script src="/html/dist/assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="/html/dist/assets/vendors/metisMenu/dist/metisMenu.min.js" type="text/javascript"></script>
     <script src="/html/dist/assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="/html/dist/assets/vendors/jquery.maskedinput/dist/jquery.maskedinput.min.js" type="text/javascript"></script>
+
+
     <script src="/html/dist/assets/vendors/DataTables/datatables.min.js" type="text/javascript"></script>
     <script src="/datatables-responsive/js/responsive.datatables.js" type="text/javascript"></script>
     <script type="text/javascript" src="/html/dist/assets/js/dataTables.select.js"></script>
     <script type="text/javascript" src="/html/dist/assets/js/dataTables.select.min.js"></script>
     <script type="text/javascript" src="/html/dist/assets/js/dataTables.checkboxes.min.js"></script>
+    <script src="/html/dist/assets/vendors/chart.js/dist/Chart.min.js" type="text/javascript"></script>
     <script src="/html/dist/assets/js/app.min.js" type="text/javascript"></script>
+    <script src="/html/dist/assets/js/scripts/chartjs_demo.js" type="text/javascript"></script>
 
 
     <!-- PAGE LEVEL PLUGINS-->
@@ -58,158 +60,6 @@
 
     <!-- notification js -->
     <script type="text/javascript" src="/html/dist/assets/notification/bootstrap-growl.min.js"></script>
-    <!-- GLOBAL MAINLY STYLES-->
-    <link href="/html/dist/assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="/html/dist/assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="/html/dist/assets/vendors/themify-icons/css/themify-icons.css" rel="stylesheet" />
-    <!-- PLUGINS STYLES-->
-    <link href="/html/dist/assets/vendors/jvectormap/jquery-jvectormap-2.0.3.css" rel="stylesheet" />
-
-    <link href="/html/dist/assets/vendors/DataTables/datatables.min.css" rel="stylesheet" />
-    <link href="/datatables-responsive/css/responsive.datatables.css" rel="stylesheet" />
-    <link href="/datatables-responsive/css/dataTable.css" rel="stylesheet" />
-
-    <!-- THEME STYLES-->
-    <link href="/html/dist/assets/css/main.min.css" rel="stylesheet" />
-    <link href="/html/dist/assets/vendors/bootstrap-datepicker/dist/css/bootstrap-datepicker.css" rel="stylesheet" />
-    <link href="/html/dist/assets/vendors/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
-    <link href="/html/dist/assets/notification/notification.css" rel="stylesheet" />
-    <link href="/html/dist/assets/animate.css/css/animate.css" rel="stylesheet" />
-
-    <!-- PAGE LEVEL STYLES-->
-
-    <!-- RESPONSIVE STYLES-->
-
-
-    <!-- CORE PLUGINS-->
-    <script src="/html/dist/assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
-    <script src="/html/dist/assets/vendors/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
-
-
-    <script src="/html/dist/assets/vendors/popper.js/dist/umd/popper.min.js" type="text/javascript"></script>
-    <script src="/html/dist/assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="/html/dist/assets/vendors/metisMenu/dist/metisMenu.min.js" type="text/javascript"></script>
-    <script src="/html/dist/assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <script src="/html/dist/assets/vendors/DataTables/datatables.min.js" type="text/javascript"></script>
-    <script src="/datatables-responsive/js/responsive.datatables.js" type="text/javascript"></script>
-    <script type="text/javascript" src="/html/dist/assets/js/dataTables.select.js"></script>
-    <script type="text/javascript" src="/html/dist/assets/js/dataTables.select.min.js"></script>
-    <script type="text/javascript" src="/html/dist/assets/js/dataTables.checkboxes.min.js"></script>
-    <script src="/html/dist/assets/js/app.min.js" type="text/javascript"></script>
-
-
-    <!-- PAGE LEVEL PLUGINS-->
-
-    <!-- CORE SCRIPTS-->
-
-    <!-- PAGE LEVEL SCRIPTS-->
-    <script src="/html/dist/assets/js/scripts/dashboard_1_demo.js" type="text/javascript"></script>
-    <script src="/html/dist/assets/vendors/bootstrap-datepicker/dist/js/bootstrap-datepicker.js" type="text/javascript"></script>
-
-    <!-- notification js -->
-    <script type="text/javascript" src="/html/dist/assets/notification/bootstrap-growl.min.js"></script>
-    <!-- GLOBAL MAINLY STYLES-->
-    <link href="/html/dist/assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="/html/dist/assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="/html/dist/assets/vendors/themify-icons/css/themify-icons.css" rel="stylesheet" />
-    <!-- PLUGINS STYLES-->
-    <link href="/html/dist/assets/vendors/jvectormap/jquery-jvectormap-2.0.3.css" rel="stylesheet" />
-
-    <link href="/html/dist/assets/vendors/DataTables/datatables.min.css" rel="stylesheet" />
-    <link href="/datatables-responsive/css/responsive.datatables.css" rel="stylesheet" />
-    <link href="/datatables-responsive/css/dataTable.css" rel="stylesheet" />
-
-    <!-- THEME STYLES-->
-    <link href="/html/dist/assets/css/main.min.css" rel="stylesheet" />
-    <link href="/html/dist/assets/vendors/bootstrap-datepicker/dist/css/bootstrap-datepicker.css" rel="stylesheet" />
-    <link href="/html/dist/assets/vendors/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
-    <link href="/html/dist/assets/notification/notification.css" rel="stylesheet" />
-    <link href="/html/dist/assets/animate.css/css/animate.css" rel="stylesheet" />
-
-    <!-- PAGE LEVEL STYLES-->
-
-    <!-- RESPONSIVE STYLES-->
-
-
-    <!-- CORE PLUGINS-->
-    <script src="/html/dist/assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
-    <script src="/html/dist/assets/vendors/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
-
-
-    <script src="/html/dist/assets/vendors/popper.js/dist/umd/popper.min.js" type="text/javascript"></script>
-    <script src="/html/dist/assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="/html/dist/assets/vendors/metisMenu/dist/metisMenu.min.js" type="text/javascript"></script>
-    <script src="/html/dist/assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <script src="/html/dist/assets/vendors/DataTables/datatables.min.js" type="text/javascript"></script>
-    <script src="/datatables-responsive/js/responsive.datatables.js" type="text/javascript"></script>
-    <script type="text/javascript" src="/html/dist/assets/js/dataTables.select.js"></script>
-    <script type="text/javascript" src="/html/dist/assets/js/dataTables.select.min.js"></script>
-    <script type="text/javascript" src="/html/dist/assets/js/dataTables.checkboxes.min.js"></script>
-    <script src="/html/dist/assets/js/app.min.js" type="text/javascript"></script>
-
-
-    <!-- PAGE LEVEL PLUGINS-->
-
-    <!-- CORE SCRIPTS-->
-
-    <!-- PAGE LEVEL SCRIPTS-->
-    <script src="/html/dist/assets/js/scripts/dashboard_1_demo.js" type="text/javascript"></script>
-    <script src="/html/dist/assets/vendors/bootstrap-datepicker/dist/js/bootstrap-datepicker.js" type="text/javascript"></script>
-
-    <!-- notification js -->
-    <script type="text/javascript" src="/html/dist/assets/notification/bootstrap-growl.min.js"></script>
-    <!-- GLOBAL MAINLY STYLES-->
-    <link href="/html/dist/assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="/html/dist/assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="/html/dist/assets/vendors/themify-icons/css/themify-icons.css" rel="stylesheet" />
-    <!-- PLUGINS STYLES-->
-    <link href="/html/dist/assets/vendors/jvectormap/jquery-jvectormap-2.0.3.css" rel="stylesheet" />
-
-    <link href="/html/dist/assets/vendors/DataTables/datatables.min.css" rel="stylesheet" />
-    <link href="/datatables-responsive/css/responsive.datatables.css" rel="stylesheet" />
-    <link href="/datatables-responsive/css/dataTable.css" rel="stylesheet" />
-
-    <!-- THEME STYLES-->
-    <link href="/html/dist/assets/css/main.min.css" rel="stylesheet" />
-    <link href="/html/dist/assets/vendors/bootstrap-datepicker/dist/css/bootstrap-datepicker.css" rel="stylesheet" />
-    <link href="/html/dist/assets/vendors/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
-    <link href="/html/dist/assets/notification/notification.css" rel="stylesheet" />
-    <link href="/html/dist/assets/animate.css/css/animate.css" rel="stylesheet" />
-
-    <!-- PAGE LEVEL STYLES-->
-
-    <!-- RESPONSIVE STYLES-->
-
-
-    <!-- CORE PLUGINS-->
-    <script src="/html/dist/assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
-    <script src="/html/dist/assets/vendors/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
-
-
-    <script src="/html/dist/assets/vendors/popper.js/dist/umd/popper.min.js" type="text/javascript"></script>
-    <script src="/html/dist/assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="/html/dist/assets/vendors/metisMenu/dist/metisMenu.min.js" type="text/javascript"></script>
-    <script src="/html/dist/assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <script src="/html/dist/assets/vendors/DataTables/datatables.min.js" type="text/javascript"></script>
-    <script src="/datatables-responsive/js/responsive.datatables.js" type="text/javascript"></script>
-    <script type="text/javascript" src="/html/dist/assets/js/dataTables.select.js"></script>
-    <script type="text/javascript" src="/html/dist/assets/js/dataTables.select.min.js"></script>
-    <script type="text/javascript" src="/html/dist/assets/js/dataTables.checkboxes.min.js"></script>
-    <script src="/html/dist/assets/js/app.min.js" type="text/javascript"></script>
-
-
-    <!-- PAGE LEVEL PLUGINS-->
-
-    <!-- CORE SCRIPTS-->
-
-    <!-- PAGE LEVEL SCRIPTS-->
-    <script src="/html/dist/assets/js/scripts/dashboard_1_demo.js" type="text/javascript"></script>
-    <script src="/html/dist/assets/vendors/bootstrap-datepicker/dist/js/bootstrap-datepicker.js" type="text/javascript"></script>
-
-    <!-- notification js -->
-    <script type="text/javascript" src="/html/dist/assets/notification/bootstrap-growl.min.js"></script>
-
-
     <!-- PAGE LEVEL SCRIPTS-->
     <script type="text/javascript">
         'use strict';
@@ -245,7 +95,7 @@
         });
         var table;
         $(document).ready(function(){
-            $('#loadingId').hide();
+
             $('#editLoadingId').hide();
             table= $('#propertyTable').DataTable({
                 "responsive": true,
@@ -329,12 +179,15 @@
             $("#btnAddNew").click(function(){
                 $("#propertyForm")[0].reset();
                 //LOAD type
-                typePropertyOption();
-                civilityOption();
                 $(".col-md-4").removeClass('has-error').removeClass('has-success');
                 $(".text-danger").remove();
                 $('#loadingId').hide();
                 $(".messages").html("");
+                typePropertyOption();
+                civilityOption();
+                twonOption();
+                $('#phoneId').mask('+225 99-99-99-99');
+
 
             });
 
@@ -356,7 +209,7 @@
                 var nberPiece = $("#nberPieceId").val();
                 var naturePiece = $("#naturePieceId").val();
                 var cpteContribu = $("#cpteContribuId").val();
-                var country = $("#countryId").val();
+                var twon = $("#twonId").val();
                 var phone = $("#phoneId").val();
                 var civility =$("#civilityId").val();
 
@@ -440,12 +293,12 @@
                     $("#cpteContribuId").closest('.col-md-4').addClass('has-success');
                 }
 
-                if(country === "0") {
-                    $("#countryId").closest('.col-md-4').addClass('has-error');
-                    $("#countryId").after('<p class="text-danger">Champs vide</p>');
+                if(twon === "0") {
+                    $("#twonId").closest('.col-md-4').addClass('has-error');
+                    $("#twonId").after('<p class="text-danger">Champs vide</p>');
                 }else {
-                    $("#countryId").closest('.col-md-4').removeClass('has-error');
-                    $("#countryId").closest('.col-md-4').addClass('has-success');
+                    $("#twonId").closest('.col-md-4').removeClass('has-error');
+                    $("#twonId").closest('.col-md-4').addClass('has-success');
                 }
 
                 if(birthDate === "") {
@@ -476,7 +329,7 @@
 
                 if(code && firstName && lastName && code &&profession && domicile && phone &&
                     lieuNaiss&&nberPiece && lieuNaiss && cpteContribu!=""
-                        &&country&& type&&civility&&naturePiece !="0") {
+                        &&twon&& type&&civility&&naturePiece !="0") {
                     $.ajax({
                         url: window.origin+'/saveProperty',
                         type: 'POST',
@@ -533,7 +386,7 @@
                 // empty the message div
                 $(".edit-messages").html("");
                 $("#editNaturePieceId").html("");
-                $("#editCountryId").html("");
+                $("#editTwonId").html("");
                 // $("#editPicture").val('');
                 // remove the id
                 $("#property_edit_id").remove();
@@ -559,20 +412,6 @@
                         $("#editCpteContribuId").val(response.data.cpteContribu);
                         $("#editDomicilId").val(response.data.domicil);
 
-                        if(response.data.country =="2"){
-                            $("#editCountryId").append('<option value='+response.data.country+'> France</option>');
-                            $("#editCountryId").append('<option value='+1+'>Cote d\'ivoire</option>');
-                            $("#editCountryId").append('<option value='+3+'>Belgique</option>');
-
-                        }else if(response.data.country =="1"){
-                            $("#editCountryId").append('<option value='+response.data.naturePiece+'> Cote d\'ivoire</option>');
-                            $("#editCountryId").append('<option value='+2+'>France</option>');
-                            $("#editCountryId").append('<option value='+3+'>Belgique</option>');
-                        }else{
-                            $("#editCountryId").append('<option value='+response.data.naturePiece+'> Belgique</option>');
-                            $("#editCountryId").append('<option value='+1+'>Cote d\'ivoire</option>');
-                            $("#editCountryId").append('<option value='+2+'>France</option>');
-                        }
 
                         if(response.data.naturePiece =="2"){
                             $("#editNaturePieceId").append('<option value='+response.data.naturePiece+'> Attestation</option>');
@@ -584,13 +423,15 @@
                             $("#editNaturePieceId").append('<option value='+2+'>Attestation</option>');
                             $("#editNaturePieceId").append('<option value='+3+'>Passeport</option>');
                         }else{
-                            $("#editNaturePieceId").append('<option value='+response.data.country+'> Passeport</option>');
+                            $("#editNaturePieceId").append('<option value='+response.data.twon+'> Passeport</option>');
                             $("#editNaturePieceId").append('<option value='+1+'>CNI</option>');
                             $("#editNaturePieceId").append('<option value='+2+'>Attestation</option>');
                         }
 
                         editTypePropertyOption(response.data.typeProperty.id,response.data.typeProperty.name);
                         editCivilityOption(response.data.civility.id,response.data.civility.name);
+                        editTwonOption(response.data.twon.id,response.data.twon.name);
+                        $('#editPhoneId').mask('+225 99-99-99-99');
 
                         $("#editPropertyForm").append('<input type="hidden" name="id" id="property_edit_id" value="'+response.data.id+'"/>');
                         // here update the member data
@@ -611,7 +452,7 @@
                             var nberPiece = $("#editNberPieceId").val();
                             var naturePiece = $("#editNaturePieceId").val();
                             var cpteContribu = $("#editCpteContribuId").val();
-                            var country = $("#editCountryId").val();
+                            var twon = $("#editTwonId").val();
                             var phone = $("#editPhoneId").val();
                             var civility =$("#editCivilityId").val();
 
@@ -694,12 +535,12 @@
                                 $("#editCpteContribuId").closest('.col-md-4').addClass('has-success');
                             }
 
-                            if(country === "0") {
-                                $("#editCountryId").closest('.col-md-4').addClass('has-error');
-                                $("#editCountryId").after('<p class="text-danger">Champs vide</p>');
+                            if(twon === "0") {
+                                $("#editTwonId").closest('.col-md-4').addClass('has-error');
+                                $("#editTwonId").after('<p class="text-danger">Champs vide</p>');
                             }else {
-                                $("#editCountryId").closest('.col-md-4').removeClass('has-error');
-                                $("#editCountryId").closest('.col-md-4').addClass('has-success');
+                                $("#editTwonId").closest('.col-md-4').removeClass('has-error');
+                                $("#editTwonId").closest('.col-md-4').addClass('has-success');
                             }
 
                             if(birthDate === "") {
@@ -730,7 +571,7 @@
 
                             if(code && firstName && lastName && code &&profession &&domicile&&phone&&
                                     lieuNaiss&&nberPiece && lieuNaiss && cpteContribu!=""
-                                    &&country&& type&&civility&&naturePiece !="0") {
+                                    &&twon&& type&&civility&&naturePiece !="0") {
                                 var id =$("#property_edit_id").val();
                                 $.ajax({
                                     url:window.origin+'/updateProperty/'+id,
@@ -906,9 +747,47 @@
         }
         //FIN
 
+        //LIST TWON
+        function twonOption(){
+            $.ajax({
+                url:window.origin+'/listTwon',
+                type:'GET',
+                dataType :"json",
+                success:function(response){
+                    $("#twonId").html('');
+                    $("#twonId").append('<option value='+0+'>'+' '+'</option>');
+                    $.each(response.data, function(key, val){
+                        $("#twonId").append('<option value='+val.id+'>'+ val.name+ '</option>');
+                    });
+                }
+            });
+        }
+        //FIN
+
+        //LIST TWON
+        function editTwonOption(comId, comVal){
+            $.ajax({
+                url:window.origin+'/listTwon',
+                type:'GET',
+                dataType :"json",
+                success:function(response){
+                    $("#editTwonId").html('');
+                    $("#editTwonId").append('<option value='+comId+'>'+comVal+'</option>');
+                    $.each(response.data, function(key, val){
+                        if(comId!=val.id){
+                            $("#editTwonId").append('<option value='+val.id+'>'+ val.name+ '</option>');
+                        }
+
+                    });
+                }
+            });
+        }
+        //FIN
+
     </script>
 
 </head>
+
 
 <body class="fixed-navbar">
 <div class="page-wrapper">
@@ -942,9 +821,9 @@
             <ul class="nav navbar-toolbar">
                 <li class="dropdown dropdown-inbox">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope-o"></i>
-                        <span class="badge badge-primary envelope-badge">9</span>
+                        <span class="badge badge-primary envelope-badge"></span>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media">
+                  <!--  <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media">
                         <li class="dropdown-menu-header">
                             <div>
                                 <span><strong>9 New</strong> Messages</span>
@@ -999,11 +878,11 @@
                                 </a>
                             </div>
                         </li>
-                    </ul>
+                    </ul>-->
                 </li>
                 <li class="dropdown dropdown-notification">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell-o rel"><span class="notify-signal"></span></i></a>
-                    <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media">
+                 <!--   <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media">
                         <li class="dropdown-menu-header">
                             <div>
                                 <span><strong>5 New</strong> Notifications</span>
@@ -1050,15 +929,16 @@
                                 </a>
                             </div>
                         </li>
-                    </ul>
+                    </ul>-->
                 </li>
                 <li class="dropdown dropdown-user">
                     <a class="nav-link dropdown-toggle link" data-toggle="dropdown">
                         <img src="/html/dist/assets/img/admin-avatar.png" />
                         <span></span>Admin<i class="fa fa-angle-down m-l-5"></i></a>
                     <ul class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="profile.html"><i class="fa fa-user"></i>Profile</a>
+                     <!--   <a class="dropdown-item" href="profile.html"><i class="fa fa-user"></i>Profile</a>
                         <a class="dropdown-item" href="profile.html"><i class="fa fa-cog"></i>Settings</a>
+                       -->
                         <li class="dropdown-divider"></li>
                         <a class="dropdown-item" href="#"  th:href="@{login}"><i class="fa fa-power-off"></i>Logout</a>
                     </ul>
@@ -1088,30 +968,24 @@
 
                 <li>
                     <a href="javascript:;"><i class="sidebar-item-icon fa fa-edit"></i>
-                        <span class="nav-label">CIVILITE</span><i class="fa fa-angle-left arrow"></i></a>
+                        <span class="nav-label">PAYS</span><i class="fa fa-angle-left arrow"></i></a>
                     <ul class="nav-2-level collapse">
                         <li>
-                            <a href="#" th:href="@{civility}">Civilité</a>
+                            <a   href="#" th:href="@{country}">Pays</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="javascript:;"><i class="sidebar-item-icon fa fa-edit"></i>
+                        <span class="nav-label">VILLE</span><i class="fa fa-angle-left arrow"></i></a>
+                    <ul class="nav-2-level collapse">
+                        <li>
+                            <a  href="#" th:href="@{twon}">Ville</a>
                         </li>
 
                     </ul>
                 </li>
-
-                <li  class="active">
-                    <a href="javascript:;"><i class="sidebar-item-icon fa fa-user"></i>
-                        <span class="nav-label">PROPRIETAIRE</span><i class="fa fa-angle-left arrow"></i></a>
-                    <ul class="nav-2-level collapse in">
-                        <li>
-                            <a href="#" th:href="@{typeProperty}">Type propriétaire</a>
-                        </li>
-
-                        <li>
-                            <a  class="active" href="#" th:href="@{property}">Propriétaire</a>
-                        </li>
-
-                    </ul>
-                </li>
-
 
                 <li>
                     <a href="javascript:;"><i class="sidebar-item-icon fa fa-table"></i>
@@ -1134,6 +1008,50 @@
                         </li>
                     </ul>
                 </li>
+
+                <li>
+                    <a href="javascript:;"><i class="sidebar-item-icon fa fa-home"></i>
+                        <span class="nav-label">MON ENTREPRISE</span><i class="fa fa-angle-left arrow"></i></a>
+                    <ul class="nav-2-level collapse">
+                        <li>
+                            <a href="#" th:href="@{enterpriseType}">Type entreprise</a>
+                        </li>
+
+                        <li>
+                            <a href="#" th:href="@{enterprise}">Entreprise</a>
+                        </li>
+
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="javascript:;"><i class="sidebar-item-icon fa fa-edit"></i>
+                        <span class="nav-label">CIVILITE</span><i class="fa fa-angle-left arrow"></i></a>
+                    <ul class="nav-2-level collapse">
+                        <li>
+                            <a href="#" th:href="@{civility}">Civilité</a>
+                        </li>
+
+                    </ul>
+                </li>
+
+                <li class="active">
+                    <a href="javascript:;"><i class="sidebar-item-icon fa fa-user"></i>
+                        <span class="nav-label">PROPRIETAIRE</span><i class="fa fa-angle-left arrow"></i></a>
+                    <ul class="nav-2-level collapse in">
+                        <li>
+                            <a href="#" th:href="@{typeProperty}">Type propriétaire</a>
+                        </li>
+
+                        <li>
+                            <a class="active" href="#" th:href="@{property}">Propriétaire</a>
+                        </li>
+
+                    </ul>
+                </li>
+
+
+
 
 
                 <li>
@@ -1165,9 +1083,9 @@
                     <a href="javascript:;"><i class="sidebar-item-icon fa fa-users"></i>
                         <span class="nav-label">LOCATAIRE</span><i class="fa fa-angle-left arrow"></i></a>
                     <ul class="nav-2-level collapse">
-                      <!--  <li>
-                            <a href="#" th:href="@{typeLocater}">Type locataire</a>
-                        </li>-->
+                        <!-- <li>
+                             <a href="#" th:href="@{typeLocater}">Type locataire</a>
+                         </li>-->
                         <li>
                             <a href="#" th:href="@{locater}">Locataire</a>
                         </li>
@@ -1183,14 +1101,15 @@
                         </li>
 
                         <li>
-                            <a href="#" th:href="@{moyenPay}">Moyen paiement</a>
+                            <a href="#" th:href="@{moyenPaye}">Moyen paiement</a>
                         </li>
 
                         <li>
-                            <a href="#" th:href="@{statutPay}">Statut paiement</a>
+                            <a href="#" th:href="@{statutPaye}">Statut paiement</a>
                         </li>
                     </ul>
                 </li>
+
                 <li>
                     <a href="javascript:;"><i class="sidebar-item-icon fa fa-home"></i>
                         <span class="nav-label">LOCATIVE</span><i class="fa fa-angle-left arrow"></i></a>
@@ -1254,7 +1173,7 @@
             <div class="ibox">
                 <div class="ibox-head">
                     <div class="ibox-title"><button class="btn btn-success" data-toggle="modal" data-target="#addPropertyModal" id="btnAddNew"><i class="fa fa-plus"></i>Ajouter</button></div>
-                    <div class="ibox-title pull-right"><button class="btn btn-warning"><i class="fa fa-cloud-upload"></i>Exporter</button></div>
+                    <!--<div class="ibox-title pull-right"><button class="btn btn-warning"><i class="fa fa-cloud-upload"></i>Exporter</button></div>-->
                 </div>
                 <div class="ibox-body">
                     <table class="table table-responsive table-striped table-bordered table-hover display responsive nowrap" id="propertyTable" cellspacing="0" width="100%">
@@ -1461,8 +1380,6 @@
     <div class="page-preloader">Loading</div>
 </div>
 <!-- END PAGA BACKDROPS-->
-
-
 <!-- Add product Modal-->
 <div class="modal fade large" id="addPropertyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
@@ -1520,8 +1437,8 @@
                     <div class="form-group row ">
                         <label class="control-label col-md-2 font-normal">Date Naissance</label>
                         <div class="col-md-4 input-group date">
-                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                <input class="form-control" type="text" name="birthDate" id="birthDateId">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            <input class="form-control" type="text" name="birthDate" id="birthDateId">
                         </div>
 
                         <label class="control-label col-md-2">Lieu Naissance</label>
@@ -1585,13 +1502,9 @@
                             <input name="cpteContribu" id="cpteContribuId" class="form-control" type="text">
                             <span class="help-block"></span>
                         </div>
-                        <label class="control-label col-md-2">Pays</label>
+                        <label class="control-label col-md-2">Ville</label>
                         <div class="col-md-4">
-                            <select class="form-control" id="countryId" name="country">
-                                <option value="0"></option>
-                                <option value="1">Cote d'ivoire</option>
-                                <option value="2">France</option>
-                                <option value="3">Belgique</option>
+                            <select class="form-control" id="twonId" name="twon">
                             </select>
                         </div>
                     </div>
@@ -1613,7 +1526,7 @@
 <!-- Fin add product -->
 
 <!-- Edit product Modal-->
-<div class="modal fade" id="editPropertyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="editPropertyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabels" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -1746,7 +1659,7 @@
                         </div>
                         <label class="control-label col-md-2">Pays</label>
                         <div class="col-md-4">
-                            <select class="form-control" id="editCountryId" name="country">
+                            <select class="form-control" id="editTwonId" name="twon">
                             </select>
                         </div>
                     </div>
@@ -1788,6 +1701,7 @@
     </div>
 </div>
 <!--Fin modal delete-->
+
 
 </body>
 

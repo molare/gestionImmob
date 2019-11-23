@@ -143,9 +143,9 @@
                 <ul class="nav navbar-toolbar">
                     <li class="dropdown dropdown-inbox">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope-o"></i>
-                            <span class="badge badge-primary envelope-badge">9</span>
+                            <span class="badge badge-primary envelope-badge"></span>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media">
+                       <!-- <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media">
                             <li class="dropdown-menu-header">
                                 <div>
                                     <span><strong>9 New</strong> Messages</span>
@@ -200,11 +200,11 @@
                                     </a>
                                 </div>
                             </li>
-                        </ul>
+                        </ul>-->
                     </li>
                     <li class="dropdown dropdown-notification">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell-o rel"><span class="notify-signal"></span></i></a>
-                        <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media">
+                        <!--<ul class="dropdown-menu dropdown-menu-right dropdown-menu-media">
                             <li class="dropdown-menu-header">
                                 <div>
                                     <span><strong>5 New</strong> Notifications</span>
@@ -251,15 +251,16 @@
                                     </a>
                                 </div>
                             </li>
-                        </ul>
+                        </ul>-->
                     </li>
                     <li class="dropdown dropdown-user">
                         <a class="nav-link dropdown-toggle link" data-toggle="dropdown">
                             <img src="/html/dist/assets/img/admin-avatar.png" />
                             <span></span>Admin<i class="fa fa-angle-down m-l-5"></i></a>
                         <ul class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="#"><i class="fa fa-user"></i>Profile</a>
+                        <!--    <a class="dropdown-item" href="#"><i class="fa fa-user"></i>Profile</a>
                             <a class="dropdown-item" href="profile.html"><i class="fa fa-cog"></i>Settings</a>
+                           -->
                             <li class="dropdown-divider"></li>
                             <a class="dropdown-item" href="#" th:href="@{login}"><i class="fa fa-power-off"></i>Logout</a>
                         </ul>
@@ -289,6 +290,63 @@
 
                     <li>
                         <a href="javascript:;"><i class="sidebar-item-icon fa fa-edit"></i>
+                            <span class="nav-label">PAYS</span><i class="fa fa-angle-left arrow"></i></a>
+                        <ul class="nav-2-level collapse">
+                            <li>
+                                <a   href="#" th:href="@{country}">Pays</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="javascript:;"><i class="sidebar-item-icon fa fa-edit"></i>
+                            <span class="nav-label">VILLE</span><i class="fa fa-angle-left arrow"></i></a>
+                        <ul class="nav-2-level collapse">
+                            <li>
+                                <a  href="#" th:href="@{twon}">Ville</a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="javascript:;"><i class="sidebar-item-icon fa fa-table"></i>
+                            <span class="nav-label">COMMUNE</span><i class="fa fa-angle-left arrow"></i></a>
+                        <ul class="nav-2-level collapse">
+                            <li>
+                                <a href="#" th:href="@{com}">Commune</a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+
+                    <li>
+                        <a href="javascript:;"><i class="sidebar-item-icon fa fa-table"></i>
+                            <span class="nav-label">QUARTIER</span><i class="fa fa-angle-left arrow"></i></a>
+                        <ul class="nav-2-level collapse">
+                            <li>
+                                <a href="#" th:href="@{city}">Quartier</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:;"><i class="sidebar-item-icon fa fa-home"></i>
+                            <span class="nav-label">MON ENTREPRISE</span><i class="fa fa-angle-left arrow"></i></a>
+                        <ul class="nav-2-level collapse">
+                            <li>
+                                <a href="#" th:href="@{enterpriseType}">Type entreprise</a>
+                            </li>
+
+                            <li>
+                                <a href="#" th:href="@{enterprise}">Entreprise</a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="javascript:;"><i class="sidebar-item-icon fa fa-edit"></i>
                             <span class="nav-label">CIVILITE</span><i class="fa fa-angle-left arrow"></i></a>
                         <ul class="nav-2-level collapse">
                             <li>
@@ -314,27 +372,7 @@
                     </li>
 
 
-                    <li>
-                        <a href="javascript:;"><i class="sidebar-item-icon fa fa-table"></i>
-                            <span class="nav-label">COMMUNE</span><i class="fa fa-angle-left arrow"></i></a>
-                        <ul class="nav-2-level collapse">
-                            <li>
-                                <a href="#" th:href="@{com}">Commune</a>
-                            </li>
 
-                        </ul>
-                    </li>
-
-
-                    <li>
-                        <a href="javascript:;"><i class="sidebar-item-icon fa fa-table"></i>
-                            <span class="nav-label">QUARTIER</span><i class="fa fa-angle-left arrow"></i></a>
-                        <ul class="nav-2-level collapse">
-                            <li>
-                                <a href="#" th:href="@{city}">Quartier</a>
-                            </li>
-                        </ul>
-                    </li>
 
 
                     <li>
@@ -492,7 +530,7 @@
                             <div class="ibox-body">
                               <div class="flexbox mb-4">
                                     <div>
-                                        <h3 class="m-0">Statistique</h3>
+                                        <h3 class="m-0">Graphique</h3>
                                         <div>des paiements mensuels</div>
                                     </div>
                             <!--        <div class="d-inline-flex">
@@ -573,7 +611,7 @@
             </div>
             <!-- END PAGE CONTENT-->
             <footer class="page-footer">
-                <div class="font-13">2019 © <b>MoryDev</b>_Gestion immobilier.</div>
+                <div class="font-13">2019 © <b>MoryDev</b>_Gestion immobiliere.</div>
 <!--
                 <a class="px-4" href="http://themeforest.net/item/adminca-responsive-bootstrap-4-3-angular-4-admin-dashboard-template/20912589" target="_blank">BUY PREMIUM</a>
 -->

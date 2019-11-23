@@ -408,9 +408,9 @@
                 <ul class="nav navbar-toolbar">
                     <li class="dropdown dropdown-inbox">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope-o"></i>
-                            <span class="badge badge-primary envelope-badge">9</span>
+                            <span class="badge badge-primary envelope-badge"></span>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media">
+                        <!--<ul class="dropdown-menu dropdown-menu-right dropdown-menu-media">
                             <li class="dropdown-menu-header">
                                 <div>
                                     <span><strong>9 New</strong> Messages</span>
@@ -465,11 +465,11 @@
                                     </a>
                                 </div>
                             </li>
-                        </ul>
+                        </ul>-->
                     </li>
                     <li class="dropdown dropdown-notification">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell-o rel"><span class="notify-signal"></span></i></a>
-                        <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media">
+                      <!--  <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media">
                             <li class="dropdown-menu-header">
                                 <div>
                                     <span><strong>5 New</strong> Notifications</span>
@@ -516,15 +516,16 @@
                                     </a>
                                 </div>
                             </li>
-                        </ul>
+                        </ul>-->
                     </li>
                     <li class="dropdown dropdown-user">
                         <a class="nav-link dropdown-toggle link" data-toggle="dropdown">
                             <img src="/html/dist/assets/img/admin-avatar.png" />
                             <span></span>Admin<i class="fa fa-angle-down m-l-5"></i></a>
                         <ul class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="profile.html"><i class="fa fa-user"></i>Profile</a>
+                           <!-- <a class="dropdown-item" href="profile.html"><i class="fa fa-user"></i>Profile</a>
                             <a class="dropdown-item" href="profile.html"><i class="fa fa-cog"></i>Settings</a>
+                           -->
                             <li class="dropdown-divider"></li>
                             <a class="dropdown-item" href="#"  th:href="@{login}"><i class="fa fa-power-off"></i>Logout</a>
                         </ul>
@@ -554,25 +555,20 @@
 
                     <li>
                         <a href="javascript:;"><i class="sidebar-item-icon fa fa-edit"></i>
-                            <span class="nav-label">CIVILITE</span><i class="fa fa-angle-left arrow"></i></a>
+                            <span class="nav-label">PAYS</span><i class="fa fa-angle-left arrow"></i></a>
                         <ul class="nav-2-level collapse">
                             <li>
-                                <a  href="#" th:href="@{civility}">Civilité</a>
+                                <a   href="#" th:href="@{country}">Pays</a>
                             </li>
-
                         </ul>
                     </li>
 
                     <li>
-                        <a href="javascript:;"><i class="sidebar-item-icon fa fa-user"></i>
-                            <span class="nav-label">PROPRIETAIRE</span><i class="fa fa-angle-left arrow"></i></a>
+                        <a href="javascript:;"><i class="sidebar-item-icon fa fa-edit"></i>
+                            <span class="nav-label">VILLE</span><i class="fa fa-angle-left arrow"></i></a>
                         <ul class="nav-2-level collapse">
                             <li>
-                                <a href="#" th:href="@{typeProperty}">Type propriétaire</a>
-                            </li>
-
-                            <li>
-                                <a href="#" th:href="@{property}">Propriétaire</a>
+                                <a  href="#" th:href="@{twon}">Ville</a>
                             </li>
 
                         </ul>
@@ -600,6 +596,49 @@
                             </li>
                         </ul>
                     </li>
+
+                    <li>
+                        <a href="javascript:;"><i class="sidebar-item-icon fa fa-home"></i>
+                            <span class="nav-label">MON ENTREPRISE</span><i class="fa fa-angle-left arrow"></i></a>
+                        <ul class="nav-2-level collapse">
+                            <li>
+                                <a href="#" th:href="@{enterpriseType}">Type entreprise</a>
+                            </li>
+
+                            <li>
+                                <a href="#" th:href="@{enterprise}">Entreprise</a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="javascript:;"><i class="sidebar-item-icon fa fa-edit"></i>
+                            <span class="nav-label">CIVILITE</span><i class="fa fa-angle-left arrow"></i></a>
+                        <ul class="nav-2-level collapse">
+                            <li>
+                                <a  href="#" th:href="@{civility}">Civilité</a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="javascript:;"><i class="sidebar-item-icon fa fa-user"></i>
+                            <span class="nav-label">PROPRIETAIRE</span><i class="fa fa-angle-left arrow"></i></a>
+                        <ul class="nav-2-level collapse">
+                            <li>
+                                <a href="#" th:href="@{typeProperty}">Type propriétaire</a>
+                            </li>
+
+                            <li>
+                                <a href="#" th:href="@{property}">Propriétaire</a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+
 
 
                     <li>

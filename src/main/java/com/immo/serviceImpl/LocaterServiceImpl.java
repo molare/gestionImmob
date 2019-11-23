@@ -11,6 +11,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.servlet.http.HttpServletRequest;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -61,5 +65,22 @@ public class LocaterServiceImpl implements LocaterService {
         }catch (NoResultException ex){
             return 0;
         }
+    }
+
+    @Override
+    public List<Locater> export(int cpt, HttpServletRequest request) {
+        List<Locater> list = new ArrayList<Locater>();
+        Locater us = null;
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy : HH:mm");
+        //DecimalFormat dft = new DecimalFormat("#.00");
+
+        for(int i=0; i<cpt; i++){
+
+            us = locaterRepository.findById(Integer.parseInt(request.getParameter("keyid"+i)));
+
+            us.setDateTransient(df.format(us.getDate()));
+            list.add(us);
+        }
+        return list;
     }
 }

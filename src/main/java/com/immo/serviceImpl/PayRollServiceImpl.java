@@ -410,7 +410,48 @@ public class PayRollServiceImpl implements PayRollService {
         return results;
     }
 
+    @Override
+    public List<PayRoll> statePayRollReporting(String startDate, String endDate, int bienId, int locativeId, int locaterId) {
+       String sql="";
+        sql="SELECT b.designation AS bien, lt.designation AS locat, lo.first_name AS firstname,lo.last_name AS lastname ,SUM(pr.amount) AS paie, SUM(c.amount) AS caution, SUM(DISTINCT c.rest_caution) AS restcaution,\n" +
+                "COALESCE(SUM(pr.amount)+SUM(DISTINCT c.rest_caution),0) AS total \n" +
+                "FROM pay_roll pr, contrat c,locater lo, bien b, locative lt\n" +
+                "WHERE pr.contrat_id = c.id \n" +
+                "AND pr.status_val =1\n" +
+                "AND c.locater_id = lo.id\n" +
+                "AND c.locative_id = lt.id\n" +
+                "AND lt.bien_id = b.id\n";
+                if(bienId!=0){
+                  sql+=" AND b.id ="+bienId;
+                }
+                if(locativeId!=0){
+                    sql+=" AND lt.id ="+locativeId;
+                }
+                if(locaterId!=0){
+                    sql+=" AND lo.id ="+locaterId;
+                }
+               sql+= " AND pr.end_date >= '"+startDate+"'\n" +
+                " AND pr.end_date <= '"+endDate+"'\n" +
+                " GROUP BY c.id,b.designation, lt.designation, lo.first_name, lo.last_name";
 
+        Query query = em.createNativeQuery(sql);
+        List<Object[]> listP =  query.getResultList();
+        List<PayRoll> listPayRoll = new ArrayList<PayRoll>();
+        for(Object[] rs : listP){
+            PayRoll pr = new PayRoll();
+            pr.setBienTransient(rs[0]+"");
+            pr.setLocativeTransient(rs[1]+"");
+            pr.setLocaterTransient(rs[2]+""+" "+rs[3]+"");
+            pr.setAmount(Double.parseDouble(rs[4]+""));
+            pr.setCautionTransient(Double.parseDouble(rs[5]+""));
+            pr.setRestCautionTransient(Double.parseDouble(rs[6]+""));
+            pr.setTotalTransient(Double.parseDouble(rs[7]+""));
+            listPayRoll.add(pr);
+
+        }
+
+        return listPayRoll;
+    }
 
 
 }

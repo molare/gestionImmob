@@ -2,6 +2,7 @@ package com.immo.service;
 
 import com.immo.entities.Locater;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -14,4 +15,6 @@ public interface LocaterService {
     public Locater findById(int id);
     public void delete(int id);
     public int countLocater();
+    public List<Locater> export(int cpt, HttpServletRequest request);
+
 }

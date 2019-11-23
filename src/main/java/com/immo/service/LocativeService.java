@@ -4,6 +4,7 @@ import com.immo.entities.Locative;
 import com.immo.entities.City;
 import com.immo.entities.Property;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -21,4 +22,5 @@ public interface LocativeService {
     public Locative findByContrat(int id);
     public List<Locative> getLocativeNotInContrat();
     public int countLocative();
+    public List<Locative> export(int cpt, HttpServletRequest request);
 }

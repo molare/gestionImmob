@@ -45,8 +45,6 @@ public class Property implements Serializable {
     @Column(name = "domicil")
     private String domicil;
 
-    @Column(name = "country")
-    private String country;
 
     @Column(name = "cpte_contribu")
     private String cpteContribu;
@@ -72,6 +70,14 @@ public class Property implements Serializable {
 
     @Column(name="image_name", nullable = true )
     private String imageName;
+
+    @ManyToOne
+    @JoinColumn(name="twon_id")
+    private Twon twon;
+
+    @Transient
+    private String twonTransient;
+
 
     @Transient
     private String imageTransient;
@@ -171,12 +177,20 @@ public class Property implements Serializable {
         this.lieuNais = lieuNais;
     }
 
-    public String getCountry() {
-        return country;
+    public Twon getTwon() {
+        return twon;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setTwon(Twon twon) {
+        this.twon = twon;
+    }
+
+    public String getTwonTransient() {
+        return twonTransient;
+    }
+
+    public void setTwonTransient(String twonTransient) {
+        this.twonTransient = twonTransient;
     }
 
     public String getNberPiece() {
@@ -346,7 +360,6 @@ public class Property implements Serializable {
                 ", naturePiece='" + naturePiece + '\'' +
                 ", lieuNais='" + lieuNais + '\'' +
                 ", domicil='" + domicil + '\'' +
-                ", country='" + country + '\'' +
                 ", cpteContribu='" + cpteContribu + '\'' +
                 ", date=" + date +
                 ", birthDate=" + birthDate +

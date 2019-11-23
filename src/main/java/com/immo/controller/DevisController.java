@@ -55,21 +55,35 @@ public class DevisController {
     }
 
 
-    @RequestMapping(value = "/saveDevis", method = RequestMethod.POST)
+    @RequestMapping(value = "/saveDevis", method = RequestMethod.POST,produces="application/json;charset=UTF-8")
     public ResponseData addDevis(Locale locale,@ModelAttribute Devis devis, BindingResult result,HttpServletRequest request){
+        ResponseData json=null;
+        try{
         devis.setName(request.getParameter("name").toUpperCase());
         devis.setDescription(request.getParameter("description"));
         Devis c =  devisService.add(devis);
-        return new ResponseData(true, c);
+        json=new ResponseData(true, c);
+
+    }catch (Exception ex){
+        json = new ResponseData(false,"une valeur a &eacute;t&eacute; dupliqu&eacute;e ou erron&eacute;e",ex.getCause());
+    }
+    return json;
     }
 
-    @RequestMapping(value = "/updateDevis/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/updateDevis/{id}", method = RequestMethod.POST,produces="application/json;charset=UTF-8")
     public ResponseData updateDevis(Locale locale,@ModelAttribute Devis devis,@PathVariable int id, BindingResult result,HttpServletRequest request){
+        ResponseData json=null;
+        try{
         Devis ci = devisService.findById(id);
         ci.setName(request.getParameter("name").toUpperCase());
         ci.setDescription(request.getParameter("description"));
         Devis c =  devisService.add(ci);
-        return new ResponseData(true, c);
+        json = new ResponseData(true, c);
+
+    }catch (Exception ex){
+        json = new ResponseData(false,"une valeur a &eacute;t&eacute; dupliqu&eacute;e ou erron&eacute;e",ex.getCause());
+    }
+    return json;
     }
 
     @RequestMapping(value = "/findDevis/{id}", method = RequestMethod.GET)
@@ -78,14 +92,14 @@ public class DevisController {
        return new ResponseData(true, ci);
     }
 
-    @RequestMapping(value = "/deleteDevis/{devisId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/deleteDevis/{devisId}", method = RequestMethod.DELETE,produces="application/json;charset=UTF-8")
     public ResponseData deleteDevis(@PathVariable int devisId,HttpServletRequest request){
         ResponseData json=null;
         try {
             devisService.delete(devisId);
             json = new ResponseData(true, null);
         }catch (Exception ex){
-            json = new ResponseData(false,"Impossible de supprimer cette donnée car elle est liée ailleurs",ex.getCause());
+            json = new ResponseData(false,"Impossible de supprimer cette donn&eacute;e car elle est li&eacute;e ailleurs",ex.getCause());
         }
         return json;
     }

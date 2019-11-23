@@ -105,4 +105,25 @@ public class MainController {
     public String report(Model model){
         return "reporting";
     }
+
+    @RequestMapping(value = "/twon", method = RequestMethod.GET)
+      public String twon(Model model){
+        return "twon";
+    }
+
+    @RequestMapping(value = "/country", method = RequestMethod.GET)
+    public String country(Model model){
+        return "country";
+    }
+
+    @RequestMapping(value = "/enterpriseType", method = RequestMethod.GET)
+    public String enterpriseType(Model model){
+        return "enterpriseType";
+    }
+
+
+    @RequestMapping(value = "/enterprise", method = RequestMethod.GET)
+    public String enterprise(Model model){
+        return "enterprise";
+    }
 }

@@ -1,0 +1,125 @@
+package com.immo.entities;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
+
+/**
+ * Created by olivier on 02/10/2019.
+ */
+@Entity
+@Table(name = "twon")
+public class Twon implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    @Column(name = "name")
+    private String name;
+    @Column(name = "description")
+    private String description;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_date", updatable = false)
+    private Date createdDate = new Date();
+
+    @ManyToOne
+    @JoinColumn(name="country_id")
+    private Country country;
+
+
+    @Transient
+    private String countryTransient;
+
+    @Transient
+    private String action;
+
+    @Transient
+    private String checkboxe;
+
+
+    @Transient
+    private String dateTransient;
+
+    public String getDateTransient() {
+        return dateTransient;
+    }
+
+    public void setDateTransient(String dateTransient) {
+        this.dateTransient = dateTransient;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public String getCheckboxe() {
+        return checkboxe;
+    }
+
+    public void setCheckboxe(String checkboxe) {
+        this.checkboxe = checkboxe;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
+    }
+
+    public String getCountryTransient() {
+        return countryTransient;
+    }
+
+    public void setCountryTransient(String countryTransient) {
+        this.countryTransient = countryTransient;
+    }
+
+    @Override
+    public String toString() {
+        return "Devis{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", createdDate=" + createdDate +
+                ", action='" + action + '\'' +
+                '}';
+    }
+}

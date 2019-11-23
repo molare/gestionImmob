@@ -5,9 +5,12 @@ import com.immo.entities.Contrat;
 import com.immo.entities.PayRoll;
 import com.immo.reporting.ContratReporting;
 import com.immo.reporting.PayRollReporting;
+import com.immo.reporting.StatePayRollReporting;
 import com.immo.service.*;
 import net.sf.dynamicreports.report.exception.DRException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -121,6 +124,31 @@ public class PayRollController {
         List<Object>  secondPayRollCharts = payRollService.secondYearPayRollChart();
         List<Object>  threePayRollCharts = payRollService.threeYearPayRollChart();
         return new ResponseData(true,firstPayRollCharts,secondPayRollCharts,threePayRollCharts);
+    }
+
+
+    @RequestMapping(value = "/statePayRoll/reporting", method = RequestMethod.GET,produces="application/json;charset=UTF-8")
+    public void statePayRollReporting(HttpServletRequest request, HttpServletResponse response,HttpSession session){
+        response.setContentType("application/pdf;charset=UTF-8");
+
+        String startDate =request.getParameter("startDate");
+        String endDate =request.getParameter("endDate");
+
+        int bienId =Integer.parseInt(request.getParameter("bien"));
+        int locativeId =Integer.parseInt(request.getParameter("locative"));
+        int locaterId =Integer.parseInt(request.getParameter("locater"));
+         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        List<PayRoll> pr = payRollService.statePayRollReporting(startDate,endDate,bienId,locativeId,locaterId);
+        try {
+            OutputStream out = response.getOutputStream();
+            StatePayRollReporting p = new StatePayRollReporting(pr,authentication.getName());
+            // response.setHeader("Content-disposition", "attachment; filename="+ ExportFileName.CONTRAT+".pdf");
+            p.build(request).toPdf(out);
+        } catch (IOException ex) {
+            Logger.getLogger(ContratController.class.getName()).log(Level.SEVERE, null, ex);
+        }  catch (DRException ex) {
+            Logger.getLogger(ContratController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

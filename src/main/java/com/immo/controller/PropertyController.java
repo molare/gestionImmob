@@ -2,9 +2,7 @@ package com.immo.controller;
 
 import com.immo.dataTableResponse.ResponseData;
 import com.immo.entities.Property;
-import com.immo.service.CivilityService;
-import com.immo.service.PropertyService;
-import com.immo.service.TypePropertyService;
+import com.immo.service.*;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -32,6 +30,9 @@ public class PropertyController {
     @Autowired
     private CivilityService civilityService;
 
+    @Autowired
+    private TwonService twonService;
+
     @RequestMapping(value = "/listProperty", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     public ResponseData getAllProperty(){
         SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
@@ -47,7 +48,7 @@ public class PropertyController {
             pro.setLastName(p.getLastName());
             pro.setEmail(p.getEmail());
             pro.setPhone(p.getPhone());
-            pro.setCountry(p.getCountry());
+            pro.setTwonTransient(p.getTwon().getName());
             pro.setBirthDateTransient(sdf.format(p.getBirthDate()));
             pro.setNberPiece(p.getNberPiece());
             pro.setDomicil(p.getDomicil());
@@ -55,6 +56,7 @@ public class PropertyController {
             pro.setLieuNais(p.getLieuNais());
             pro.setTypeTransient(p.getTypeProperty().getName());
             pro.setCivilityTransient(p.getCivility().getName());
+
             String act="<td>\n" +
                     "	<a href=\"javascript: void(0);\" data-toggle=\"modal\" data-target=\"#editPropertyModal\" class=\"link-underlined margin-right-50 btn btn-success\" onclick=\"editProperty("+pro.getId()+")\"><i class=\"fa fa-edit\"><!-- --></i></a>\n" +
                     "	<a href=\"javascript: void(0);\" data-toggle=\"modal\" data-target=\"#removePropertyModal\" class=\"link-underlined btn btn-danger\" onclick=\"removeProperty("+pro.getId()+")\"><i class=\"fa fa-trash-o\"><!-- --></i></a>\n" +
@@ -102,7 +104,7 @@ public class PropertyController {
         return new ResponseData(true, prds);
     }
 
-    @RequestMapping(value = "/saveProperty", method = RequestMethod.POST,headers="Accept=*/*")
+    @RequestMapping(value = "/saveProperty", method = RequestMethod.POST,headers="Accept=*/*",produces="application/json;charset=UTF-8")
     public ResponseData addProperty(Locale locale, @ModelAttribute Property property,BindingResult result,@RequestParam("picture")MultipartFile file,HttpServletRequest request)throws Exception{
         ResponseData json=null;
         SimpleDateFormat sdf =new SimpleDateFormat("dd-MM-yyyy");
@@ -123,7 +125,7 @@ public class PropertyController {
             String lieuNais = request.getParameter("lieuNais");
             String cpteContribu = request.getParameter("cpteContribu");
             String domicil = request.getParameter("domicil");
-            String country = request.getParameter("country");
+            String twon = request.getParameter("twon");
             String birthDate = request.getParameter("birthDate");
             String nberPiece = request.getParameter("nberPiece");
             String naturePiece = request.getParameter("naturePiece");
@@ -139,7 +141,7 @@ public class PropertyController {
             property.setLieuNais(lieuNais);
             property.setCpteContribu(cpteContribu);
             property.setBirthDate(sdf.parse(birthDate));
-            property.setCountry(country);
+            property.setTwon(twonService.findById(Integer.parseInt(twon)));
             property.setDomicil(domicil);
             property.setNberPiece(nberPiece);
             property.setNaturePiece(naturePiece);
@@ -149,12 +151,12 @@ public class PropertyController {
             json = new ResponseData(true, p);
 
         }catch (Exception ex){
-            json = new ResponseData(false,"une valeur a été dupliquée",ex.getCause());
+            json = new ResponseData(false,"une valeur a &eacute;t&eacute; dupliqu&eacute;e ou erron&eacute;e",ex.getCause());
         }
         return json;
     }
 
-    @RequestMapping(value = "/updateProperty/{idProperty}", method = RequestMethod.POST,headers="Accept=*/*")
+    @RequestMapping(value = "/updateProperty/{idProperty}", method = RequestMethod.POST,headers="Accept=*/*",produces="application/json;charset=UTF-8")
     public ResponseData updateProperty(Locale locale, @ModelAttribute Property property,BindingResult result, @PathVariable int idProperty,@RequestParam("editPicture")MultipartFile file,HttpServletRequest request)throws Exception{
         ResponseData json=null;
         SimpleDateFormat sdf =new SimpleDateFormat("dd-MM-yyyy");
@@ -179,7 +181,7 @@ public class PropertyController {
             String lieuNais = request.getParameter("lieuNais");
             String cpteContribu = request.getParameter("cpteContribu");
             String domicil = request.getParameter("domicil");
-            String country = request.getParameter("country");
+            String twon = request.getParameter("twon");
             String birthDate = request.getParameter("birthDate");
             String nberPiece = request.getParameter("nberPiece");
             String naturePiece = request.getParameter("naturePiece");
@@ -195,7 +197,7 @@ public class PropertyController {
             property.setLieuNais(lieuNais);
             property.setCpteContribu(cpteContribu);
             property.setBirthDate(sdf.parse(birthDate));
-            property.setCountry(country);
+            property.setTwon(twonService.findById(Integer.parseInt(twon)));
             property.setDomicil(domicil);
             property.setNberPiece(nberPiece);
             property.setNaturePiece(naturePiece);
@@ -204,7 +206,7 @@ public class PropertyController {
             Property p = propertyService.update(property);
             json = new ResponseData(true, p);
         }catch (Exception ex){
-            json = new ResponseData(false,"une valeur a été dupliquée",null);
+            json = new ResponseData(false,"une valeur a &eacute;t&eacute; dupliqu&eacute;e ou erron&eacute;e",ex.getCause());
         }
         return json;
     }
@@ -214,13 +216,6 @@ public class PropertyController {
         Property p = propertyService.findById(id);
         SimpleDateFormat sdf =new SimpleDateFormat("dd-MM-yyyy");
         p.setDateTransient(sdf.format(p.getBirthDate()));
-        if(p.getCountry().equals("1")){
-            p.setCountryTransient("Cote d'ivoire");
-        }else if(p.getCountry().equals("2")){
-            p.setCountryTransient("France");
-        }else{
-            p.setCountryTransient("Belgique");
-        }
 
         if(p.getNaturePiece().equals("1")){
             p.setNatureTransient("CNI");

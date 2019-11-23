@@ -130,6 +130,7 @@
                     {"data":"id"},
                     {"data":"dateTransient"},
                     {"data":"name"},
+                    {"data":"twonTransient"},
                     {"data":"description"},
                     {"data":"action"}
 
@@ -150,11 +151,12 @@
 
             //IF OPEN MODAL
             $("#btnAddNew").click(function(){
+                $("#communeForm")[0].reset();
                 $(".col-md-4").removeClass('has-error').removeClass('has-success');
                 $(".text-danger").remove();
                 $('#loadingId').hide();
-                $("#communeForm")[0].reset();
                 $(".messages").html("");
+                twonOption();
 
             });
 
@@ -166,6 +168,7 @@
                 // validation
                 var name = $("#nameId").val();
                 var description= $("#descriptionId").val();
+                var town =$("#twonId").val();
 
                 if(name === "") {
                     $("#nameId").closest('.col-md-4').addClass('has-error');
@@ -182,7 +185,16 @@
                     $("#descriptionId").closest('.col-md-4').removeClass('has-error');
                     $("#descriptionId").closest('.col-md-4').addClass('has-success');
                 }
-                if(name && description !="") {
+
+                if(town === "") {
+                    $("#townId").closest('.col-md-4').addClass('has-error');
+                    $("#townId").after('<p class="text-danger">Champs vide</p>');
+                }else {
+                    $("#townId").closest('.col-md-4').removeClass('has-error');
+                    $("#townId").closest('.col-md-4').addClass('has-success');
+                }
+
+                if(name && description !="" && town!="0") {
                     $.ajax({
                         url: window.origin + '/saveCommune',
                         type: 'POST',
@@ -251,7 +263,7 @@
 
                         $("#editNameId").val(response.data.name);
                         $("#editDescriptionId").val(response.data.description);
-                        
+                        editTwonOption(response.data.twon.id,response.data.twon.name);
 
                         $("#editCommuneForm").append('<input type="hidden" name="id" id="commune_edit_id" value="'+response.data.id+'"/>');
                         // here update the member data
@@ -373,6 +385,43 @@
 
         //FIN DELETE COMMUNE
 
+        //LIST TWON
+        function twonOption(){
+            $.ajax({
+                url:window.origin+'/listTwon',
+                type:'GET',
+                dataType :"json",
+                success:function(response){
+                    $("#twonId").html('');
+                    $("#twonId").append('<option value='+0+'>'+' '+'</option>');
+                    $.each(response.data, function(key, val){
+                        $("#twonId").append('<option value='+val.id+'>'+ val.name+ '</option>');
+                    });
+                }
+            });
+        }
+        //FIN
+
+        //LIST TWON
+        function editTwonOption(comId, comVal){
+            $.ajax({
+                url:window.origin+'/listTwon',
+                type:'GET',
+                dataType :"json",
+                success:function(response){
+                    $("#editTwonId").html('');
+                    $("#editTwonId").append('<option value='+comId+'>'+comVal+'</option>');
+                    $.each(response.data, function(key, val){
+                        if(comId!=val.id){
+                            $("#editTwonId").append('<option value='+val.id+'>'+ val.name+ '</option>');
+                        }
+
+                    });
+                }
+            });
+        }
+        //FIN
+
 
     </script>
 
@@ -410,9 +459,9 @@
                 <ul class="nav navbar-toolbar">
                     <li class="dropdown dropdown-inbox">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope-o"></i>
-                            <span class="badge badge-primary envelope-badge">9</span>
+                            <span class="badge badge-primary envelope-badge"></span>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media">
+                      <!--  <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media">
                             <li class="dropdown-menu-header">
                                 <div>
                                     <span><strong>9 New</strong> Messages</span>
@@ -467,11 +516,11 @@
                                     </a>
                                 </div>
                             </li>
-                        </ul>
+                        </ul>-->
                     </li>
                     <li class="dropdown dropdown-notification">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell-o rel"><span class="notify-signal"></span></i></a>
-                        <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media">
+                     <!--   <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media">
                             <li class="dropdown-menu-header">
                                 <div>
                                     <span><strong>5 New</strong> Notifications</span>
@@ -518,15 +567,16 @@
                                     </a>
                                 </div>
                             </li>
-                        </ul>
+                        </ul>-->
                     </li>
                     <li class="dropdown dropdown-user">
                         <a class="nav-link dropdown-toggle link" data-toggle="dropdown">
                             <img src="/html/dist/assets/img/admin-avatar.png" />
                             <span></span>Admin<i class="fa fa-angle-down m-l-5"></i></a>
                         <ul class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="profile.html"><i class="fa fa-user"></i>Profile</a>
+                         <!--   <a class="dropdown-item" href="profile.html"><i class="fa fa-user"></i>Profile</a>
                             <a class="dropdown-item" href="profile.html"><i class="fa fa-cog"></i>Settings</a>
+                          -->
                             <li class="dropdown-divider"></li>
                             <a class="dropdown-item" href="#"  th:href="@{login}"><i class="fa fa-power-off"></i>Logout</a>
                         </ul>
@@ -556,25 +606,20 @@
 
                     <li>
                         <a href="javascript:;"><i class="sidebar-item-icon fa fa-edit"></i>
-                            <span class="nav-label">CIVILITE</span><i class="fa fa-angle-left arrow"></i></a>
+                            <span class="nav-label">PAYS</span><i class="fa fa-angle-left arrow"></i></a>
                         <ul class="nav-2-level collapse">
                             <li>
-                                <a href="#" th:href="@{civility}">Civilité</a>
+                                <a   href="#" th:href="@{country}">Pays</a>
                             </li>
-
                         </ul>
                     </li>
 
                     <li>
-                        <a href="javascript:;"><i class="sidebar-item-icon fa fa-user"></i>
-                            <span class="nav-label">PROPRIETAIRE</span><i class="fa fa-angle-left arrow"></i></a>
+                        <a href="javascript:;"><i class="sidebar-item-icon fa fa-edit"></i>
+                            <span class="nav-label">VILLE</span><i class="fa fa-angle-left arrow"></i></a>
                         <ul class="nav-2-level collapse">
                             <li>
-                                <a href="#" th:href="@{typeProperty}">Type propriétaire</a>
-                            </li>
-
-                            <li>
-                                <a href="#" th:href="@{property}">Propriétaire</a>
+                                <a  href="#" th:href="@{twon}">Ville</a>
                             </li>
 
                         </ul>
@@ -602,6 +647,48 @@
                             </li>
                         </ul>
                     </li>
+
+                    <li>
+                        <a href="javascript:;"><i class="sidebar-item-icon fa fa-home"></i>
+                            <span class="nav-label">MON ENTREPRISE</span><i class="fa fa-angle-left arrow"></i></a>
+                        <ul class="nav-2-level collapse">
+                            <li>
+                                <a href="#" th:href="@{enterpriseType}">Type entreprise</a>
+                            </li>
+
+                            <li>
+                                <a href="#" th:href="@{enterprise}">Entreprise</a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="javascript:;"><i class="sidebar-item-icon fa fa-edit"></i>
+                            <span class="nav-label">CIVILITE</span><i class="fa fa-angle-left arrow"></i></a>
+                        <ul class="nav-2-level collapse">
+                            <li>
+                                <a href="#" th:href="@{civility}">Civilité</a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="javascript:;"><i class="sidebar-item-icon fa fa-user"></i>
+                            <span class="nav-label">PROPRIETAIRE</span><i class="fa fa-angle-left arrow"></i></a>
+                        <ul class="nav-2-level collapse">
+                            <li>
+                                <a href="#" th:href="@{typeProperty}">Type propriétaire</a>
+                            </li>
+
+                            <li>
+                                <a href="#" th:href="@{property}">Propriétaire</a>
+                            </li>
+
+                        </ul>
+                    </li>
+
 
 
                     <li>
@@ -732,6 +819,7 @@
                                 <th><input name="select_all" value="1" type="checkbox"></th>
                                 <th>Date création</th>
                                 <th>Nom</th>
+                                <th>Ville</th>
                                 <th>Description</th>
                                 <th>Action</th>
                             </tr>
@@ -742,6 +830,7 @@
                                 <th></th>
                                 <th>Date création</th>
                                 <th>Nom</th>
+                                <th>Ville</th>
                                 <th>Description</th>
                                 <th>Action</th>
                             </tr>
@@ -955,6 +1044,14 @@
                                 <span class="help-block"></span>
                             </div>
                         </div>
+
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">Ville</label>
+                            <div class="col-md-4">
+                                <select class="form-control" id="twonId" name="twon">
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-group row">
                             <label class="control-label col-md-2">Description</label>
                             <div class="col-md-4">
@@ -1010,6 +1107,14 @@
                                 <span class="help-block"></span>
                             </div>
                         </div>
+
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">Ville</label>
+                            <div class="col-md-4">
+                                <select class="form-control" id="editTwonId" name="twon">
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-group row">
                             <label class="control-label col-md-2">Description</label>
                             <div class="col-md-4">
@@ -1017,6 +1122,7 @@
                                 <span class="help-block"></span>
                             </div>
                         </div>
+
                     </form>
                 </div>
                 <div class="modal-footer">

@@ -59,6 +59,11 @@ public class PayRoll implements Serializable {
     private String locativeTransient;
 
     @Transient
+    private String bienTransient;
+
+    private String typeBienTransient;
+
+    @Transient
     private String locaterTransient;
 
 
@@ -77,6 +82,15 @@ public class PayRoll implements Serializable {
 
     @Transient
     private String checkboxe;
+
+    @Transient
+    private double restCautionTransient;
+
+    @Transient
+    private double cautionTransient;
+
+    @Transient
+    private double totalTransient;
 
     public int getId() {
         return id;
@@ -236,5 +250,45 @@ public class PayRoll implements Serializable {
 
     public void setCautionStatut(int cautionStatut) {
         this.cautionStatut = cautionStatut;
+    }
+
+    public String getBienTransient() {
+        return bienTransient;
+    }
+
+    public void setBienTransient(String bienTransient) {
+        this.bienTransient = bienTransient;
+    }
+
+    public String getTypeBienTransient() {
+        return typeBienTransient;
+    }
+
+    public void setTypeBienTransient(String typeBienTransient) {
+        this.typeBienTransient = typeBienTransient;
+    }
+
+    public double getRestCautionTransient() {
+        return restCautionTransient;
+    }
+
+    public void setRestCautionTransient(double restCautionTransient) {
+        this.restCautionTransient = restCautionTransient;
+    }
+
+    public double getCautionTransient() {
+        return cautionTransient;
+    }
+
+    public void setCautionTransient(double cautionTransient) {
+        this.cautionTransient = cautionTransient;
+    }
+
+    public double getTotalTransient() {
+        return totalTransient;
+    }
+
+    public void setTotalTransient(double totalTransient) {
+        this.totalTransient = totalTransient;
     }
 }

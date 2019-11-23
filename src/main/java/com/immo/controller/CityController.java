@@ -55,21 +55,35 @@ public class CityController {
 
     @RequestMapping(value = "/saveCity", method = RequestMethod.POST,produces="application/json;charset=UTF-8")
     public ResponseData addCity(Locale locale,@ModelAttribute City city, BindingResult result,HttpServletRequest request){
-        city.setName(request.getParameter("name").toUpperCase());
-        city.setDescription(request.getParameter("description"));
-        city.setCommune(communeService.findById(Integer.parseInt(request.getParameter("commune"))));
-        City c =  cityService.add(city);
-        return new ResponseData(true,c);
+        ResponseData json=null;
+        try{
+            city.setName(request.getParameter("name").toUpperCase());
+            city.setDescription(request.getParameter("description"));
+            city.setCommune(communeService.findById(Integer.parseInt(request.getParameter("commune"))));
+            City c =  cityService.add(city);
+            json = new ResponseData(true,c);
+
+        }catch (Exception ex){
+            json = new ResponseData(false,"une valeur a &eacute;t&eacute; dupliqu&eacute;e ou erron&eacute;e",ex.getCause());
+        }
+        return  json;
     }
 
     @RequestMapping(value = "/updateCity/{idCity}", method = RequestMethod.POST,produces="application/json;charset=UTF-8")
        public ResponseData updateCity(Locale locale,@ModelAttribute City city,@PathVariable int idCity, BindingResult result,HttpServletRequest request){
+        ResponseData json=null;
         City ci = cityService.findById(idCity);
+        try{
         ci.setName(request.getParameter("name").toUpperCase());
         ci.setDescription(request.getParameter("description"));
         ci.setCommune(communeService.findById(Integer.parseInt(request.getParameter("commune"))));
         City c =  cityService.update(ci);
-        return new ResponseData(true,c);
+        json = new ResponseData(true,c);
+
+        }catch (Exception ex){
+            json = new ResponseData(false,"une valeur a &eacute;t&eacute; dupliqu&eacute;e ou erron&eacute;e",ex.getCause());
+        }
+        return  json;
     }
 
     @RequestMapping(value = "/findCity/{idCity}", method = RequestMethod.GET)
@@ -78,14 +92,14 @@ public class CityController {
         return new ResponseData(true,ci);
     }
 
-    @RequestMapping(value = "/deleteCity/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/deleteCity/{id}", method = RequestMethod.DELETE,produces="application/json;charset=UTF-8")
     public ResponseData deleteCity(@PathVariable int id,HttpServletRequest request){
         ResponseData json=null;
         try {
             cityService.delete(id);
             json = new ResponseData(true, null);
         }catch (Exception ex){
-            json = new ResponseData(false,"Impossible de supprimer cette donnée car elle est liée ailleurs",ex.getCause());
+            json = new ResponseData(false,"Impossible de supprimer cette donn&eacute;e car elle est li&eacute;e ailleurs",ex.getCause());
         }
         return json;
     }

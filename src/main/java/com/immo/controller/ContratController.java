@@ -210,6 +210,8 @@ public class ContratController {
         int id =Integer.parseInt(request.getParameter("cpt"));
        // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         List<Contrat> contrats = contratService.export(id, request);
+
+
         try {
             OutputStream out = response.getOutputStream();
             ContratReporting p = new ContratReporting(contrats);

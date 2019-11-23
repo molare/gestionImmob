@@ -2,22 +2,33 @@ package com.immo.controller;
 
 import com.immo.dataTableResponse.ResponseData;
 import com.immo.entities.Locater;
+import com.immo.reporting.LocaterReporting;
 import com.immo.service.CivilityService;
 import com.immo.service.LocaterService;
 import com.immo.service.TypePropertyService;
+import net.sf.dynamicreports.report.exception.DRException;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by olivier on 09/10/2019.
@@ -250,5 +261,25 @@ public class LocaterController {
             json = new ResponseData(false,"erreur serveur",ex.getCause());
         }
         return json;
+    }
+
+
+    @RequestMapping(value = "/locater/export", method = RequestMethod.POST, produces = MediaType.ALL_VALUE)
+    public void exportCustomer(HttpServletRequest request, HttpServletResponse response,HttpSession session){
+        response.setContentType("application/pdf");
+
+        int id =Integer.parseInt(request.getParameter("cpt"));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        List<Locater> customers = locaterService.export(id, request);
+        // System.out.println("userList "+customers);
+        try {
+            OutputStream out = response.getOutputStream();
+            LocaterReporting p = new LocaterReporting(customers,authentication.getName());
+            p.build(request).toPdf(out);
+        } catch (IOException ex) {
+            Logger.getLogger(LocaterController.class.getName()).log(Level.SEVERE, null, ex);
+        }  catch (DRException ex) {
+            Logger.getLogger(LocaterController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

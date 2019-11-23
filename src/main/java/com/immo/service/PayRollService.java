@@ -27,5 +27,7 @@ public interface PayRollService {
     List<Object> firstYearPayRollChart();
     List<Object> secondYearPayRollChart();
     List<Object> threeYearPayRollChart();
+    public List<PayRoll> statePayRollReporting(String startDate, String endDate,int bienId, int locativeId, int locaterId);
+
 
 }

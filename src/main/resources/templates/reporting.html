@@ -116,6 +116,30 @@
 
             LocaterOption();
             bienOption();
+            locativeOption();
+
+            $("#exportId").on("click", function(){
+                if($("#startDateId").val() !== "" && $("#endDateId").val() !== ""){
+
+                    var parts =$("#startDateId").val().split('-');
+                    var d1 = Number(parts[2] + parts[1] + parts[0]);
+                    var part =$("#endDateId").val().split('-');
+                    var d2 = Number(part[2] + part[1] + part[0]);
+
+                    if(d1 <= d2){
+                        printPayRollPlotState($("#startDateId").val(), $("#endDateId").val(), $("#bienId").val(), "0", "0");
+                    }else{
+                        $(".messages").html('<div class="alert alert-warning alert-dismissible" role="alert">'+
+                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+
+                                '<strong> <span class="glyphicon glyphicon-exclamation-sign"></span> </strong> La date debut doit être inferieur à la date fin</div>');
+                    }
+                }else{
+                    $(".messages").html('<div class="alert alert-warning alert-dismissible" role="alert">'+
+                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+
+                            '<strong> <span class="glyphicon glyphicon-exclamation-sign"></span> </strong>un champs obligatoire est vide </div>');
+
+                }
+            });
         });
 
         function LocaterOption(){
@@ -150,6 +174,26 @@
             });
         }
 
+        function locativeOption(){
+            $.ajax({
+                url:window.origin+'/listLocative',
+                type:'GET',
+                dataType :"json",
+                success:function(response){
+                    console.log(response)
+                    $("#locativeId").html('');
+                    $("#locativeId").append('<option value='+0+'>'+' '+'</option>');
+                    $.each(response.data, function(key, val){
+                        $("#locativeId").append('<option value='+val.id+'>'+val.designation+' ('+val.typeTransient+')'+'</option>');
+                    });
+                }
+            });
+        }
+
+        function printPayRollPlotState(startDateId, endDateId, bienId, locativeId, locaterId){
+            var url = window.origin+'/statePayRoll/reporting?startDate='+startDateId+'&endDate='+endDateId+'&bien='+bienId+'&locative='+locativeId+'&locater='+locaterId;
+            window.open(url,'_blank');
+        }
     </script>
 
 </head>
@@ -186,9 +230,9 @@
                 <ul class="nav navbar-toolbar">
                     <li class="dropdown dropdown-inbox">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope-o"></i>
-                            <span class="badge badge-primary envelope-badge">9</span>
+                            <span class="badge badge-primary envelope-badge"></span>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media">
+                       <!-- <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media">
                             <li class="dropdown-menu-header">
                                 <div>
                                     <span><strong>9 New</strong> Messages</span>
@@ -243,11 +287,11 @@
                                     </a>
                                 </div>
                             </li>
-                        </ul>
+                        </ul>-->
                     </li>
                     <li class="dropdown dropdown-notification">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell-o rel"><span class="notify-signal"></span></i></a>
-                        <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media">
+                      <!--  <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media">
                             <li class="dropdown-menu-header">
                                 <div>
                                     <span><strong>5 New</strong> Notifications</span>
@@ -294,15 +338,16 @@
                                     </a>
                                 </div>
                             </li>
-                        </ul>
+                        </ul>-->
                     </li>
                     <li class="dropdown dropdown-user">
                         <a class="nav-link dropdown-toggle link" data-toggle="dropdown">
                             <img src="/html/dist/assets/img/admin-avatar.png" />
                             <span></span>Admin<i class="fa fa-angle-down m-l-5"></i></a>
                         <ul class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="profile.html"><i class="fa fa-user"></i>Profile</a>
+                          <!--  <a class="dropdown-item" href="profile.html"><i class="fa fa-user"></i>Profile</a>
                             <a class="dropdown-item" href="profile.html"><i class="fa fa-cog"></i>Settings</a>
+                           -->
                             <li class="dropdown-divider"></li>
                             <a class="dropdown-item" href="#"  th:href="@{login}"><i class="fa fa-power-off"></i>Logout</a>
                         </ul>
@@ -332,6 +377,64 @@
 
                     <li>
                         <a href="javascript:;"><i class="sidebar-item-icon fa fa-edit"></i>
+                            <span class="nav-label">PAYS</span><i class="fa fa-angle-left arrow"></i></a>
+                        <ul class="nav-2-level collapse">
+                            <li>
+                                <a   href="#" th:href="@{country}">Pays</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="javascript:;"><i class="sidebar-item-icon fa fa-edit"></i>
+                            <span class="nav-label">VILLE</span><i class="fa fa-angle-left arrow"></i></a>
+                        <ul class="nav-2-level collapse">
+                            <li>
+                                <a  href="#" th:href="@{twon}">Ville</a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="javascript:;"><i class="sidebar-item-icon fa fa-table"></i>
+                            <span class="nav-label">COMMUNE</span><i class="fa fa-angle-left arrow"></i></a>
+                        <ul class="nav-2-level collapse">
+                            <li>
+                                <a href="#" th:href="@{com}">Commune</a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+
+                    <li>
+                        <a href="javascript:;"><i class="sidebar-item-icon fa fa-table"></i>
+                            <span class="nav-label">QUARTIER</span><i class="fa fa-angle-left arrow"></i></a>
+                        <ul class="nav-2-level collapse">
+                            <li>
+                                <a href="#" th:href="@{city}">Quartier</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="javascript:;"><i class="sidebar-item-icon fa fa-home"></i>
+                            <span class="nav-label">MON ENTREPRISE</span><i class="fa fa-angle-left arrow"></i></a>
+                        <ul class="nav-2-level collapse">
+                            <li>
+                                <a href="#" th:href="@{enterpriseType}">Type entreprise</a>
+                            </li>
+
+                            <li>
+                                <a href="#" th:href="@{enterprise}">Entreprise</a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="javascript:;"><i class="sidebar-item-icon fa fa-edit"></i>
                             <span class="nav-label">CIVILITE</span><i class="fa fa-angle-left arrow"></i></a>
                         <ul class="nav-2-level collapse ">
                             <li>
@@ -357,27 +460,7 @@
                     </li>
 
 
-                    <li>
-                        <a href="javascript:;"><i class="sidebar-item-icon fa fa-table"></i>
-                            <span class="nav-label">COMMUNE</span><i class="fa fa-angle-left arrow"></i></a>
-                        <ul class="nav-2-level collapse">
-                            <li>
-                                <a href="#" th:href="@{com}">Commune</a>
-                            </li>
 
-                        </ul>
-                    </li>
-
-
-                    <li>
-                        <a href="javascript:;"><i class="sidebar-item-icon fa fa-table"></i>
-                            <span class="nav-label">QUARTIER</span><i class="fa fa-angle-left arrow"></i></a>
-                        <ul class="nav-2-level collapse">
-                            <li>
-                                <a href="#" th:href="@{city}">Quartier</a>
-                            </li>
-                        </ul>
-                    </li>
 
 
                     <li>
@@ -536,17 +619,25 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group row">
-                                            <label class="col-md-2 col-form-label">Détail par locataire</label>
+                                  <!--      <div class="form-group row">
+                                            <label class="col-md-2 col-form-label">Détail par locative</label>
                                             <div class="col-md-4">
-                                                <select class="form-control"  placeholder="locatire" id="locaterId" name="locater">
+                                                <select class="form-control"  placeholder="locative" id="locativeId" name="locater">
                                                 </select>
                                             </div>
                                         </div>
 
                                         <div class="form-group row">
+                                            <label class="col-md-2 col-form-label">Détail par locataire</label>
+                                            <div class="col-md-4">
+                                                <select class="form-control"  placeholder="locater" id="locaterId" name="locater">
+                                                </select>
+                                            </div>
+                                        </div>-->
+
+                                        <div class="form-group row">
                                             <div class="col-sm-2 ml-sm-auto">
-                                                <button class="btn btn-info" type="submit">Exporter</button>
+                                                <button class="btn btn-info" id="exportId">Exporter</button>
                                             </div>
                                         </div>
                                     </form>

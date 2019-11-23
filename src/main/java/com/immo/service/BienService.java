@@ -4,6 +4,7 @@ import com.immo.entities.City;
 import com.immo.entities.Bien;
 import com.immo.entities.Property;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -18,4 +19,5 @@ public interface BienService {
     public List<Bien> findByProperty(Property property);
     public List<Bien> findByCity(City city);
     public int countBien();
+    public List<Bien> export(int cpt, HttpServletRequest request);
 }

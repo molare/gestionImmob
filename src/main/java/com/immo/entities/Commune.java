@@ -21,6 +21,14 @@ public class Commune implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_date", updatable = false)
     private Date createdDate = new Date();
+
+    @ManyToOne
+    @JoinColumn(name="twon_id")
+    private Twon twon;
+
+    @Transient
+    private String twonTransient;
+
     @Transient
     private String action;
 
@@ -84,6 +92,22 @@ public class Commune implements Serializable {
 
     public void setCheckboxe(String checkboxe) {
         this.checkboxe = checkboxe;
+    }
+
+    public Twon getTwon() {
+        return twon;
+    }
+
+    public void setTwon(Twon twon) {
+        this.twon = twon;
+    }
+
+    public String getTwonTransient() {
+        return twonTransient;
+    }
+
+    public void setTwonTransient(String twonTransient) {
+        this.twonTransient = twonTransient;
     }
 
     @Override

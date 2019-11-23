@@ -1,6 +1,7 @@
 package com.immo.serviceImpl;
 
 
+import com.immo.entities.Bien;
 import com.immo.entities.Locative;
 import com.immo.entities.City;
 import com.immo.entities.Property;
@@ -14,6 +15,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.servlet.http.HttpServletRequest;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -119,5 +123,30 @@ public class LocativeServiceImpl implements LocativeService {
         }catch (NoResultException ex){
             return 0;
         }
+    }
+
+    @Override
+    public List<Locative> export(int cpt, HttpServletRequest request) {
+        List<Locative> list = new ArrayList<Locative>();
+        Locative us = null;
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy : HH:mm");
+        //DecimalFormat dft = new DecimalFormat("#.00");
+
+        for(int i=0; i<cpt; i++){
+
+            us = locativeRepository.findById(Integer.parseInt(request.getParameter("keyid"+i)));
+
+            us.setDateTransient(df.format(us.getDate()));
+            us.setTypeTransient(us.getTypeLocative().getName());
+           // c.setUsageLocative(co.getUsageLocative());
+           // c.setCharge(co.getCharge());
+            //us.setSuperficy(co.getSuperficy());
+            us.setDate(us.getDate());
+            us.setDateTransient(df.format(us.getDate()));
+            us.setDevisTransient(us.getDevis().getName());
+            us.setBienTransient(us.getBien().getDesignation());
+            list.add(us);
+        }
+        return list;
     }
 }
