@@ -14,6 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,6 +36,9 @@ public class EnterpriseController {
 
     @Autowired
     private EnterpriseTypeService enterpriseTypeService;
+
+    //Save the uploaded file to this folder
+   // private static String UPLOADED_FOLDER ="C:/Users/olivier/IdeaProjects/gestionImmob/src/main/resources/static/";
 
     @RequestMapping(value = "/listEnterprise", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     public ResponseData getAllProperty(){
@@ -104,12 +110,17 @@ public class EnterpriseController {
     public ResponseData addProperty(Locale locale, @ModelAttribute Enterprise enterprise,BindingResult result,@RequestParam("picture")MultipartFile file,HttpServletRequest request)throws Exception{
         ResponseData json=null;
         SimpleDateFormat sdf =new SimpleDateFormat("dd-MM-yyyy");
+
         try {
             if(file.getSize()>0){
                 String fileName = file.getOriginalFilename();
                 byte[] bytes = file.getBytes();
                 enterprise.setImageName(fileName);
                 enterprise.setImage(bytes);
+
+                //envoie d un fichier vers un dossier specifique
+               /* Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
+                Files.write(path, bytes);*/
             }
             String name = request.getParameter("name");
             String capital = request.getParameter("capital");

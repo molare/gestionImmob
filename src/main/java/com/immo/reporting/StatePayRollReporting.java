@@ -51,7 +51,7 @@ public class StatePayRollReporting {
         StyleBuilder titleStyle= stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(10).setBackgroundColor(new Color(62,162,97));
 
 
-        TextColumnBuilder<String> locaterColumn = col.column("Locater", "locaterTransient", type.stringType());
+        TextColumnBuilder<String> locaterColumn = col.column("Locataire", "locaterTransient", type.stringType());
         TextColumnBuilder<String> locativeColumn = col.column("Locative", "locativeTransient", type.stringType());
         TextColumnBuilder<String> bienColumn = col.column("Nom bien", "bienTransient", type.stringType());
         TextColumnBuilder<Double> amountColumn = col.column("Total paie mensuel (FCFA)", "amount", type.doubleType());

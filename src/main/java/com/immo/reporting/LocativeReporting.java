@@ -10,6 +10,7 @@ import net.sf.dynamicreports.report.builder.component.ComponentBuilder;
 import net.sf.dynamicreports.report.builder.component.HorizontalListBuilder;
 import net.sf.dynamicreports.report.builder.component.ImageBuilder;
 import net.sf.dynamicreports.report.builder.component.RectangleBuilder;
+import net.sf.dynamicreports.report.builder.style.PenBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.constant.HorizontalAlignment;
 import net.sf.dynamicreports.report.constant.PageOrientation;
@@ -68,7 +69,7 @@ public class LocativeReporting {
 
 
         //logo
-        logoImg = cmp.image(image).setStyle(DynamicReports.stl.style().setHorizontalAlignment(HorizontalAlignment.LEFT));
+        logoImg = cmp.image(image).setStyle(DynamicReports.stl.style()/*.setBorder(stl.penDotted())*/.setHorizontalAlignment(HorizontalAlignment.LEFT));
         logoImg.setDimension(80,80);
 
         subreport

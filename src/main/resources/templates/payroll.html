@@ -269,7 +269,7 @@
                         orderable:      false,
                         data:           null,
                         //defaultContent:'<a href="javascript: void(0);" class="link-underlined margin-right-5" style="color: white" ><i class="fa fa-plus"></i></a>'
-                       defaultContent: '<a href="javascript: void(0);" style="color: white"><i id="detailId" class="fa fa-plus"></i></a>'
+                       defaultContent: '<a href="javascript: void(0);" style="color: white"><i class="fa fa-plus"></i></a>'
 
                     },
                     {"data":"dateTransient"},
@@ -298,23 +298,26 @@
                 if(row.child.isShown()){
                     row.child.hide();
                     tr.removeClass('shown');
+                  /* tr.next().children($("i")).removeClass(".fa fa-minus");
+                    tr.next().children($("i")).addClass(".fa fa-plus") ;*/
 
                 }else{
                     row.child(formatPayRoll(row.data())).show();
                     tr.addClass('shown');
-
+                   /* tr.next().children($("i")).removeClass(".fa fa-plus");
+                    tr.next().children($("i")).addClass(".fa fa-minus") ;*/
                 }
             });
 
-           /* $('#payRollTable tbody').on('click','a', function(){
-               if(!$(this).children("#detailId").hasClass(".fa fa-plus")){
+          /* $('#payRollTable tbody').on('click','a', function(){
+               if($(this).children("#detailId").hasClass(".fa fa-plus")){
                     alert('11111')
-                    $("#detailId").removeClass(".fa fa-minus");
-                    $("#detailId").addClass("fa fa-plus") ;
-                }else if($(this).children("#detailId").hasClass(".fa fa-plus")){
-                    alert('2222')
                     $("#detailId").removeClass(".fa fa-plus");
-                    $("#detailId").addClass("fa fa-minus") ;
+                    $("#detailId").addClass(".fa fa-minus") ;
+                }else{
+                    alert('2222')
+                    $("#detailId").removeClass(".fa fa-minus");
+                    $("#detailId").addClass(".fa fa-plus") ;
 
                 }
             });*/
